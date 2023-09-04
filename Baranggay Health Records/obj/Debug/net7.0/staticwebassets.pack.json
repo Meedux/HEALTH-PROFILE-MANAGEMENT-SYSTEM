@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.Baranggay Health Records.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.Baranggay Health Records.props",
+      "PackagePath": "build\\Baranggay Health Records.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.Baranggay Health Records.props",
+      "PackagePath": "buildMultiTargeting\\Baranggay Health Records.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.Baranggay Health Records.props",
+      "PackagePath": "buildTransitive\\Baranggay Health Records.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

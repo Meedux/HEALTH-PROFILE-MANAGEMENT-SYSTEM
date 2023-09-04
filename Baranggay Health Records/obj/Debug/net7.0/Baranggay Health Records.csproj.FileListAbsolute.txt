@@ -1,0 +1,28 @@
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\appsettings.Development.json
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\appsettings.json
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Baranggay Health Records.staticwebassets.runtime.json
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Baranggay Health Records.exe
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Baranggay Health Records.deps.json
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Baranggay Health Records.runtimeconfig.json
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Baranggay Health Records.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Baranggay Health Records.pdb
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.AssemblyInfoInputs.cache
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.AssemblyInfo.cs
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.csproj.CoreCompileInputs.cache
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.RazorAssemblyInfo.cache
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.RazorAssemblyInfo.cs
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\staticwebassets\msbuild.Baranggay Health Records.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\staticwebassets\msbuild.build.Baranggay Health Records.props
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.Baranggay Health Records.props
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.Baranggay Health Records.props
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\staticwebassets.pack.json
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\staticwebassets.build.json
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\staticwebassets.development.json
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\scopedcss\bundle\Baranggay Health Records.styles.css
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\refint\Baranggay Health Records.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.pdb
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.genruntimeconfig.cache
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\ref\Baranggay Health Records.dll
