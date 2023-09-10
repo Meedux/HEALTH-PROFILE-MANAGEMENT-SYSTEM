@@ -36,18 +36,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XERhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/HealthInventory.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XEhlYWx0aEludmVudG9yeS5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/HealthMonitorList.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XEhlYWx0aE1vbml0b3JMaXN0LnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/HealthRecord.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XEhlYWx0aFJlY29yZC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/HouseholdList.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XEhvdXNlaG9sZExpc3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -66,6 +54,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/PurokList.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XFB1cm9rTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/ArchiveRow.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEFyY2hpdmVSb3cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/DashboardCard.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXERhc2hib2FyZENhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/HouseholdRow.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEhvdXNlaG9sZFJvdy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/PurokCard.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFB1cm9rQ2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/PurokListCard.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFB1cm9rTGlzdENhcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/_Imports.razor]

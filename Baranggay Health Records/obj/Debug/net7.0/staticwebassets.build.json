@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "KfKs2Xk8JBCtBt4k24Ok+Us2NP0ctzAAzRQqreXzWQ0=",
+  "Hash": "PW5FLKxBvIEz0wxuuPkMqjbdbf2UM5RzuIyirHxTwiE=",
   "Source": "Baranggay Health Records",
   "BasePath": "_content/Baranggay Health Records",
   "Mode": "Default",
@@ -16,6 +16,40 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "SourceId": "Baranggay Health Records",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\",
+      "BasePath": "_content/Baranggay Health Records",
+      "RelativePath": "bootstrap/bootstrap.min.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Identity": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "SourceId": "Baranggay Health Records",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\",
+      "BasePath": "_content/Baranggay Health Records",
+      "RelativePath": "bootstrap/bootstrap.min.css.map",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
+    },
     {
       "Identity": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\css\\site.css",
       "SourceId": "Baranggay Health Records",
