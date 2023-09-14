@@ -1,5 +1,6 @@
 ﻿@page "/profiling-form"
 @layout SecretaryLayout
+@inject Context appcontext
 
 <div class="container" style="margin-top: 32px;">
     <form>
@@ -9,16 +10,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-3"><label class="form-label">First Name</label><input class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
-            <div class="col-xl-4"><label class="form-label">Middle Name</label><input class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
-            <div class="col-xl-3"><label class="form-label">Last Name</label><input class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
-            <div class="col"><label class="form-label">Suffix</label><input class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
+            <div class="col-xl-3"><label class="form-label">First Name</label><input @bind="firstName" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
+            <div class="col-xl-4"><label class="form-label">Middle Name</label><input @bind="middleName" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
+            <div class="col-xl-3"><label class="form-label">Last Name</label><input @bind="lastName" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
+            <div class="col"><label class="form-label">Suffix</label><input @bind="suffix" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Date of Birth</label><input class="form-control" type="text" placeholder="mm/dd/yyyy" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Date of Birth</label><input @bind="dob" class="form-control" type="text" placeholder="mm/dd/yyyy" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Age</label><input class="form-control" type="text" placeholder="age" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Age</label><input @bind="age" class="form-control" type="number" placeholder="age" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
@@ -28,34 +29,81 @@
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Civil Status</label><input class="form-control" type="text" placeholder="Ex. Single" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Civil Status</label><input @bind="civil_status" class="form-control" type="text" placeholder="Ex. Single" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Religion</label><input class="form-control" type="text" placeholder="Ex. Catholic or Islam" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Religion</label><input @bind="religion" class="form-control" type="text" placeholder="Ex. Catholic or Islam" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Occupation</label><input class="form-control" type="text" placeholder="Ex. Private Employee" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Occupation</label><input @bind="occupation" class="form-control" type="text" placeholder="Ex. Private Employee" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Father's Name</label><input class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Father's Name</label><input @bind="fathers_name" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Mother's Name</label><input class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Mother's Name</label><input @bind="mothers_name" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Head of Family</label><input class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Head of Family</label><input @bind="head" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Educational Attainment</label><input class="form-control" type="text" placeholder="Ex. College" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Educational Attainment</label><input @bind="ed_attain" class="form-control" type="text" placeholder="Ex. College" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Purok</label><input class="form-control" type="text" placeholder="Ex. 1A" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Purok</label><input @bind="purok" class="form-control" type="text" placeholder="Ex. 1A" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Status Type</label><input class="form-control" type="text" placeholder="Ex. New Born" required=""></div>
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Status Type</label><input @bind="status_type" class="form-control" type="text" placeholder="Ex. New Born" required=""></div>
         </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Civil Status</label><input class="form-control" type="text" placeholder="Ex. Single"></div>
-        </div>
-    </form><button class="btn btn-success" type="button" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;">ADD</button><button class="btn btn-danger" type="button" style="margin-top: 20px;margin-bottom: 40px;">Cancel</button>
+        @* <div class="row" style="margin-top: 10px;">
+            <div class="col-xl-12 offset-xl-0"><label class="form-label">Civil Status</label><input @bind="civi" class="form-control" type="text" placeholder="Ex. Single"></div>
+        </div> *@
+    </form><button @onclick="AddResident" class="btn btn-success" type="button" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;">ADD</button><button class="btn btn-danger" type="button" style="margin-top: 20px;margin-bottom: 40px;">Cancel</button>
 </div>
+
+@code {
+
+    string firstName = "";
+    string middleName = "";
+    string lastName = "";
+    string suffix = "";
+    string dob = "";
+    int age = 0;
+    string gender = "";
+    string civil_status = "";
+    string religion = "";
+    string occupation = "";
+    string fathers_name = "";
+    string mothers_name = "";
+    string head = "";
+    int num_of_fam = 0;
+    string ed_attain = "";
+    int household_number = 0;
+    string purok = "";
+    string status_type = "";
+
+
+    void AddResident()
+    {
+        Resident res = new Resident(
+            firstName,
+            middleName,
+            lastName,
+            suffix,
+            dob,
+            age,
+            civil_status,
+            religion,
+            occupation,
+            fathers_name,
+            mothers_name,
+            head,
+            ed_attain,
+            purok,
+            status_type
+        );
+
+        appcontext.AddResident(res);
+
+    }
+}
