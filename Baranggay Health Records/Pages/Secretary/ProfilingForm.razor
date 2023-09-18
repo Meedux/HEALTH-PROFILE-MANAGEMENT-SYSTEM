@@ -1,6 +1,7 @@
 ﻿@page "/profiling-form"
+@using Baranggay_Health_Records.Controller
 @layout SecretaryLayout
-@inject Context appcontext
+@inject Context context
 
 <div class="container" style="margin-top: 32px;">
     <form>
@@ -85,25 +86,72 @@
 
     void AddResident()
     {
-        Resident res = new Resident(
-            firstName,
-            middleName,
-            lastName,
-            suffix,
-            dob,
-            age,
-            civil_status,
-            religion,
-            occupation,
-            fathers_name,
-            mothers_name,
-            head,
-            ed_attain,
-            purok,
-            status_type
-        );
+        Resident res = new Resident();
 
-        appcontext.AddResident(res);
+        res.FirstName = firstName;
+        res.MiddleName = middleName;
+        res.LastName = lastName;
+        res.Suffix = suffix;
+        res.Dob = dob;
+        res.Age = age;
+        res.Gender = gender;
+        res.Civil_status = civil_status;
+        res.Religion = religion;
+        res.Occupation = occupation;
+        res.Fathers_name = fathers_name;
+        res.Mothers_name = mothers_name;
+        res.Head = head;
+        res.Num_of_fam = num_of_fam;
+        res.Ed_attain = ed_attain;
+        res.Household_number = household_number;
+        res.Purok = purok;
+        res.Status_type = status_type;
+
+        if(
+            firstName != "" ||
+            middleName != "" ||
+            lastName != "" ||
+            suffix != "" ||
+            dob != "" ||
+            age != 0 ||
+            gender != "" ||
+            civil_status != "" ||
+            religion != "" ||
+            occupation != "" ||
+            fathers_name != "" ||
+            mothers_name != "" ||
+            head != "" ||
+            num_of_fam != 0 ||
+            ed_attain != "" ||
+            household_number != 0 ||
+            purok != "" ||
+            status_type != ""
+        )
+        {
+            context.AddResident(res);
+        }
+
+        firstName = "";
+        middleName = "";
+        lastName = "";
+        suffix = "";
+        dob = "";
+        age = 0;
+        gender = "";
+        civil_status = "";
+        religion = "";
+        occupation = "";
+        fathers_name = "";
+        mothers_name = "";
+        head = "";
+        num_of_fam = 0;
+        ed_attain = "";
+        household_number = 0;
+        purok = "";
+        status_type = "";
+
+        Console.WriteLine(context.GetAllResidents());
+        Console.WriteLine("Item Added to Residents!");
 
     }
 }
