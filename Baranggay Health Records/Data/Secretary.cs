@@ -19,5 +19,19 @@ namespace Baranggay_Health_Records.Data
         [Required]
         public String? LastName { get; set; }
 
+        public int? GetID()
+        {
+            return this.ID;
+        }
+
+        public String? GetAccountUserName()
+        {
+            return this.UserName;
+        }
+
+        public String? GetAccountPassword()
+        {
+            return this.Password;
+        }
     }
 }

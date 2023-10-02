@@ -38,8 +38,83 @@ namespace Baranggay_Health_Records.Data
         public string? Purok { get; set; }
         public string? Status_type { get; set; }
 
+        public bool? IsPWD { get; set; }
 
-        
+        public bool? IsSenior { get; set; }
+
+
+        //Resident Model Queries
+
+        public int? GetID()
+        {
+            return this.ID;
+        }
+
+        public int? GetResidentID()
+        {
+            return this.ID;
+        }
+
+        public String? GetResidentFirstName()
+        {
+            return this.FirstName;
+        }
+
+        public String? GetResidentMiddleName()
+        {
+            return this.MiddleName;
+        }
+
+        public String? GetResidentLastName()
+        {
+            return this.LastName;
+        }
+
+        public String? GetResidentSuffix()
+        {
+            return this.Suffix;
+        }
+
+        public String? GetResidentDOB()
+        {
+            return this.Dob.ToString();
+        }
+
+        public int? GetResidentAge()
+        {
+            return this.Age;
+        }
+
+        public String? GetResidentGender()
+        {
+            return this.Gender;
+        }
+
+        public String? GetResidentCivilStatus()
+        {
+            return this.Civil_status;
+        }
+
+        public String? GetResidentReligion()
+        {
+            return this.Religion;
+        }
+
+        public String? GetOccupation()
+        {
+            return this.Occupation;
+        }
+
+        public String? GetEducationalAttainment()
+        {
+            return this.Ed_attain;
+        }
+
+        public String? GetPurok()
+        {
+            return this.Purok;
+        }
+
 
     }
 }

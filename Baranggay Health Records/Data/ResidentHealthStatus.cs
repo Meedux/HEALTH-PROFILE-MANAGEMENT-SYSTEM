@@ -18,6 +18,34 @@ namespace Baranggay_Health_Records.Data
 
         [Required] public String? BloodPressure { get; set; }
 
+        public int? GetID()
+        {
+            return this.ID;
+        }
 
+        new public String? GetType()
+        {
+            return this.Typeofillness;
+        }
+
+        public int? GetWeight()
+        {
+            return this.Weight;
+        }
+
+        public int? GetHeight()
+        {
+            return this.Height;
+        }
+
+        public int? GetTemperature()
+        {
+            return this.Temperature;
+        }
+
+        public String? GetBloodPressure()
+        {
+            return this.BloodPressure;
+        }
     }
 }
