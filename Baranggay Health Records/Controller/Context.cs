@@ -4,7 +4,9 @@ namespace Baranggay_Health_Records.Controller
 {
     public class Context
     {
+
         public List<Resident>? Residents { get; set; }
+        private SQLConnector sqlConnector = new SQLConnector("", "", "", "");
 
         public void AddResident(Resident temp)
         {
@@ -30,5 +32,13 @@ namespace Baranggay_Health_Records.Controller
         {
             return true;
         }
+
+        public void Login(string username, string password)
+        {
+            
+        }
+
+       
+
     }
 }

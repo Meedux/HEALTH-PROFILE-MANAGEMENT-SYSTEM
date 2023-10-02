@@ -2,7 +2,7 @@
 
 namespace Baranggay_Health_Records.Data
 {
-    public class User
+    public class Secretary
     {
         public int Id { get; set; }
 
@@ -19,7 +19,5 @@ namespace Baranggay_Health_Records.Data
         [Required]
         public String? LastName { get; set; }
 
-        [Required]
-        public String? AccountType { get; set; }
     }
 }

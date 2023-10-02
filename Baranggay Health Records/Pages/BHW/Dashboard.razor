@@ -1,8 +1,26 @@
-﻿@page "/secretary/dashboard"
+﻿@layout BHWLayout
+@page "/BHW/dashboard"
 @using Baranggay_Health_Records.Shared
-@layout SecretaryLayout
 
-<div class="container">
+<div class="container" style="margin-top: 80px;">
+    <div class="row" style="margin-top: 20px;">
+        <div class="col">
+            <DashboardCard Name="Total illness Occured" Progress="15" Count="0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-1" style="margin-right: 19px;">
+                    <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
+                    <path d="M472.2 195.9l-66.1-22.1c-19.25-6.624-33.5-20.87-38.13-38.24l-16-60.49c-11.62-43.74-76.63-57.11-110-22.62L194.1 99.3c-13.25 13.75-33.5 20.87-54.25 19.25L68.86 112.9c-52-3.999-86.88 44.99-59 82.86l38.63 52.49c11 14.1 12.75 33.74 4.625 50.12l-28.5 56.99c-20.62 41.24 22.88 84.86 73.5 73.86l69.1-15.25c20.12-4.499 41.38 .0001 57 11.62l54.38 40.87c39.38 29.62 101 7.623 104.5-37.24l4.625-61.86c1.375-17.75 12.88-33.87 30.62-42.99l61.1-31.62C526.1 269.8 520.9 212.5 472.2 195.9zM159.1 256c-17.62 0-31.1-14.37-31.1-31.1s14.37-31.1 31.1-31.1s31.1 14.37 31.1 31.1S177.6 256 159.1 256zM287.1 351.1c-17.62 0-31.1-14.37-31.1-31.1c0-17.62 14.37-31.1 31.1-31.1s31.1 14.37 31.1 31.1C319.1 337.6 305.6 351.1 287.1 351.1zM303.1 224c-8.875 0-15.1-7.125-15.1-15.1c0-8.873 7.125-15.1 15.1-15.1s15.1 7.125 15.1 15.1C319.1 216.9 312.9 224 303.1 224z"></path>
+                </svg>
+            </DashboardCard>
+        </div>
+        <div class="col">
+            <DashboardCard Name="Medicine" Progress="100" Count="0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-1" style="margin-right: 19px;">
+                    <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
+                    <path d="M0 144v288C0 457.6 22.41 480 48 480H64V96H48C22.41 96 0 118.4 0 144zM464 96H448v384h16c25.59 0 48-22.41 48-48v-288C512 118.4 489.6 96 464 96zM384 48C384 22.41 361.6 0 336 0h-160C150.4 0 128 22.41 128 48V96H96v384h320V96h-32V48zM176 48h160V96h-160V48zM352 312C352 316.4 348.4 320 344 320H288v56c0 4.375-3.625 8-8 8h-48C227.6 384 224 380.4 224 376V320H168C163.6 320 160 316.4 160 312v-48C160 259.6 163.6 256 168 256H224V200C224 195.6 227.6 192 232 192h48C284.4 192 288 195.6 288 200V256h56C348.4 256 352 259.6 352 264V312z"></path>
+                </svg>
+            </DashboardCard>
+        </div>
+    </div>
     <div class="row" style="margin-top: 20px;">
         <div class="col">
             <DashboardCard Name="Residents" Progress="80" Count="0">
@@ -49,12 +67,30 @@
     </div>
     <div class="row" style="margin-top: 20px;">
         <div class="col">
-            <DashboardCard Name="Total Households" Progress="1" Count="0">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 576 576" width="1em" height="1em" fill="currentColor" class="fs-1" style="margin-right: 19px;">
+            <DashboardCard Name="Total Prenates" Progress="1" Count="0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="-96 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-1" style="margin-right: 19px;">
                     <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
-                    <path d="M575.8 255.5C575.8 273.5 560.8 287.6 543.8 287.6H511.8L512.5 447.7C512.5 450.5 512.3 453.1 512 455.8V472C512 494.1 494.1 512 472 512H456C454.9 512 453.8 511.1 452.7 511.9C451.3 511.1 449.9 512 448.5 512H392C369.9 512 352 494.1 352 472V384C352 366.3 337.7 352 320 352H256C238.3 352 224 366.3 224 384V472C224 494.1 206.1 512 184 512H128.1C126.6 512 125.1 511.9 123.6 511.8C122.4 511.9 121.2 512 120 512H104C81.91 512 64 494.1 64 472V360C64 359.1 64.03 358.1 64.09 357.2V287.6H32.05C14.02 287.6 0 273.5 0 255.5C0 246.5 3.004 238.5 10.01 231.5L266.4 8.016C273.4 1.002 281.4 0 288.4 0C295.4 0 303.4 2.004 309.5 7.014L564.8 231.5C572.8 238.5 576.9 246.5 575.8 255.5L575.8 255.5z"></path>
+                    <path d="M112 48C112 21.49 133.5 0 160 0C186.5 0 208 21.49 208 48C208 74.51 186.5 96 160 96C133.5 96 112 74.51 112 48zM88 382.1C74.2 379.4 64 366.9 64 352V296.9L59.43 304.5C50.33 319.6 30.67 324.5 15.52 315.4C.3696 306.3-4.531 286.7 4.573 271.5L62.85 174.6C77.84 149.6 103.2 133 131.5 128.1C135.6 128.3 139.8 128 144 128H160C161.4 128 162.8 128.1 164.1 128.3C199.8 131.2 229.5 157.6 236.2 193.3L242.3 225.7C286.6 234.3 320 273.2 320 320V352C320 369.7 305.7 384 288 384H232V480C232 497.7 217.7 512 200 512C182.3 512 168 497.7 168 480V384H152V480C152 497.7 137.7 512 120 512C102.3 512 88 497.7 88 480L88 382.1z"></path>
                 </svg>
             </DashboardCard>
         </div>
     </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col">
+            <DashboardCard Name="Total Households" Progress="1" Count="0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 576 576" width="1em" height="1em" fill="currentColor" class="fs-1" style="margin-right: 19px;">
+                            <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
+                            <path d="M575.8 255.5C575.8 273.5 560.8 287.6 543.8 287.6H511.8L512.5 447.7C512.5 450.5 512.3 453.1 512 455.8V472C512 494.1 494.1 512 472 512H456C454.9 512 453.8 511.1 452.7 511.9C451.3 511.1 449.9 512 448.5 512H392C369.9 512 352 494.1 352 472V384C352 366.3 337.7 352 320 352H256C238.3 352 224 366.3 224 384V472C224 494.1 206.1 512 184 512H128.1C126.6 512 125.1 511.9 123.6 511.8C122.4 511.9 121.2 512 120 512H104C81.91 512 64 494.1 64 472V360C64 359.1 64.03 358.1 64.09 357.2V287.6H32.05C14.02 287.6 0 273.5 0 255.5C0 246.5 3.004 238.5 10.01 231.5L266.4 8.016C273.4 1.002 281.4 0 288.4 0C295.4 0 303.4 2.004 309.5 7.014L564.8 231.5C572.8 238.5 576.9 246.5 575.8 255.5L575.8 255.5z"></path>
+                        </svg>
+            </DashboardCard>
+        </div>
+        <div class="col">
+            <DashboardCard Name="Total PWD" Progress="1" Count="0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-1" style="margin-right: 19px;">
+                    <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
+                    <path d="M510.3 421.9c-5.594-16.75-23.53-25.84-40.47-20.22l-19.38 6.438l-41.7-99.97C403.9 295.1 392.2 288 379.1 288h-97.78l-10.4-48h65.11c17.69 0 32-14.31 32-32s-14.31-32-32-32h-78.98L255.6 169.2C251.8 142.1 227.2 124.8 201.2 128.5C174.1 132.2 156.7 156.5 160.5 182.8l23.68 140.4C185.8 339.6 199.6 352 216 352h141.4l44.86 107.9C407.3 472.3 419.3 480 432 480c3.344 0 6.781-.5313 10.12-1.656l48-16C506.9 456.8 515.9 438.7 510.3 421.9zM160 464c-61.76 0-112-50.24-112-112c0-54.25 38.78-99.55 90.06-109.8L130.1 195C56.06 209 0 273.9 0 352c0 88.37 71.63 160 160 160c77.4 0 141.9-54.97 156.8-128h-49.1C252.9 430.1 210.6 464 160 464zM192 96c26.51 0 48-21.49 48-48S218.5 0 192 0S144 21.49 144 48S165.5 96 192 96z"></path>
+                </svg>
+            </DashboardCard>
+        </div>
     </div>
+</div>

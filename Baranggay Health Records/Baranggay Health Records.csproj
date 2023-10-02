@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Baranggay_Health_Records</RootNamespace>
+    <UserSecretsId>ee6a95a8-90e8-452f-9c39-38595ef5e392</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\BHW\" />
+    <PackageReference Include="MySql.Data" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Queries\" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@
             @ChildContent
             <h3>@Name</h3>
         </div>
-        <h2 class="text-center text-muted card-subtitle mb-2">1000</h2>
+        <h2 class="text-center text-muted card-subtitle mb-2">@Count</h2>
         <div class="progress">
             <div class="progress-bar bg-danger" aria-valuenow="@Progress" aria-valuemin="0" aria-valuemax="100" style="width: @Progress%;"><span class="visually-hidden">@Progress%</span></div>
         </div>
@@ -17,6 +17,9 @@
 
     [Parameter]
     public String? Progress { get; set; }
+
+    [Parameter]
+    public int? Count { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

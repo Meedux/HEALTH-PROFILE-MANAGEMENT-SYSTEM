@@ -6,7 +6,7 @@ namespace Baranggay_Health_Records.Data
 {
     public class Resident
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
 
         [Required]
         public string? FirstName { get; set; }
@@ -21,7 +21,7 @@ namespace Baranggay_Health_Records.Data
         public string? Suffix { get; set; }
 
         [Required]
-        public string? Dob { get; set; }
+        public DateTime? Dob { get; set; }
 
         [Range(0, 200)]
         public int Age { get; set;} 
@@ -40,5 +40,6 @@ namespace Baranggay_Health_Records.Data
 
 
         
+
     }
 }
