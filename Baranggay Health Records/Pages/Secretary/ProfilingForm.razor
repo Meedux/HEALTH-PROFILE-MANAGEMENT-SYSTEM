@@ -68,7 +68,7 @@
     string middleName = "";
     string lastName = "";
     string suffix = "";
-    string dob = "";
+    DateTime dob;
     int age = 0;
     string gender = "";
     string civil_status = "";
@@ -112,7 +112,7 @@
             middleName != "" ||
             lastName != "" ||
             suffix != "" ||
-            dob != "" ||
+            dob.ToShortDateString() != "" ||
             age != 0 ||
             gender != "" ||
             civil_status != "" ||
@@ -135,7 +135,6 @@
         middleName = "";
         lastName = "";
         suffix = "";
-        dob = "";
         age = 0;
         gender = "";
         civil_status = "";

@@ -6,19 +6,19 @@ namespace Baranggay_Health_Records.Controller
     {
 
         public List<Resident>? Residents { get; set; }
-        private SQLConnector sqlConnector = new SQLConnector("", "", "", "");
+        public SQLConnector Connector = new SQLConnector("", "", "", "");
 
         public void AddResident(Resident temp)
         {
             Residents?.Add(temp);
         }
 
-        public List<Resident> GetAllResidents()
+        public List<Resident>? GetAllResidents()
         {
             return Residents;
         }
 
-        public Resident GetPresident(int index)
+        public Resident? GetPresident(int index)
         {
             return null;
         }
