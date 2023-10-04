@@ -1,4 +1,6 @@
 ﻿@page "/"
+@inject NavigationManager Navigation
+@inject Context context
 
 <section class="py-4 py-xl-5">
     <div class="container">
@@ -12,12 +14,12 @@
                             </svg>
                         </div>
                         <h2>Sign In</h2>
-                        <form class="text-center" method="post">
+                        <div class="text-center">
                             <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email"></div>
                             <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-                            <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Login</button></div>
+                            <div class="mb-3"><button class="btn btn-primary d-block w-100" @onclick="@SignIn">Login</button></div>
                             <p class="text-muted">Forgot your password?</p>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -29,3 +31,17 @@
         </div>
     </div>
 </section>
+
+@code {
+    public String? email { get; set; } = "";
+
+    public String? password { get; set; } = "";
+
+    public void SignIn()
+    {
+        if(email != "" || password != "")
+        {
+            context.Login(email, password, Navigation);
+        }
+    }
+}

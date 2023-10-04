@@ -1,4 +1,5 @@
 ﻿using Baranggay_Health_Records.Data;
+using Microsoft.AspNetCore.Components;
 
 namespace Baranggay_Health_Records.Controller
 {
@@ -10,9 +11,19 @@ namespace Baranggay_Health_Records.Controller
         public String PurokHealthViewTracker = "Purok 1A";
 
 
-        public bool Login(string username, string password)
+        public bool Login(String? email, String? password, NavigationManager navigationManager)
         {
-            return true;
+            if(email == "bhw@gmail.com" && password == "123")
+            {
+                Console.WriteLine("BHW");
+                navigationManager.NavigateTo("/bhw/");
+                return true;
+            }else if(email == "secretary@gmail.com" && password == "123")
+            {
+                navigationManager.NavigateTo("/secretary/");
+                return true;
+            }
+            return false;
         }
 
         public void AddResident(Resident temp)
