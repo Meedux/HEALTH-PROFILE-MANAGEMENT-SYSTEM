@@ -7,6 +7,9 @@ namespace Baranggay_Health_Records.Controller
 
         public List<Resident>? Residents { get; set; }
         public SQLConnector Connector = new SQLConnector("", "", "", "");
+        public String PurokHealthViewTracker = "Purok 1A";
+
+       
 
         public void AddResident(Resident temp)
         {
@@ -17,28 +20,10 @@ namespace Baranggay_Health_Records.Controller
         {
             return Residents;
         }
-
-        public Resident? GetPresident(int index)
-        {
-            return null;
-        }
-
-        public bool UpdateResident(Resident temp, int index)
-        {
-            return true;
-        }
-
-        public bool DeleteResident(Resident temp, int index)
-        {
-            return true;
-        }
-
-        public void Login(string username, string password)
-        {
             
+        public void ChangeViewTracker(String Purok)
+        {
+            PurokHealthViewTracker = Purok;
         }
-
-       
-
     }
 }

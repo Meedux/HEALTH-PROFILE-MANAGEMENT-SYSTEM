@@ -8,50 +8,18 @@
 <div class="container" style="margin-top: 13px;">
     <div class="row">
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Paracetamol</h4>
-                    <p class="card-text">Total: 0</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="visually-hidden">100%</span></div>
-                    </div>
-                </div>
-            </div>
+            <InventoryCard MedicineName="Paracetamol" MedicineTotal="0"/>
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Mefinamic</h4>
-                    <p class="card-text">Total: 0</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="visually-hidden">100%</span></div>
-                    </div>
-                </div>
-            </div>
+            <InventoryCard MedicineName="Mefinamic" MedicineTotal="0" />
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Biogesic</h4>
-                    <p class="card-text">Total: 0</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="visually-hidden">100%</span></div>
-                    </div>
-                </div>
-            </div>
+            <InventoryCard MedicineName="Biogesic" MedicineTotal="0" />
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <div class="card" style="margin-top: 12px;">
-                <div class="card-body">
-                    <h4 class="card-title"></h4>
-                    <p class="card-text">Total Medicine: 0</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="visually-hidden">100%</span></div>
-                    </div>
-                </div>
-            </div>
+            <InventoryCard MedicineName="" MedicineTotal="0"/>
         </div>
     </div>
 </div>
@@ -80,15 +48,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-truncate" style="max-width: 200px;">02</td>
-                                    <td class="text-truncate" style="max-width: 200px;">Paracetamol</td>
-                                    <td>Sakit Ulo</td>
-                                    <td class="text-truncate" style="max-width: 200px;">3</td>
-                                    <td class="text-truncate" style="max-width: 200px;">97</td>
-                                    <td>09/12/2024</td>
-                                    <td>09/12/2024</td>
-                                </tr>
+                                <MedicineRow ID="01" MedicineName="Paracetamol" MedicineDescription="Sakit Ulo" Quality="3" Stock="97" ExpirationDate="09/12/2024" ReleaseDate="09/12/2024" />
+                                <MedicineRow ID="02" MedicineName="Paracetamol" MedicineDescription="Sakit Ulo" Quality="3" Stock="97" ExpirationDate="09/12/2024" ReleaseDate="09/12/2024" />
                             </tbody>
                         </table>
                     </div>

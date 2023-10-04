@@ -112,8 +112,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXERhc2hib2FyZENhcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/HealthMonitorRow.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEhlYWx0aE1vbml0b3JSb3cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/HouseholdRow.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEhvdXNlaG9sZFJvdy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/InventoryCard.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEludmVudG9yeUNhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/MedicineRow.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1lZGljaW5lUm93LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/PurokCard.razor]
@@ -126,6 +138,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/SecretaryLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNlY3JldGFyeUxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/SeniorCitizenRow.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNlbmlvckNpdGl6ZW5Sb3cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/_Imports.razor]

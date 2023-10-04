@@ -1,0 +1,33 @@
+﻿<tr>
+    <td class="text-truncate" style="max-width: 200px;">02</td>
+    <td class="text-truncate" style="max-width: 200px;">Paracetamol</td>
+    <td>Sakit Ulo</td>
+    <td class="text-truncate" style="max-width: 200px;">3</td>
+    <td class="text-truncate" style="max-width: 200px;">97</td>
+    <td>09/12/2024</td>
+    <td>09/12/2024</td>
+</tr>
+
+@code {
+
+    [Parameter]
+    public int? ID { get; set; }
+
+    [Parameter]
+    public String? MedicineName { get; set; }
+
+    [Parameter]
+    public String? MedicineDescription { get; set; }
+
+    [Parameter]
+    public int? Quality { get; set; }
+
+    [Parameter]
+    public int? Stock { get; set; }
+
+    [Parameter]
+    public String? ExpirationDate { get; set; }
+
+    [Parameter]
+    public String? ReleaseDate { get; set; }
+}
