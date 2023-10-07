@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controller\NewFolder\**" />
+    <Content Remove="Controller\NewFolder\**" />
+    <EmbeddedResource Remove="Controller\NewFolder\**" />
+    <None Remove="Controller\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Shared\Navbar.razor" />
   </ItemGroup>
 

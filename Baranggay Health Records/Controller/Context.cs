@@ -1,14 +1,21 @@
 ﻿using Baranggay_Health_Records.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Baranggay_Health_Records.Controller
 {
     public class Context
     {
 
-        public List<Resident>? Residents { get; set; }
+        public List<Resident>? Residents { get; set; } = new List<Resident>();
+        public List<Archive>? Archives { get; set; } = new List<Archive>();
+        public List<Household>? Households { get; set; } = new List<Household>();
+        public List<ResidentHealthStatus>? ResidentHealthStatus { get; set; } = new List<ResidentHealthStatus>();
+
+
         public SQLConnector Connector = new SQLConnector("", "", "", "");
         public String PurokHealthViewTracker = "Purok 1A";
+
 
 
         public bool Login(String? email, String? password, NavigationManager navigationManager)
@@ -44,77 +51,162 @@ namespace Baranggay_Health_Records.Controller
         //Dashboard
         public int GetResidentCount()
         {
-            return 1000;
+            return 2000;
         }
 
         public int GetTotalSeniorCitizenCount()
         {
-            return 0;
+            return 100;
         }
 
         public int GetTotalMinorCount()
         {
-            return 0;
+            return 100;
         }
 
         public int GetTotalAdultCount()
         {
-            return 0;
+            return 100;
         }
 
         public int GetTotalNewBorn()
         {
-            return 0;
+            return 100;
         }
 
         public int GetTotalHouseholds()
         {
-            return 0;
+            return 100;
         }
 
         public int GetTotalMedicine() {
-            return 0;
+            return 100;
         }
 
         public int GetTotalIllnessesOccured()
         {
-            return 0;
+            return 100;
         }
 
         public int GetTotalPrenates()
         {
-            return 0;
+            return 100;
         }
 
         public int GetTotalPWD()
         {
-            return 0;
+            return 100;
         }
 
         //Table Queries
-        public List<Household>? GetHouseholds()
+        public void GetHouseholds()
         {
-            return null;
+            Console.WriteLine("Fetching Household Data");
         }
 
-        public List<Archive>? GetArchives()
+        public void GetArchives()
         {
-            return null;
+            Console.WriteLine("Fetching Archive Data");
         } 
 
-        public List<Resident>? GetResidents()
+        public void GetResidents()
         {
-            return null;
+            Console.WriteLine("Fetching Resident Data");
         }
 
-        public List<ResidentHealthStatus>? GetResidentHealthStatuses()
+        public void GetResidentHealthStatuses()
         {
-            return null;
+            Console.WriteLine("Fetching Resident Health Status Data");
         }
 
-        public List<ResidentMedicine>? GetMedicines()
+        public void GetMedicines()
         {
-            return null;
+            Console.WriteLine("Fetching Medicine Data");
         }
+
+
+
+        //Table Queries
+
+        public void GetHealthMonitorData()
+        {
+            Console.WriteLine("Fetching Health Monitor Data");
+        }
+
+        public void GetHouseholdData()
+        {
+            Console.WriteLine("Fetching Household Data");
+        }
+
+        public void GetMedicineData()
+        {
+            Console.WriteLine("Fetching Medicine Data");
+        }
+
+        public void GetSeniorCitizenData()
+        {
+            Console.WriteLine("Fetching Senior Citizen Data");
+        }
+
+        //Medicine Inventory
+        public int GetParacetamolCount()
+        {
+            return 100;
+        }
+
+        public int GetMefinamicCount()
+        {
+            return 100;
+        }
+
+        public int GetBiogesicCount()
+        {
+            return 100;
+        }
+
+        //Purok Health Details
+
+        public int GetFluCount()
+        {
+            return 200;
+        }
+
+        public int GetMalnourishedCount()
+        {
+            return 200;
+        }
+
+        public int GetMeaslesCount()
+        {
+            return 200;
+        }
+
+        public int GetTuberculosisCount()
+        {
+            return 200;
+        }
+
+        public int GetDewormingCount()
+        {
+            return 200;
+        }
+
+        public int GetPrenatalCount()
+        {
+            return 200;
+        }
+
+        public int GetHouseholdCount()
+        {
+            return 200;
+        }
+
+        public int GetSeniorCitizenCount()
+        {
+            return 200;
+        }
+       
+
+
     }
 }
