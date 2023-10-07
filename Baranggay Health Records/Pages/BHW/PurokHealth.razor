@@ -1,5 +1,6 @@
 ﻿@layout BHWLayout
 @page "/bhw/purok-health"
+@using Baranggay_Health_Records.Shared
 @inject Context context
 
 <div class="container" style="margin-top: 86px;">
@@ -10,72 +11,32 @@
     </div>
     <div class="row" style="margin-bottom: 26px;">
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Flu</h4>
-                    <p class="card-text">Total: @FluCount</p><button class="btn btn-primary" type="button" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></button>
-                </div>
-            </div>
+            <PurokHealthCard Name="Flu" Count="@FluCount"/>
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Malnourished</h4>
-                    <p class="card-text">Total: @MalnourishedCount</p><button class="btn btn-primary" type="button" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></button>
-                </div>
-            </div>
+            <PurokHealthCard Name="Malnourished" Count="@MalnourishedCount" />
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Measles</h4>
-                    <p class="card-text">Total: @MeaslesCount</p><button class="btn btn-primary" type="button" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></button>
-                </div>
-            </div>
+            <PurokHealthCard Name="Measles" Count="@MeaslesCount" />
         </div>
     </div>
     <div class="row" style="margin-bottom: 26px;">
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Tuberculosis</h4>
-                    <p class="card-text">Total: @TuberculosisCount</p><button class="btn btn-primary" type="button" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></button>
-                </div>
-            </div>
+            <PurokHealthCard Name="Tuberculosis" Count="@TuberculosisCount" />
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Prenatal</h4>
-                    <p class="card-text">Total: @PrenatalCount</p><button class="btn btn-primary" type="button" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></button>
-                </div>
-            </div>
+            <PurokHealthCard Name="Prenatal" Count="@PrenatalCount" />
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Deworming</h4>
-                    <p class="card-text">Total: @DewormingCount</p><button class="btn btn-primary" type="button" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></button>
-                </div>
-            </div>
+            <PurokHealthCard Name="Deworming" Count="@DewormingCount" />
         </div>
     </div>
     <div class="row" style="margin-bottom: 26px;">
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Household</h4>
-                    <p class="card-text">Total: @HouseholdCount</p><button class="btn btn-primary" type="button" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></button>
-                </div>
-            </div>
+            <PurokHealthCard Name="Households" Count="@HouseholdCount" />
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Senior Citizen</h4>
-                    <p class="card-text">Total: @SeniorCitizenCount</p><button class="btn btn-primary" type="button" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></button>
-                </div>
-            </div>
+            <PurokHealthCard Name="Senior Citizen" Count="@SeniorCitizenCount" />
         </div>
     </div>
 </div>

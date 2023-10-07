@@ -132,6 +132,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFB1cm9rQ2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/PurokHealthCard.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFB1cm9rSGVhbHRoQ2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/PurokListCard.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFB1cm9rTGlzdENhcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
