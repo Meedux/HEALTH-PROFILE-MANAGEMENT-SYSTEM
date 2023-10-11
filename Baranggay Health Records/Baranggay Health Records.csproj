@@ -16,10 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Secretary\HouseholdDetails.razor" />
     <Content Remove="Shared\Navbar.razor" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Secretary\HouseholdDetails.razor" />
     <None Include="Shared\Navbar.razor" />
   </ItemGroup>
 
@@ -29,6 +31,14 @@
 
   <ItemGroup>
     <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Secretary\HouseholdDetails.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Secretary\HouseholdDetails.razor" />
   </ItemGroup>
 
 </Project>

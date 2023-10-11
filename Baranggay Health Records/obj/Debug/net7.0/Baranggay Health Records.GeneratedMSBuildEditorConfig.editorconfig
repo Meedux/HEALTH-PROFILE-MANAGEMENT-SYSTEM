@@ -112,6 +112,30 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XFB1cm9rTGlzdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/PurokTables/Adult.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XFB1cm9rVGFibGVzXEFkdWx0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/PurokTables/Household.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XFB1cm9rVGFibGVzXEhvdXNlaG9sZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/PurokTables/Minors.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XFB1cm9rVGFibGVzXE1pbm9ycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/PurokTables/NewBorn.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XFB1cm9rVGFibGVzXE5ld0Jvcm4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/PurokTables/SeniorCitizen.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XFB1cm9rVGFibGVzXFNlbmlvckNpdGl6ZW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Pages/Secretary/ResidentDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VjcmV0YXJ5XFJlc2lkZW50RGV0YWlscy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/ArchiveRow.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEFyY2hpdmVSb3cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
