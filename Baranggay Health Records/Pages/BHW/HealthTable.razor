@@ -79,4 +79,9 @@
 
     [Parameter]
     public String? Illness { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Fetching Table Data with the Purok number of {Purok} and Illness type of {Illness}");
+    }
 }

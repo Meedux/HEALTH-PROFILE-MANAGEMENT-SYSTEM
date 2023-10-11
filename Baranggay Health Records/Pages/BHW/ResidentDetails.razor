@@ -131,4 +131,9 @@
 
 @code {
     [Parameter] public int? ID { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Fetching user Data and Health status data with the user ID of {ID}");
+    }
 }

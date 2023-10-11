@@ -25,4 +25,9 @@
 
 @code {
     [Parameter] public int? ID { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"Fetching User Data with the ID of {ID}");
+    }
 }
