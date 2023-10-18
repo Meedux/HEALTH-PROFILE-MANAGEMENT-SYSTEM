@@ -2,7 +2,7 @@
 
 namespace Baranggay_Health_Records.Data
 {
-    public class BHW
+    public class SecretaryModel
     {
         public int ID { get; set; }
 
@@ -10,10 +10,11 @@ namespace Baranggay_Health_Records.Data
         public String? UserName { get; set; }
 
         [Required]
+
         public String? Password { get; set; }
 
         [Required]
-        public String? FirstName { get; set; }
+        public String? FirstName {  get; set; }
 
         [Required]
         public String? LastName { get; set; }
@@ -32,6 +33,5 @@ namespace Baranggay_Health_Records.Data
         {
             return this.Password;
         }
-
     }
 }

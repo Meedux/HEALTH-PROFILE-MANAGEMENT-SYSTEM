@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Baranggay_Health_Records.Data
 {
-    public class Resident
+    public class ResidentModel
     {
         public int ID { get; set; }
 

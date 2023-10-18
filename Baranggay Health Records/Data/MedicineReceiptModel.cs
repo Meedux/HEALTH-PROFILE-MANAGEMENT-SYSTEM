@@ -2,7 +2,7 @@
 
 namespace Baranggay_Health_Records.Data
 {
-    public class MedicineReceipt
+    public class MedicineReceiptModel
     {
         public int? ID { get; set; }
 

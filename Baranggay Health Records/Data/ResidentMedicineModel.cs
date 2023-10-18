@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Contracts;
 
 namespace Baranggay_Health_Records.Data
 {
-    public class ResidentMedicine
+    public class ResidentMedicineModel
     {
         public int? ID { get; set; }
 
-        [Required] public String? Name { get; set; }
 
         [Required] public String? MedicineName { get; set; }
 
@@ -16,14 +16,18 @@ namespace Baranggay_Health_Records.Data
 
         [Required] public DateTime? ExpirationDate { get; set; }
 
+        [Required] public DateTime? ReleaseDate { get; set; }
+
+        [Required] public int? Stock { get; set; }
+
         public int? GetID()
         {
             return this.ID;
         }
 
-        public String? GetName()
+        public int? GetStock()
         {
-            return this.Name;
+            return this.Stock;
         }
 
         public String? GetMedicineName()
@@ -41,9 +45,14 @@ namespace Baranggay_Health_Records.Data
             return this.Quality;
         }
 
-        public DateTime? GetExpirationDate()
+        public String? GetExpirationDate()
         {
-            return this.ExpirationDate;
+            return this.ExpirationDate.ToString();
+        }
+
+        public String? GetReleaseDate()
+        {
+            return this.ReleaseDate.ToString();
         }
     }
 }

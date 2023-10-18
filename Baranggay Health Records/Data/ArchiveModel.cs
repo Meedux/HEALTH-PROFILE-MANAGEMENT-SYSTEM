@@ -1,6 +1,6 @@
 ﻿namespace Baranggay_Health_Records.Data
 {
-    public class Archive
+    public class ArchiveModel
     {
         public String? Name { get; set; }
 

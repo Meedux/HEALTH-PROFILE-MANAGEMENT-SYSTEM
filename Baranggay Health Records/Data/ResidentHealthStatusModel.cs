@@ -2,7 +2,7 @@
 
 namespace Baranggay_Health_Records.Data
 {
-    public class ResidentHealthStatus
+    public class ResidentHealthStatusModel
     {
         public int ID { get; set; }
 
