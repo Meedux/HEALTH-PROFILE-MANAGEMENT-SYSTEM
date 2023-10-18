@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Ohg94G18FQoJxQ+SHXj+ALlQqyfpObayZU3Rzs2KO2lxGIX8ls5jNT023+5XlHOIpFJ9jTZ1JD7pIs6xMbSREA==",
+  "dgSpecHash": "6HIanI7SRPa66XyQtX8miyknYTWUInhvRNR6rw04fhbF1IeKJGTye48QEkLCL1Dg9uLphRlznA4Uz6HADQnavQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\Baranggay Health Records.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\herre\\.nuget\\packages\\dapper\\2.1.4\\dapper.2.1.4.nupkg.sha512",
     "C:\\Users\\herre\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",
     "C:\\Users\\herre\\.nuget\\packages\\k4os.compression.lz4\\1.3.5\\k4os.compression.lz4.1.3.5.nupkg.sha512",
     "C:\\Users\\herre\\.nuget\\packages\\k4os.compression.lz4.streams\\1.3.5\\k4os.compression.lz4.streams.1.3.5.nupkg.sha512",

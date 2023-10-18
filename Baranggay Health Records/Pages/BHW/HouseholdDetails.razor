@@ -1,5 +1,6 @@
 ﻿@page "/bhw/household/details/{ID}"
 @layout BHWLayout
+@inject Context context
 
 <div class="container text-center" style="margin-top: 90px;margin-bottom: 10px;">
     <h1>Household Details for User @ID</h1>
@@ -26,8 +27,23 @@
 @code {
     [Parameter] public int? ID { get; set; }
 
+    HouseholdModel household = new HouseholdModel();
+
     protected override void OnInitialized()
     {
+        List<HouseholdModel> households = new List<HouseholdModel>();
+
         Console.WriteLine($"Fetching User Data with the ID of {ID}");
+
+        households = context.GetHouseholds();
+
+        foreach(HouseholdModel house in households)
+        {
+            if(house.GetMemberID() == ID)
+            {
+                household = house;
+                break;
+            }
+        }
     }
 }

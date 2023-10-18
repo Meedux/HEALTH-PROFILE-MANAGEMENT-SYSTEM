@@ -47,8 +47,9 @@
 </div>
 
 @code {
+    public List<ArchiveModel> Archives { get; set; } = new List<ArchiveModel>();
     protected override void OnInitialized()
     {
-        context.GetArchives();
+        Archives = context.GetArchives();
     }
 }

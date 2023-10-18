@@ -70,8 +70,12 @@
 </div>
 
 @code {
+    public List<ResidentModel> Residents { get; set; } = new List<ResidentModel>();
+    public List<ResidentHealthStatusModel> residentHealthStatuses { get; set; } = new List<ResidentHealthStatusModel>();
+
     protected override void OnInitialized()
     {
-        context.GetHealthMonitorData();
+        Residents = context.GetResidents();
+        residentHealthStatuses = context.GetResidentHealthStatuses();
     }
 }

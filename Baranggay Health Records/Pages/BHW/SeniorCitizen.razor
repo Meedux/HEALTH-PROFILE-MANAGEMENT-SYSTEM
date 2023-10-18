@@ -43,7 +43,17 @@
                             </thead>
                             <tbody>
                                 <SeniorCitizenRow ID="01" LastName="Dela Cruz" FirstName="Cjay" MiddleName="Juan" Age="18" Gender="Male" Purok="1A"/>
-                                <SeniorCitizenRow ID="02" LastName="Maco" FirstName="Ace" MiddleName="Maco" Age="7" Gender="Male" Purok="2" />
+                                @foreach(ResidentModel seniors in Residents)
+                                {
+                                    <SeniorCitizenRow 
+                                        ID="@seniors.GetID()" 
+                                        LastName="@seniors.GetResidentLastName()"
+                                        FirstName="@seniors.GetResidentFirstName()"
+                                        MiddleName="@seniors.GetResidentMiddleName()" 
+                                        Age="@seniors.GetResidentAge()" 
+                                        Gender="@seniors.GetResidentGender()" 
+                                        Purok="@seniors.GetPurok()" />
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -65,8 +75,13 @@
 </div>
 
 @code {
+    public List<ResidentModel> Residents { get; set; } = new List<ResidentModel>();
+
     protected override void OnInitialized()
     {
-        context.GetSeniorCitizenData();
+        Residents = context.GetResidents();
+
+        //Filter out the Residents with ages more than 60
+
     }
 }

@@ -63,8 +63,9 @@
 </div>
 
 @code {
+    public List<HouseholdModel>? households = new List<HouseholdModel>();
     protected override void OnInitialized()
     {
-        context.GetHouseholdData();
+        households = context.GetHouseholds();
     }
 }

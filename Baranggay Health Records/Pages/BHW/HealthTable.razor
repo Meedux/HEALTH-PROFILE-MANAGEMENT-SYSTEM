@@ -1,6 +1,7 @@
 ﻿@layout BHWLayout
 @using Baranggay_Health_Records.Shared
 @page "/bhw/purok-health/{Purok}/{Illness}"
+@inject Context context
 
 <div class="container" style="margin-top: 66px;">
     <h1 class="text-center">Purok @Purok?.ToUpper() - Illness @Illness?.ToUpper()</h1>
@@ -80,8 +81,13 @@
     [Parameter]
     public String? Illness { get; set; }
 
+    public List<ResidentModel>? Residents { get; set; } = new List<ResidentModel>();
+    public List<ResidentHealthStatusModel>? residentHealthStatuses { get; set; } = new List<ResidentHealthStatusModel>();
+
     protected override void OnInitialized()
     {
         Console.WriteLine($"Fetching Table Data with the Purok number of {Purok} and Illness type of {Illness}");
+        Residents = context.GetResidents();
+        residentHealthStatuses = context.GetResidentHealthStatuses();
     }
 }

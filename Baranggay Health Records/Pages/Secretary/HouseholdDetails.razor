@@ -26,4 +26,9 @@
 
 @code {
     [Parameter] public int? ID { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 }

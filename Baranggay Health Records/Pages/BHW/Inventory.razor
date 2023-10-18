@@ -28,7 +28,7 @@
         <div class="col-lg-10 d-lg-flex align-items-lg-center">
             <div class="input-group"><span class="input-group-text">Search</span><input class="form-control" type="text"><button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button></div>
         </div>
-        <div class="col d-flex justify-content-between"><button class="btn btn-primary" type="button" data-bs-target="#medicine-modal" data-bs-toggle="modal">Add New Arrival</button></div>
+        <button class="btn btn-primary" type="button" data-bs-target="#medicine-modal" data-bs-toggle="modal">Add New Arrival</button>
     </div>
     <div class="row justify-content-center" style="margin-top: 24px;">
         <div class="col-xl-10 col-xxl-9">
@@ -50,6 +50,17 @@
                             <tbody>
                                 <MedicineRow ID="01" MedicineName="Paracetamol" MedicineDescription="Sakit Ulo" Quality="3" Stock="97" ExpirationDate="09/12/2024" ReleaseDate="09/12/2024" />
                                 <MedicineRow ID="02" MedicineName="Paracetamol" MedicineDescription="Sakit Ulo" Quality="3" Stock="97" ExpirationDate="09/12/2024" ReleaseDate="09/12/2024" />
+                            
+                                @foreach (ResidentMedicineModel medicine in residentMedicines)
+                                {
+                                    <MedicineRow ID="@medicine.GetID()"
+                                                 MedicineName="@medicine.GetMedicineName()"
+                                                 MedicineDescription="@medicine.GetDescription()"
+                                                 Quality="@medicine.GetQuality()"
+                                                 Stock="@medicine.GetStock()"
+                                                 ExpirationDate="@medicine.GetExpirationDate()"
+                                                 ReleaseDate="@medicine.GetReleaseDate()" />
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -92,12 +103,14 @@
     public int MefinamicTotal { get; set; } = 0;
     public int BiogesicTotal { get; set; } = 0;
 
+    public List<ResidentMedicineModel> residentMedicines { get; set; } = new List<ResidentMedicineModel>();
+
     protected override void OnInitialized()
     {
         ParacetamolTotal = context.GetParacetamolCount();
         MefinamicTotal = context.GetMefinamicCount();
         BiogesicTotal = context.GetBiogesicCount();
 
-        context.GetMedicineData();
+        residentMedicines = context.GetMedicines();
     }
 }
