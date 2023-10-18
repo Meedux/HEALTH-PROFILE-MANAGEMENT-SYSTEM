@@ -7,10 +7,10 @@ namespace Baranggay_Health_Records.Controller
     public class Context
     {
 
-        public List<Resident>? Residents { get; set; } = new List<Resident>();
-        public List<Archive>? Archives { get; set; } = new List<Archive>();
-        public List<Household>? Households { get; set; } = new List<Household>();
-        public List<ResidentHealthStatus>? ResidentHealthStatus { get; set; } = new List<ResidentHealthStatus>();
+        public List<ResidentModel>? Residents { get; set; } = new List<ResidentModel>();
+
+        public List<HouseholdModel>? Households { get; set; } = new List<HouseholdModel>();
+        public List<ResidentHealthStatusModel>? ResidentHealthStatus { get; set; } = new List<ResidentHealthStatusModel>();
 
 
         public SQLConnector Connector = new SQLConnector("", "", "", "");
@@ -20,12 +20,12 @@ namespace Baranggay_Health_Records.Controller
 
         public bool Login(String? email, String? password, NavigationManager navigationManager)
         {
-            if(email == "bhw@gmail.com" && password == "123")
+            if (email == "bhw@gmail.com" && password == "123")
             {
                 Console.WriteLine("BHW");
                 navigationManager.NavigateTo("/bhw/");
                 return true;
-            }else if(email == "secretary@gmail.com" && password == "123")
+            } else if (email == "secretary@gmail.com" && password == "123")
             {
                 navigationManager.NavigateTo("/secretary/");
                 return true;
@@ -33,16 +33,16 @@ namespace Baranggay_Health_Records.Controller
             return false;
         }
 
-        public void AddResident(Resident temp)
+        public void AddResident(ResidentModel temp)
         {
             Residents?.Add(temp);
         }
 
-        public List<Resident>? GetAllResidents()
+        public List<ResidentModel>? GetAllResidents()
         {
             return Residents;
         }
-            
+
         public void ChangeViewTracker(String Purok)
         {
             PurokHealthViewTracker = Purok;
@@ -99,39 +99,46 @@ namespace Baranggay_Health_Records.Controller
         }
 
         //Table Queries
-        public void GetHouseholds()
+        public List<HouseholdModel> GetHouseholds()
         {
+            List<HouseholdModel> households = new List<HouseholdModel>();
             Console.WriteLine("Fetching Household Data");
+            return households;
         }
 
-        public void GetArchives()
+        public List<ArchiveModel> GetArchives()
         {
+            List<ArchiveModel> archives = new List<ArchiveModel>();
             Console.WriteLine("Fetching Archive Data");
+
+            return archives;
         } 
 
-        public void GetResidents()
+        public List<ResidentModel> GetResidents()
         {
+            List<ResidentModel> residents  = new List<ResidentModel>();
             Console.WriteLine("Fetching Resident Data");
+            return residents;
         }
 
-        public void GetResidentHealthStatuses()
+        public List<ResidentHealthStatusModel> GetResidentHealthStatuses()
         {
+            List<ResidentHealthStatusModel> residentHealthStatuses = new List<ResidentHealthStatusModel>();
             Console.WriteLine("Fetching Resident Health Status Data");
+            return residentHealthStatuses;
         }
 
-        public void GetMedicines()
+        public List<ResidentMedicineModel> GetMedicines()
         {
+            List<ResidentMedicineModel> residentMedicines = new List<ResidentMedicineModel>();
             Console.WriteLine("Fetching Medicine Data");
+            return residentMedicines;
         }
 
 
 
         //Table Queries
 
-        public void GetHealthMonitorData()
-        {
-            Console.WriteLine("Fetching Health Monitor Data");
-        }
 
         public void GetHouseholdData()
         {
