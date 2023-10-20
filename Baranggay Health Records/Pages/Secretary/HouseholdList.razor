@@ -1,5 +1,6 @@
 ﻿@page "/secretary/household-list"
 @layout SecretaryLayout
+@inject Context context
 
 <div class="container" style="margin-top: 30px;">
     <div class="row">
@@ -41,7 +42,17 @@
                             </thead>
                             <tbody>
                                 <HouseholdRow ID="01" Lastname="Juan" Firstname="Cjay" Middlename="Juan" Member="3" Purok="1" />
-                                <HouseholdRow ID="02" Lastname="Maco" Firstname="Ace" Middlename="Maco" Member="5" Purok="2" />
+                                @foreach(ResidentModel household in resident)
+                                {
+                                    <HouseholdRow 
+                                        ID="@household.GetID()" 
+                                        Lastname="@household.GetResidentLastName()" 
+                                        Firstname="@household.GetResidentFirstName()" 
+                                        Middlename="@household.GetResidentMiddleName()" 
+                                        Member="@household.Num_of_fam" 
+                                        Purok="@household.GetPurok()" />
+
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -61,3 +72,13 @@
         </div>
     </div>
 </div>
+
+@code {
+    public List<ResidentModel> resident = new List<ResidentModel>(); 
+    protected override void OnInitialized()
+    {
+        List<HouseholdModel> households = context.GetHouseholds();
+
+        //Something Filter idk lmao
+    }
+}

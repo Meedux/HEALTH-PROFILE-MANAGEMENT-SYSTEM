@@ -18,6 +18,13 @@ namespace Baranggay_Health_Records.Data
 
         [Required] public int? MemberID { get; set; }
 
+        [Required] public int? FamilyCount { get; set; }
+
+        public int? GetFamilyCount()
+        {
+            return this.FamilyCount;
+        }
+
         public int? GetID()
         {
             return this.ID;

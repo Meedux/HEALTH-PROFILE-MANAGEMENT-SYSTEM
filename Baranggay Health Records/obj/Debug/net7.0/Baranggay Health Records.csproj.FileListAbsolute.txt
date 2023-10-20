@@ -51,3 +51,4 @@ C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Record
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.csproj.AssemblyReference.cache
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.csproj.CopyComplete
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Dapper.dll

@@ -1,6 +1,9 @@
 ﻿@page "/secretary/household/details/{ID}"
 @using Baranggay_Health_Records.Shared
 @layout SecretaryLayout
+@using Baranggay_Health_Records.Data
+@using Baranggay_Health_Records.Controller
+@inject Context context
 
 <div class="container text-center" style="margin-top: 90px;margin-bottom: 10px;">
     <h1>Household Details for User @ID</h1>
@@ -14,10 +17,10 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <p style="font-size: 26px;"><strong>Head of The Family</strong>: Family Name&nbsp;</p>
-                    <p style="font-size: 26px;"><strong>Father's Name</strong>: Family Name</p>
-                    <p style="font-size: 26px;"><strong>Mother's Name</strong>: Family Name</p>
-                    <p style="font-size: 26px;"><strong>Members</strong>: 10</p>
+                    <p style="font-size: 26px;"><strong>Head of The Family</strong>: @household.GetHeadofFamily()</p>
+                    <p style="font-size: 26px;"><strong>Father's Name</strong>: @household.GetFathersName()></p>
+                    <p style="font-size: 26px;"><strong>Mother's Name</strong>: @household.GetMothersName()</p>
+                    <p style="font-size: 26px;"><strong>Members</strong>: @household.GetFamilyCount()</p>
                 </div>
             </div>
         </div>
@@ -25,10 +28,12 @@
 </div>
 
 @code {
-    [Parameter] public int? ID { get; set; }
+    [Parameter] public int ID { get; set; }
+
+    HouseholdModel household = new HouseholdModel();
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
+        household = context.GetHousehold(ID);
     }
 }

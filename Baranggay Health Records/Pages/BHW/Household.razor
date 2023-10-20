@@ -40,8 +40,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <HouseholdRow ID="01" Lastname="Juan" Firstname="Cjay" Middlename="Juan" Purok="1" />
-                                <HouseholdRow ID="02" Lastname="Maco" Firstname="Ace" Middlename="Maco" Purok="2" />
+                                <HouseholdRow ID="01" Lastname="Juan" Firstname="Cjay" Middlename="Juan" Member="3" Purok="1" />
+                                @foreach (ResidentModel household in resident)
+                                {
+                                    <HouseholdRow ID="@household.GetID()"
+                                                  Lastname="@household.GetResidentLastName()"
+                                                  Firstname="@household.GetResidentFirstName()"
+                                                  Middlename="@household.GetResidentMiddleName()"
+                                                  Member="@household.Num_of_fam"
+                                                  Purok="@household.GetPurok()" />
+
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -63,9 +72,11 @@
 </div>
 
 @code {
-    public List<HouseholdModel>? households = new List<HouseholdModel>();
+    public List<ResidentModel> resident = new List<ResidentModel>();
     protected override void OnInitialized()
     {
-        households = context.GetHouseholds();
+        List<HouseholdModel> households = context.GetHouseholds();
+
+        //Something Filter idk lmao
     }
 }

@@ -43,7 +43,7 @@
                             </thead>
                             <tbody>
                                 <SeniorCitizenRow ID="01" LastName="Dela Cruz" FirstName="Cjay" MiddleName="Juan" Age="18" Gender="Male" Purok="1A"/>
-                                @foreach(ResidentModel seniors in Residents)
+                                @foreach(ResidentModel seniors in Seniors)
                                 {
                                     <SeniorCitizenRow 
                                         ID="@seniors.GetID()" 
@@ -75,11 +75,11 @@
 </div>
 
 @code {
-    public List<ResidentModel> Residents { get; set; } = new List<ResidentModel>();
+    public List<ResidentModel> Seniors { get; set; } = new List<ResidentModel>();
 
     protected override void OnInitialized()
     {
-        Residents = context.GetResidents();
+        public List<ResidentModel> Residents { get; set; } = context.GetResidents();
 
         //Filter out the Residents with ages more than 60
 

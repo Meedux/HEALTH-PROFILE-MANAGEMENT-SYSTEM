@@ -13,7 +13,7 @@ namespace Baranggay_Health_Records.Controller
         public List<ResidentHealthStatusModel>? ResidentHealthStatus { get; set; } = new List<ResidentHealthStatusModel>();
 
 
-        public SQLConnector Connector = new SQLConnector("", "", "", "");
+        public SQLConnector Connector = new SQLConnector("127.0.0.1", "bhr", "root", "root");
         public String PurokHealthViewTracker = "Purok 1A";
 
 
@@ -135,6 +135,21 @@ namespace Baranggay_Health_Records.Controller
             return residentMedicines;
         }
 
+
+        //Single Query
+        public ResidentModel GetResident(int ID)
+        {
+            ResidentModel resident = new ResidentModel();
+            Console.WriteLine($"Fetching Resident Data with ID of {ID}");
+            return resident;
+        }
+
+        public HouseholdModel GetHousehold(int ID)
+        {
+            HouseholdModel household = new HouseholdModel();
+            Console.WriteLine($"Fetching Household Data with Resident ID of {ID}");
+            return household;
+        }
 
 
         //Table Queries

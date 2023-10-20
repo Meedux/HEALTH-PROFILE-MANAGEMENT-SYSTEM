@@ -8,10 +8,19 @@
     ".NETCoreApp,Version=v7.0": {
       "Baranggay Health Records/1.0.0": {
         "dependencies": {
+          "Dapper": "2.1.4",
           "MySql.Data": "8.1.0"
         },
         "runtime": {
           "Baranggay Health Records.dll": {}
+        }
+      },
+      "Dapper/2.1.4": {
+        "runtime": {
+          "lib/net5.0/Dapper.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.1.4.42149"
+          }
         }
       },
       "Google.Protobuf/3.21.9": {
@@ -304,6 +313,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Dapper/2.1.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TnTa28ktP/drRXnnXChHANq2WoF8af9DLu3VBtyPn3RYjxwDzuYhGrSvAN2CrmE+RyNaN1v81kf6rYbp0a4UaQ==",
+      "path": "dapper/2.1.4",
+      "hashPath": "dapper.2.1.4.nupkg.sha512"
     },
     "Google.Protobuf/3.21.9": {
       "type": "package",
