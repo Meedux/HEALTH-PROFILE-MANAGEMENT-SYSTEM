@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baranggay Health Records", "Baranggay Health Records\Baranggay Health Records.csproj", "{23EE2928-756C-4B85-A460-E5C125A6DE7B}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "BHRDatabase", "BHRDatabase\BHRDatabase\BHRDatabase.sqlproj", "{5B5E33B2-73C9-443F-8E72-CBA5DFB4E832}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{23EE2928-756C-4B85-A460-E5C125A6DE7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23EE2928-756C-4B85-A460-E5C125A6DE7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23EE2928-756C-4B85-A460-E5C125A6DE7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B5E33B2-73C9-443F-8E72-CBA5DFB4E832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B5E33B2-73C9-443F-8E72-CBA5DFB4E832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B5E33B2-73C9-443F-8E72-CBA5DFB4E832}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5B5E33B2-73C9-443F-8E72-CBA5DFB4E832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B5E33B2-73C9-443F-8E72-CBA5DFB4E832}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B5E33B2-73C9-443F-8E72-CBA5DFB4E832}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

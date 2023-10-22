@@ -1,47 +1,30 @@
 ﻿using MySql.Data.MySqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Baranggay_Health_Records.Controller
 {
-    public class SQLConnector
+    public class SQLConnector : IDisposable
     {
-        public MySqlConnection connection;
-        public string connectionString;
+        private readonly MySqlConnection _connection;
 
-        //Constructor
-        public SQLConnector(string server, string database, string username, string password) {
-            connectionString = $"Server={server};Database={database};User ID={username};Password={password};";
-            connection = new MySqlConnection(connectionString);
-        }
-        ~SQLConnector() {
-            connection.Close();
-        }
-
-        public void OpenConnection()
+        public SQLConnector(IConfiguration configuration)
         {
-            try
-            {
-                if(connection.State == System.Data.ConnectionState.Closed)
-                {
-                    connection.Open();
-                }
-            }
-            catch(Exception ex) {
-                Console.WriteLine("Error opening the connection: " + ex.Message);
-            }
+            var connectionString = configuration.GetConnectionString("BHRSQL");
+            _connection = new MySqlConnection(connectionString);
         }
 
-        public void CloseConnection() {
-            try
-            {
-                if(connection.State == System.Data.ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }catch(Exception ex)
-            {
-                Console.WriteLine("Error closing the connection: " + ex.Message);
-            }
+        public MySqlConnection GetConnection()
+        {
+            if (_connection.State != System.Data.ConnectionState.Open)
+                _connection.Open();
+            return _connection;
+        }
+
+        public void Dispose()
+        {
+            _connection.Close();
+            _connection.Dispose();
         }
     }
 }

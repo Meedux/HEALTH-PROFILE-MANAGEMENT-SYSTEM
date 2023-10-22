@@ -4,9 +4,11 @@ using Baranggay_Health_Records.Data;
 using Baranggay_Health_Records.Controller;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<Context>();
+
 
 var app = builder.Build();
 

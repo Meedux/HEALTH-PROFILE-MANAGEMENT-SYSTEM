@@ -12,9 +12,14 @@ namespace Baranggay_Health_Records.Controller
         public List<HouseholdModel>? Households { get; set; } = new List<HouseholdModel>();
         public List<ResidentHealthStatusModel>? ResidentHealthStatus { get; set; } = new List<ResidentHealthStatusModel>();
 
-
-        public SQLConnector Connector = new SQLConnector("127.0.0.1", "bhr", "root", "root");
         public String PurokHealthViewTracker = "Purok 1A";
+
+        private readonly SQLConnector _sqlConnector;
+
+        public Context(IConfiguration configuration)
+        {
+            _sqlConnector = new SQLConnector(configuration);
+        }
 
 
 
