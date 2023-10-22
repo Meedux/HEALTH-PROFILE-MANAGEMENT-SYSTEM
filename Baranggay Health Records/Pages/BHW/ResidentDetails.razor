@@ -13,11 +13,11 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <p style="font-size: 26px;"><strong>First Name</strong>: FirstName&nbsp;</p>
-                    <p style="font-size: 26px;"><strong>Last Name</strong>: LastName</p>
-                    <p style="font-size: 26px;"><strong>Middle Name</strong>: MiddleName</p>
-                    <p style="font-size: 26px;"><strong>Age</strong>: 10</p>
-                    <p style="font-size: 26px;"><strong>Date of Birth</strong>: 10/10/2011</p>
+                    <p style="font-size: 26px;"><strong>First Name</strong>: @firstName</p>
+                    <p style="font-size: 26px;"><strong>Last Name</strong>: @lastName</p>
+                    <p style="font-size: 26px;"><strong>Middle Name</strong>: @middleName</p>
+                    <p style="font-size: 26px;"><strong>Age</strong>: @age</p>
+                    <p style="font-size: 26px;"><strong>Date of Birth</strong>: @dob.ToString()</p>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                     <p style="font-size: 26px;font-weight: bold;">Gender:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">Male</p>
+                    <p style="font-size: 26px;">@gender</p>
                 </div>
             </div>
             <div class="row">
@@ -37,7 +37,7 @@
                     <p style="font-size: 26px;font-weight: bold;">Civil Status:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">Single</p>
+                    <p style="font-size: 26px;">@civil_status</p>
                 </div>
             </div>
             <div class="row">
@@ -45,7 +45,7 @@
                     <p style="font-size: 26px;font-weight: bold;">Religion:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">Catholic</p>
+                    <p style="font-size: 26px;">@religion</p>
                 </div>
             </div>
             <div class="row">
@@ -53,7 +53,7 @@
                     <p style="font-size: 26px;font-weight: bold;">Occupation:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">Unemployed</p>
+                    <p style="font-size: 26px;">@occupation</p>
                 </div>
             </div>
             <div class="row">
@@ -61,7 +61,7 @@
                     <p style="font-size: 26px;font-weight: bold;">Highest Educational Attainment:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">College</p>
+                    <p style="font-size: 26px;">@ed_attain</p>
                 </div>
             </div>
             <div class="row">
@@ -69,7 +69,7 @@
                     <p style="font-size: 26px;font-weight: bold;">Household Number:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">#20</p>
+                    <p style="font-size: 26px;">#@household_number</p>
                 </div>
             </div>
             <div class="row">
@@ -77,7 +77,7 @@
                     <p style="font-size: 26px;font-weight: bold;">Purok:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">1A</p>
+                    <p style="font-size: 26px;">@purok</p>
                 </div>
             </div>
             <div class="row">
@@ -85,7 +85,7 @@
                     <p style="font-size: 26px;font-weight: bold;">Status:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">???</p>
+                    <p style="font-size: 26px;">@status_type</p>
                 </div>
             </div>
         </div>
@@ -131,6 +131,25 @@
 
 @code {
     [Parameter] public int? ID { get; set; }
+
+    String? firstName        {get; set;}
+    String? middleName       {get; set;}
+    String? lastName         {get; set;}
+    String? suffix           {get; set;}
+    DateTime? dob            {get; set;}
+    int? age                 {get; set;}
+    String? gender           {get; set;}
+    String? civil_status     {get; set;}
+    String? religion         {get; set;}
+    String? occupation       {get; set;}
+    String? fathers_name     {get; set;}
+    String? mothers_name     {get; set;}
+    String? head             {get; set;}
+    int? num_of_fam          {get; set;}
+    String? ed_attain        {get; set;}
+    int? household_number    {get; set;}
+    String? purok            {get; set;}
+    String? status_type      {get; set;}
 
     protected override void OnInitialized()
     {
