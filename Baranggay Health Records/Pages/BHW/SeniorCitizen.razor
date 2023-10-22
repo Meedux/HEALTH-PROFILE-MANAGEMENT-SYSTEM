@@ -79,9 +79,7 @@
 
     protected override void OnInitialized()
     {
-        public List<ResidentModel> Residents { get; set; } = context.GetResidents();
-
-        //Filter out the Residents with ages more than 60
+        List<ResidentModel> Residents = context.GetResidents();
 
     }
 }

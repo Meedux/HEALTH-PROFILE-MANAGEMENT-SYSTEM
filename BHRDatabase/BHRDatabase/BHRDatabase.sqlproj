@@ -63,4 +63,7 @@
     <Folder Include="Queries\UPDATE" />
     <Folder Include="Queries\DELETE" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="BHRDatabase.publish.xml" />
+  </ItemGroup>
 </Project>
