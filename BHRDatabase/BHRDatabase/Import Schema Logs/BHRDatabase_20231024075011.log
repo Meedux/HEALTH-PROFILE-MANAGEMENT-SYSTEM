@@ -1,0 +1,88 @@
+24/10/2023 3:50:11 pm	This log contains information about the import schema operation into project 'BHRDatabase' on computer 'DESKTOP-G7DNKIN' by user 'herre'.
+24/10/2023 3:50:12 pm	Import of database schema has started.
+24/10/2023 3:50:23 pm	Gathering database credentials
+24/10/2023 3:50:23 pm	Gathering database options
+24/10/2023 3:50:23 pm	Gathering generic database scoped configuration option
+24/10/2023 3:50:23 pm	Gathering users
+24/10/2023 3:50:23 pm	Gathering roles
+24/10/2023 3:50:23 pm	Gathering application roles
+24/10/2023 3:50:23 pm	Gathering role memberships
+24/10/2023 3:50:23 pm	Gathering filegroups
+24/10/2023 3:50:23 pm	Gathering full-text catalogs
+24/10/2023 3:50:23 pm	Gathering assemblies
+24/10/2023 3:50:23 pm	Gathering certificates
+24/10/2023 3:50:23 pm	Gathering asymmetric keys
+24/10/2023 3:50:23 pm	Gathering symmetric keys
+24/10/2023 3:50:23 pm	Gathering encrypted symmetric keys
+24/10/2023 3:50:23 pm	Gathering schemas
+24/10/2023 3:50:23 pm	Gathering XML schema collections
+24/10/2023 3:50:23 pm	Gathering user-defined data types
+24/10/2023 3:50:23 pm	Gathering user-defined types
+24/10/2023 3:50:23 pm	Gathering table types
+24/10/2023 3:50:23 pm	Gathering unique keys for table types
+24/10/2023 3:50:23 pm	Gathering primary keys for table types
+24/10/2023 3:50:23 pm	Gathering indexes for table types
+24/10/2023 3:50:24 pm	Gathering check constraints for table types
+24/10/2023 3:50:24 pm	Gathering default constraints for table types
+24/10/2023 3:50:24 pm	Gathering partition functions
+24/10/2023 3:50:24 pm	Gathering partition schemes
+24/10/2023 3:50:24 pm	Gathering functions
+24/10/2023 3:50:24 pm	Gathering encrypted functions
+24/10/2023 3:50:24 pm	Gathering aggregates
+24/10/2023 3:50:24 pm	Gathering procedures
+24/10/2023 3:50:24 pm	Gathering encrypted procedures
+24/10/2023 3:50:24 pm	Gathering tables
+24/10/2023 3:50:24 pm	Gathering primary keys
+24/10/2023 3:50:24 pm	Gathering unique constraints
+24/10/2023 3:50:24 pm	Gathering foreign keys
+24/10/2023 3:50:24 pm	Gathering default constraints
+24/10/2023 3:50:24 pm	Gathering check constraints
+24/10/2023 3:50:24 pm	Gathering views
+24/10/2023 3:50:24 pm	Gathering encrypted views
+24/10/2023 3:50:24 pm	Gathering indexes
+24/10/2023 3:50:24 pm	Gathering statistics
+24/10/2023 3:50:24 pm	Gathering full-text index stoplists
+24/10/2023 3:50:24 pm	Gathering search property lists
+24/10/2023 3:50:24 pm	Gathering search properties
+24/10/2023 3:50:25 pm	Gathering full-text indexes
+24/10/2023 3:50:25 pm	Gathering column store indexes
+24/10/2023 3:50:25 pm	Gathering spatial indexes
+24/10/2023 3:50:25 pm	Gathering XML indexes
+24/10/2023 3:50:25 pm	Gathering Selective XML indexes
+24/10/2023 3:50:25 pm	Gathering encrypted triggers
+24/10/2023 3:50:25 pm	Gathering triggers
+24/10/2023 3:50:25 pm	Gathering encrypted and clr ddl triggers
+24/10/2023 3:50:25 pm	Gathering ddl triggers
+24/10/2023 3:50:25 pm	Creating edge constraints
+24/10/2023 3:50:25 pm	Gathering synonyms
+24/10/2023 3:50:25 pm	Gathering defaults
+24/10/2023 3:50:25 pm	Gathering data constraint uddt bindings
+24/10/2023 3:50:25 pm	Gathering rules
+24/10/2023 3:50:25 pm	Gathering data constraint uddt bindings
+24/10/2023 3:50:25 pm	Gathering message types
+24/10/2023 3:50:25 pm	Gathering queues
+24/10/2023 3:50:25 pm	Gathering contracts
+24/10/2023 3:50:25 pm	Gathering services
+24/10/2023 3:50:25 pm	Gathering event notifications
+24/10/2023 3:50:25 pm	Gathering remote service bindings
+24/10/2023 3:50:25 pm	Gathering broker priorities
+24/10/2023 3:50:25 pm	Gathering signatures
+24/10/2023 3:50:25 pm	Gathering compression options
+24/10/2023 3:50:25 pm	Gathering sequence types
+24/10/2023 3:50:25 pm	Gathering security policies
+24/10/2023 3:50:25 pm	Gather column encryption keys
+24/10/2023 3:50:25 pm	Gathering column master keys
+24/10/2023 3:50:25 pm	Gathering external data sources
+24/10/2023 3:50:25 pm	Gathering external file formats
+24/10/2023 3:50:25 pm	Gathering external tables
+24/10/2023 3:50:25 pm	Gathering database permissions
+24/10/2023 3:50:27 pm	Gathering extended properties
+24/10/2023 3:50:35 pm	Gathering assemblies
+24/10/2023 3:50:35 pm	Gathering credentials
+24/10/2023 3:50:35 pm	Gathering logins
+24/10/2023 3:50:35 pm	Gathering server audits
+24/10/2023 3:50:37 pm	Scanning project for duplicate elements
+24/10/2023 3:50:38 pm	Finished duplicate element processing
+24/10/2023 3:50:39 pm	Finished importing database.
+24/10/2023 3:50:39 pm	A summary of the import was saved to the following location: C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase\Import Schema Logs\BHRDatabase_20231024075011.log
+24/10/2023 3:50:39 pm	Click Finish to continue...

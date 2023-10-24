@@ -4,3 +4,7 @@ C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase\obj\Debug\BHRDatabase.sqlproj.AssemblyReference.cache
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase\obj\Debug\BHRDatabase.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase\obj\Debug\BHRDatabase.pdb
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase\obj\Debug\Model.xml
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase\obj\Debug\refactor.xml
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase\obj\Debug\postdeploy.sql
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\BHRDatabase\BHRDatabase\obj\Debug\predeploy.sql
