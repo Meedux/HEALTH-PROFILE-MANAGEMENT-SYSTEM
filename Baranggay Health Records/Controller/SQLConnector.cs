@@ -10,8 +10,7 @@ namespace Baranggay_Health_Records.Controller
 
         public SQLConnector(IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("BHRSQL");
-            _connection = new MySqlConnection(connectionString);
+            _connection = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=bhr;User=root;Password=root;");
             Console.WriteLine("Database Connected!");
         }
 

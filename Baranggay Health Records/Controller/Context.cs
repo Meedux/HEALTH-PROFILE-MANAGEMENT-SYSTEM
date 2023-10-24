@@ -1,6 +1,10 @@
 ﻿using Baranggay_Health_Records.Data;
+using Dapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using MySql.Data.MySqlClient;
+using System.Data;
+using System.Data.Common;
 
 namespace Baranggay_Health_Records.Controller
 {
@@ -23,20 +27,34 @@ namespace Baranggay_Health_Records.Controller
 
 
 
-        public bool Login(String? email, String? password, NavigationManager navigationManager)
+        public bool Login(string? email, string? password, NavigationManager navigationManager)
         {
-            if (email == "bhw@gmail.com" && password == "123")
+            if (IsValidCredentials(email, password))
             {
-                Console.WriteLine("BHW");
-                navigationManager.NavigateTo("/bhw/");
-                return true;
-            } else if (email == "secretary@gmail.com" && password == "123")
-            {
-                navigationManager.NavigateTo("/secretary/");
+                if (email == "bhw@gmail.com")
+                {
+                    Console.WriteLine("BHW");
+                    navigationManager.NavigateTo("/bhw/");
+                }
+                else if (email == "secretary@gmail.com")
+                {
+                    navigationManager.NavigateTo("/secretary/");
+                }
                 return true;
             }
             return false;
         }
+
+        private bool IsValidCredentials(string? email, string? password)
+        {
+            // Replace this with your actual authentication logic, e.g., querying a database
+            if ((email == "bhw@gmail.com" && password == "123") || (email == "secretary@gmail.com" && password == "123"))
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public void AddResident(ResidentModel temp)
         {
@@ -56,22 +74,78 @@ namespace Baranggay_Health_Records.Controller
         //Dashboard
         public int GetResidentCount()
         {
-            return 2000;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Resident";
+
+                try
+                {
+                    int residentCount = connection.QuerySingle<int>(query);
+                    return residentCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting resident count: {ex.Message}");
+                    return -1;
+                }
+            }
         }
 
         public int GetTotalSeniorCitizenCount()
         {
-            return 100;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Resident WHERE Age >= 60";
+
+                try
+                {
+                    int residentCount = connection.QuerySingle<int>(query);
+                    return residentCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting resident count: {ex.Message}");
+                    return -1;
+                }
+            }
         }
 
         public int GetTotalMinorCount()
         {
-            return 100;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Resident WHERE Age < 18";
+
+                try
+                {
+                    int residentCount = connection.QuerySingle<int>(query);
+                    return residentCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting resident count: {ex.Message}");
+                    return -1;
+                }
+            }
         }
 
         public int GetTotalAdultCount()
         {
-            return 100;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Resident WHERE Age >= 18";
+
+                try
+                {
+                    int residentCount = connection.QuerySingle<int>(query);
+                    return residentCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting resident count: {ex.Message}");
+                    return -1;
+                }
+            }
         }
 
         public int GetTotalNewBorn()
@@ -121,9 +195,12 @@ namespace Baranggay_Health_Records.Controller
 
         public List<ResidentModel> GetResidents()
         {
-            List<ResidentModel> residents  = new List<ResidentModel>();
-            Console.WriteLine("Fetching Resident Data");
-            return residents;
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residents = connection.Query<ResidentModel>("SELECT * FROM resident").ToList();
+                Console.WriteLine("Fetching Resident Data");
+                return residents;
+            }
         }
 
         public List<ResidentHealthStatusModel> GetResidentHealthStatuses()
@@ -232,8 +309,29 @@ namespace Baranggay_Health_Records.Controller
         {
             return 200;
         }
-       
 
 
+        public void CreateResident(ResidentModel resident)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    connection.Execute(@"
+                        INSERT INTO Resident (FirstName, MiddleName, LastName, Suffix, Dob, Age, Gender, Civil_status, Religion, Occupation, Ed_attain, Household_number, Purok, IsPWD, IsSenior)
+                        VALUES (@FirstName, @MiddleName, @LastName, @Suffix, @Dob, @Age, @Gender, @Civil_status, @Religion, @Occupation, @Ed_attain, @Household_number, @Purok, @IsPWD, @IsSenior);
+                    ", resident);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void CreateResidentHealthStatus()
+        {
+
+        }
     }
 }
