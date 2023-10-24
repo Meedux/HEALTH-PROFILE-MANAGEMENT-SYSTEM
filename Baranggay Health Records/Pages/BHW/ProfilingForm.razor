@@ -1,5 +1,8 @@
 ﻿@layout BHWLayout
 @page "/bhw/profiling-form"
+@inject Context context
+@inject NavigationManager NavManager
+
 
 <div class="container" style="margin-top: 90px;">
     <form>
@@ -84,7 +87,8 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0"><label class="form-label">Medicine</label><input @bind="medicine" class="form-control" type="text" placeholder="Ex. Medicine Name" required=""></div>
         </div>
-    </form><button class="btn btn-success" type="button" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;">ADD</button><button class="btn btn-danger" type="button" style="margin-top: 20px;margin-bottom: 40px;">Cancel</button>
+    </form>
+    <button class="btn btn-success" type="button" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;" @onclick="AddResident">ADD</button><button class="btn btn-danger" type="button" style="margin-top: 20px;margin-bottom: 40px;">Cancel</button>
 </div>
 
 @code {
@@ -92,7 +96,7 @@
     String middleName = "";
     String lastName = "";
     String suffix = "";
-    DateTime dob;
+    String dob = "";
     int age = 0;
     String gender = "";
     String fathers_name = "";
@@ -101,6 +105,7 @@
     int num_of_fam = 0;
     String purok = "";
     bool isPWD = false;
+    bool isSenior = false;
     bool isPrenate = false;
     List<String> Immunization = new List<String>();
     String weight = "";
@@ -109,4 +114,24 @@
     String temperature = "";
     String bloodPressure = "";
     String medicine = "";
+
+
+    public void AddResident()
+    {
+        ResidentModel newResident = new ResidentModel
+        {
+              FirstName = firstName,
+              MiddleName = middleName,
+              LastName = lastName,
+              Suffix = suffix,
+              Age = age,
+              Dob = dob,
+              Gender = gender,
+              Purok = purok,
+              IsPWD = isPWD,
+              IsSenior = isSenior,
+        };
+        context.CreateResident(newResident);
+        NavManager.NavigateTo("/bhw/");
+    }
 }
