@@ -180,17 +180,22 @@ namespace Baranggay_Health_Records.Controller
         //Table Queries
         public List<HouseholdModel> GetHouseholds()
         {
-            List<HouseholdModel> households = new List<HouseholdModel>();
-            Console.WriteLine("Fetching Household Data");
-            return households;
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var households = connection.Query<HouseholdModel>("SELECT * FROM household").ToList();
+                Console.WriteLine("Fetching Household Data");
+                return households;
+            }
         }
 
         public List<ArchiveModel> GetArchives()
         {
-            List<ArchiveModel> archives = new List<ArchiveModel>();
-            Console.WriteLine("Fetching Archive Data");
-
-            return archives;
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var archives = connection.Query<ArchiveModel>("SELECT * FROM archive").ToList();
+                Console.WriteLine("Fetching Resident Data");
+                return archives;
+            }
         } 
 
         public List<ResidentModel> GetResidents()
@@ -205,38 +210,104 @@ namespace Baranggay_Health_Records.Controller
 
         public List<ResidentHealthStatusModel> GetResidentHealthStatuses()
         {
-            List<ResidentHealthStatusModel> residentHealthStatuses = new List<ResidentHealthStatusModel>();
-            Console.WriteLine("Fetching Resident Health Status Data");
-            return residentHealthStatuses;
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residentHealthStatuses = connection.Query<ResidentHealthStatusModel>("SELECT * FROM resident_health_status").ToList();
+                Console.WriteLine("Fetching Resident Health Status Data");
+                return residentHealthStatuses;
+            }
         }
 
         public List<ResidentMedicineModel> GetMedicines()
         {
-            List<ResidentMedicineModel> residentMedicines = new List<ResidentMedicineModel>();
-            Console.WriteLine("Fetching Medicine Data");
-            return residentMedicines;
+            using(MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residentMedicines = connection.Query<ResidentMedicineModel>("SELECT * FROM medicine").ToList();
+                Console.WriteLine("Fetching Medicine Data");
+                return residentMedicines;
+            }
         }
 
 
         //Single Query
-        public ResidentModel GetResident(int ID)
+        public ResidentModel? GetResident(int ID)
         {
-            ResidentModel resident = new ResidentModel();
-            Console.WriteLine($"Fetching Resident Data with ID of {ID}");
-            return resident;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                ResidentModel? resident = null; // Initialize with null
+
+                string query = "SELECT * FROM Resident WHERE ID = @ID";
+                try
+                {
+                    resident = connection.QuerySingleOrDefault<ResidentModel>(query, new { ID });
+
+                    if (resident == null)
+                    {
+                        Console.WriteLine($"Resident with ID {ID} not found.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting resident: {ex.Message}");
+                }
+                
+                return resident;
+            }
         }
 
-        public HouseholdModel GetHousehold(int ID)
+        public HouseholdModel? GetHousehold(int ID)
         {
-            HouseholdModel household = new HouseholdModel();
-            Console.WriteLine($"Fetching Household Data with Resident ID of {ID}");
-            return household;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                HouseholdModel? household = null; // Initialize with null
+
+                string query = "SELECT * FROM household WHERE MemberID = @ID";
+                try
+                {
+                    household = connection.QuerySingleOrDefault<HouseholdModel>(query, new { ID });
+
+                    if (household == null)
+                    {
+                        Console.WriteLine($"Household with ID: {ID} not found.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting Household: {ex.Message}");
+                }
+
+                return household;
+            }
+        }
+
+        public ResidentHealthStatusModel? GetResidentHealthStatus(int ID)
+        {
+
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                ResidentHealthStatusModel? residentHealthStatus = null; // Initialize with null
+
+                string query = "SELECT * FROM resident_health_status WHERE ResidentID = @ID";
+                try
+                {
+                    residentHealthStatus = connection.QuerySingleOrDefault<ResidentHealthStatusModel>(query, new { ID });
+
+                    if (residentHealthStatus == null)
+                    {
+                        Console.WriteLine($"Resident Health Status with ID: {ID} not found.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting resident health status: {ex.Message}");
+                }
+
+                return residentHealthStatus;
+            }
         }
 
 
         //Table Queries
-
-
         public void GetHouseholdData()
         {
             Console.WriteLine("Fetching Household Data");

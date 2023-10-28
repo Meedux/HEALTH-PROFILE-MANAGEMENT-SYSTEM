@@ -73,7 +73,7 @@ namespace Baranggay_Health_Records.Data
 
         public String? GetResidentDOB()
         {
-            return this.Dob.ToString();
+            return this.Dob;
         }
 
         public int? GetResidentAge()

@@ -14,9 +14,9 @@ namespace Baranggay_Health_Records.Data
 
         [Required] public int? Quality { get; set; }
 
-        [Required] public DateTime? ExpirationDate { get; set; }
+        [Required] public String? ExpirationDate { get; set; }
 
-        [Required] public DateTime? ReleaseDate { get; set; }
+        [Required] public String? ReleaseDate { get; set; }
 
         [Required] public int? Stock { get; set; }
 
@@ -47,12 +47,12 @@ namespace Baranggay_Health_Records.Data
 
         public String? GetExpirationDate()
         {
-            return this.ExpirationDate.ToString();
+            return this.ExpirationDate;
         }
 
         public String? GetReleaseDate()
         {
-            return this.ReleaseDate.ToString();
+            return this.ReleaseDate;
         }
     }
 }
