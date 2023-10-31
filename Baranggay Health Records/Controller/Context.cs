@@ -155,11 +155,39 @@ namespace Baranggay_Health_Records.Controller
 
         public int GetTotalHouseholds()
         {
-            return 100;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM household";
+
+                try
+                {
+                    int householdCount = connection.QuerySingle<int>(query);
+                    return householdCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting household count: {ex.Message}");
+                    return -1;
+                }
+            }
         }
 
         public int GetTotalMedicine() {
-            return 100;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM medicine";
+
+                try
+                {
+                    int medicineCount = connection.QuerySingle<int>(query);
+                    return medicineCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting medicine count: {ex.Message}");
+                    return -1;
+                }
+            }
         }
 
         public int GetTotalIllnessesOccured()
@@ -169,13 +197,43 @@ namespace Baranggay_Health_Records.Controller
 
         public int GetTotalPrenates()
         {
-            return 100;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Resident WHERE isPregnant = 1";
+
+                try
+                {
+                    int totalPregnant = connection.QuerySingle<int>(query);
+                    return totalPregnant;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting total pregnant count: {ex.Message}");
+                    return -1; // or any suitable error value
+                }
+            }
         }
+
 
         public int GetTotalPWD()
         {
-            return 100;
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Resident WHERE isPWD = 1";
+
+                try
+                {
+                    int totalPWD = connection.QuerySingle<int>(query);
+                    return totalPWD;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting total PWD count: {ex.Message}");
+                    return -1; // or any suitable error value
+                }
+            }
         }
+
 
         //Table Queries
         public List<HouseholdModel> GetHouseholds()
@@ -324,41 +382,44 @@ namespace Baranggay_Health_Records.Controller
         }
 
         //Medicine Inventory
-        public int GetParacetamolCount()
+        public int GetMedicineTypeCount(string type)
         {
-            return 100;
-        }
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Medicine WHERE medicineType = @Type";
 
-        public int GetMefinamicCount()
-        {
-            return 100;
-        }
-
-        public int GetBiogesicCount()
-        {
-            return 100;
+                try
+                {
+                    int medicineTypeCount = connection.QuerySingle<int>(query, new { Type = type });
+                    return medicineTypeCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting medicine type count: {ex.Message}");
+                    return -1; // or any suitable error value
+                }
+            }
         }
 
         //Purok Health Details
 
-        public int GetFluCount()
+        private int GetIllnessCount(string illnessType)
         {
-            return 200;
-        }
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM resident_health_status WHERE TypeofIllness = @IllnessType";
 
-        public int GetMalnourishedCount()
-        {
-            return 200;
-        }
-
-        public int GetMeaslesCount()
-        {
-            return 200;
-        }
-
-        public int GetTuberculosisCount()
-        {
-            return 200;
+                try
+                {
+                    int illnessCount = connection.QuerySingle<int>(query, new { IllnessType = illnessType });
+                    return illnessCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting {illnessType} count: {ex.Message}");
+                    return -1; // or any suitable error value
+                }
+            }
         }
 
         public int GetDewormingCount()
