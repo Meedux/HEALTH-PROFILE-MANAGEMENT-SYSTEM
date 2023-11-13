@@ -107,9 +107,9 @@
 
     protected override void OnInitialized()
     {
-        ParacetamolTotal = context.GetParacetamolCount();
-        MefinamicTotal = context.GetMefinamicCount();
-        BiogesicTotal = context.GetBiogesicCount();
+        ParacetamolTotal = context.GetMedicineTypeCount("Paracetamol");
+        MefinamicTotal = context.GetMedicineTypeCount("Mefinamic");
+        BiogesicTotal = context.GetMedicineTypeCount("Biogesic");
 
         residentMedicines = context.GetMedicines();
     }

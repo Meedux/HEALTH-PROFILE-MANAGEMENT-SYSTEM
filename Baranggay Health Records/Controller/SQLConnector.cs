@@ -10,7 +10,7 @@ namespace Baranggay_Health_Records.Controller
 
         public SQLConnector(IConfiguration configuration)
         {
-            _connection = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=bhr;User=root;Password=root;");
+            _connection = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=bhr;User=bhrs;Password=bhrs;");
             Console.WriteLine("Database Connected!");
         }
 

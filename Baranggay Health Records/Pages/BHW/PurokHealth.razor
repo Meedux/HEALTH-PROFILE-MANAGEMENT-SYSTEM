@@ -53,10 +53,10 @@
 
     protected override void OnInitialized()
     {
-        FluCount = context.GetFluCount();
-        MalnourishedCount = context.GetMalnourishedCount();
-        MeaslesCount = context.GetMeaslesCount();
-        TuberculosisCount = context.GetTuberculosisCount();
+        FluCount = context.GetIllnessCount("Flu");
+        MalnourishedCount = context.GetIllnessCount("Malnourished");
+        MeaslesCount = context.GetIllnessCount("Measles");
+        TuberculosisCount = context.GetIllnessCount("Tuberculosis");
         PrenatalCount = context.GetPrenatalCount();
         DewormingCount = context.GetDewormingCount();
         HouseholdCount = context.GetHouseholdCount();

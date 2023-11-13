@@ -403,7 +403,7 @@ namespace Baranggay_Health_Records.Controller
 
         //Purok Health Details
 
-        private int GetIllnessCount(string illnessType)
+        public int GetIllnessCount(string illnessType)
         {
             using (var connection = _sqlConnector.GetConnection())
             {

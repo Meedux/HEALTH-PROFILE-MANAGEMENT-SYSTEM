@@ -25,7 +25,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <ArchiveRow Name="Alexis Deblios" Date="Thursday"/>
+                                @foreach (ArchiveModel archive in Archives)
+                                {
+                                    <ArchiveRow Name="@archive.GetName()" Date="@archive.GetDate()" />
+                                }
                             </tbody>
                         </table>
                     </div>
