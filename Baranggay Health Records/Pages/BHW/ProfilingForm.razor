@@ -26,8 +26,14 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Gender</label>
-                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-3" name="gender"><label class="form-check-label" for="formCheck-3">Male</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-4" name="gender"><label class="form-check-label" for="formCheck-4">Female</label></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="maleRadio" name="gender" value="Male" @onchange="@(() => gender = "Male")">
+                    <label class="form-check-label" for="maleRadio">Male</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="femaleRadio" name="gender" value="Female" @onchange="@(() => gender = "Female")">
+                    <label class="form-check-label" for="femaleRadio">Female</label>
+                </div>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
@@ -48,17 +54,29 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">PWD?</label>
-                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-1" name="pwd"><label class="form-check-label" for="formCheck-1">Yes</label></div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" id="pwdYes" checked="@(isPWD == true)" @onchange="@(() => isPWD = true)">
+                        <label class="form-check-label" for="pwdYes">Yes</label>
+                    </div>
 
-                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-2" name="pwd"><label class="form-check-label" for="formCheck-1">No</label></div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" id="pwdNo" checked="@(isPWD == false)" @onchange="@(() => isPWD = false)">
+                        <label class="form-check-label" for="pwdNo">No</label>
+                    </div>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Prenatal?</label>
-                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-3" name="prenatal"><label class="form-check-label" for="formCheck-5">Yes</label></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="prenateYes" name="prenate" checked="@(isPrenate == true)" @onchange="@(() => isPWD = true)">
+                    <label class="form-check-label" for="prenateYes">Yes</label>
+                </div>
 
-                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-4" name="prenatal"><label class="form-check-label" for="formCheck-1">No</label></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="prenateNo" name="prenate" checked="@(isPrenate == false)" @onchange="@(() => isPWD = false)">
+                    <label class="form-check-label" for="prenateNo">No</label>
+                </div>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
@@ -67,9 +85,18 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Immunization</label>
-                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">1st Dose</label></div>
-                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-7"><label class="form-check-label" for="formCheck-7">2nd Dose</label></div>
-                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-6"><label class="form-check-label" for="formCheck-6">3rd Dose</label></div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="immunization1" @onchange="@(() => HandleImmunizationCheckbox("1st Dose"))">
+                    <label class="form-check-label" for="immunization1">1st Dose</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="immunization2" @onchange="@(() => HandleImmunizationCheckbox("2nd Dose"))">
+                    <label class="form-check-label" for="immunization2">2nd Dose</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="immunization3" @onchange="@(() => HandleImmunizationCheckbox("3rd Dose"))">
+                    <label class="form-check-label" for="immunization3">3rd Dose</label>
+                </div>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
@@ -119,19 +146,77 @@
     public void AddResident()
     {
         ResidentModel newResident = new ResidentModel
-        {
-              FirstName = firstName,
-              MiddleName = middleName,
-              LastName = lastName,
-              Suffix = suffix,
-              Age = age,
-              Dob = dob,
-              Gender = gender,
-              Purok = purok,
-              IsPWD = isPWD,
-              IsSenior = isSenior,
-        };
-        context.CreateResident(newResident);
+            {
+                FirstName = firstName,
+                MiddleName = middleName,
+                LastName = lastName,
+                Suffix = suffix,
+                Age = age,
+                Dob = dob,
+                Gender = gender,
+                Purok = purok,
+                IsPWD = isPWD,
+                IsSenior = isSenior,
+                isPrenate = isPrenate,
+            };
+
+        ResidentHealthStatusModel newRHS = new ResidentHealthStatusModel();
+        HouseholdModel newHousehold = new HouseholdModel();
+
+        var resID = context.CreateResident(newResident);
+
+        newRHS.ResidentId = resID;
+        newRHS.Typeofillness = typeOfIllness;
+        newRHS.Weight = weight;
+        newRHS.Height = height;
+        newRHS.Temperature = temperature;
+
+
+        newHousehold.FathersName = fathers_name;
+        newHousehold.MothersName = mothers_name;
+        newHousehold.Member = firstName + " " + middleName + " " + lastName;
+        newHousehold.MemberID = resID;
+        newHousehold.FamilyCount = num_of_fam;
+        newHousehold.HeadofFamily = head;
+
+        context.CreateHousehold(newHousehold);
+        context.CreateResidentHealthStatus(newRHS);
+
+        firstName = "";
+        middleName = "";
+        lastName = "";
+        suffix = "";
+        dob = "";
+        age = 0;
+        gender = "";
+        fathers_name = "";
+        mothers_name = "";
+        head = "";
+        num_of_fam = 0;
+        purok = "";
+        isPWD = false;
+        isSenior = false;
+        isPrenate = false;
+        Immunization.Clear();
+        weight = "";
+        height = "";
+        typeOfIllness = "";
+        temperature = "";
+        bloodPressure = "";
+        medicine = "";
+
         NavManager.NavigateTo("/bhw/");
+    }
+
+    private void HandleImmunizationCheckbox(string dose)
+    {
+        if (Immunization.Contains(dose))
+        {
+            Immunization.Remove(dose);
+        }
+        else
+        {
+            Immunization.Add(dose);
+        }
     }
 }

@@ -199,7 +199,7 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM Resident WHERE isPregnant = 1";
+                string query = "SELECT COUNT(*) FROM Resident WHERE isPrenate = 1";
 
                 try
                 {
@@ -443,27 +443,73 @@ namespace Baranggay_Health_Records.Controller
         }
 
 
-        public void CreateResident(ResidentModel resident)
+        public int CreateResident(ResidentModel resident)
         {
             try
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    connection.Execute(@"
-                        INSERT INTO Resident (FirstName, MiddleName, LastName, Suffix, Dob, Age, Gender, Civil_status, Religion, Occupation, Ed_attain, Household_number, Purok, IsPWD, IsSenior)
-                        VALUES (@FirstName, @MiddleName, @LastName, @Suffix, @Dob, @Age, @Gender, @Civil_status, @Religion, @Occupation, @Ed_attain, @Household_number, @Purok, @IsPWD, @IsSenior);
-                    ", resident);
+                    const string query = @"
+                INSERT INTO Resident (FirstName, MiddleName, LastName, Suffix, Dob, Age, Gender, Civil_status, Religion, Occupation, Ed_attain, Household_number, Purok, IsPWD, IsSenior)
+                VALUES (@FirstName, @MiddleName, @LastName, @Suffix, @Dob, @Age, @Gender, @Civil_status, @Religion, @Occupation, @Ed_attain, @Household_number, @Purok, @IsPWD, @IsSenior);
+                SELECT LAST_INSERT_ID();";
+
+                    int newResidentId = connection.ExecuteScalar<int>(query, resident);
+                    return newResidentId;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                return -1;
             }
         }
 
-        public void CreateResidentHealthStatus()
+        public int CreateResidentHealthStatus(ResidentHealthStatusModel RHS)
         {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                    INSERT INTO resident_health_status (ResidentId, Typeofillness, Weight, Height, Temperature, BloodPressure)
+                    VALUES (@ResidentId, @Typeofillness, @Weight, @Height, @Temperature, @BloodPressure);
+                    SELECT LAST_INSERT_ID();
+                    ";
 
+                    int newRHS_ID = connection.ExecuteScalar<int>(query, new { ResidentId = RHS.ResidentId, Typeofillness = RHS.Typeofillness, Weight = RHS.Weight, Height = RHS.Height, Temperature = RHS.Temperature, BloodPressure = RHS.BloodPressure });
+                    return newRHS_ID;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+
+        }
+
+        public int CreateHousehold(HouseholdModel Model)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                    INSERT INTO household (FathersName, MothersName, HeadofFamily, Member, MemberID, FamilyCount)
+                    VALUES (@FathersName, @MothersName, @HeadofFamily, @Member, @MemberID, @FamilyCount);
+                    SELECT LAST_INSERT_ID();
+                    ";
+
+                    int newHousehold_ID = connection.ExecuteScalar<int>(query, Model);
+                    return newHousehold_ID;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
         }
     }
 }

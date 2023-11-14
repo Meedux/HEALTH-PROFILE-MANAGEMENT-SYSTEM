@@ -38,4 +38,8 @@
     <_ContentIncludedByDefault Remove="Pages\Secretary\HouseholdDetails.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
 </Project>

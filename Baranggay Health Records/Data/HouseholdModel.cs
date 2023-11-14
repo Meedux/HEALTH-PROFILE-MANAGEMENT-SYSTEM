@@ -12,15 +12,13 @@ namespace Baranggay_Health_Records.Data
 
         [Required] public String? HeadofFamily { get; set; }
 
-        [Required] public int? HeadofFamilyID { get; set; }
-
         [Required] public String? Member { get; set; }
 
         [Required] public int? MemberID { get; set; }
 
-        [Required] public int? FamilyCount { get; set; }
+        [Required] public int FamilyCount { get; set; }
 
-        public int? GetFamilyCount()
+        public int GetFamilyCount()
         {
             return this.FamilyCount;
         }
@@ -45,10 +43,6 @@ namespace Baranggay_Health_Records.Data
             return this.HeadofFamily;
         }
 
-        public int? GetHeadofFamilyID()
-        {
-            return this.HeadofFamilyID;
-        }
 
         public String? GetMember()
         {

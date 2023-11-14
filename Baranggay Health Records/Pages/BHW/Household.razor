@@ -33,6 +33,7 @@
                                     <th>Last Name</th>
                                     <th>First Name</th>
                                     <th>Middle Name</th>
+                                    <th>Family Member Count</th>
                                     <th>Purok</th>
                                     <th></th>
                                     <th></th>
@@ -47,8 +48,8 @@
                                                   Lastname="@household.GetResidentLastName()"
                                                   Firstname="@household.GetResidentFirstName()"
                                                   Middlename="@household.GetResidentMiddleName()"
+                                                  Member="@GetFamilyMemberCount(household.GetID())"
                                                   Purok="@household.GetPurok()" />
-
                                 }
                             </tbody>
                         </table>
@@ -72,10 +73,19 @@
 
 @code {
     public List<ResidentModel> resident = new List<ResidentModel>();
+    public List<HouseholdModel> households = new List<HouseholdModel>();
+
     protected override void OnInitialized()
     {
-        List<HouseholdModel> households = context.GetHouseholds();
+        households = context.GetHouseholds();
+        resident = context.GetResidents();
 
         //Something Filter idk lmao
+    }
+
+    private int GetFamilyMemberCount(int memberId)
+    {
+        HouseholdModel? household = households.Find(h => h.MemberID == memberId);
+        return household?.FamilyCount ?? 0;
     }
 }

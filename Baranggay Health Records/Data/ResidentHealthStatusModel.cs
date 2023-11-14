@@ -6,17 +6,23 @@ namespace Baranggay_Health_Records.Data
     {
         public int ID { get; set; }
 
-        [Required] public int? ResidentId { get; set; }
+        [Required]
+        public int ResidentId { get; set; } = 0;
 
-        [Required] public String? Typeofillness { get; set; }
+        [Required]
+        public String Typeofillness { get; set; } = "";
 
-        [Required] public int? Weight { get; set; }
+        [Required]
+        public String Weight { get; set; } = "";
 
-        [Required] public int? Height { get; set; }
+        [Required]
+        public String Height { get; set; } = "";
 
-        [Required] public int? Temperature { get; set; }
+        [Required]
+        public String Temperature { get; set; } = "";
 
-        [Required] public String? BloodPressure { get; set; }
+        [Required]
+        public String BloodPressure { get; set; } = "";
 
         public int? GetID()
         {
@@ -28,17 +34,17 @@ namespace Baranggay_Health_Records.Data
             return this.Typeofillness;
         }
 
-        public int? GetWeight()
+        public String? GetWeight()
         {
             return this.Weight;
         }
 
-        public int? GetHeight()
+        public String? GetHeight()
         {
             return this.Height;
         }
 
-        public int? GetTemperature()
+        public String? GetTemperature()
         {
             return this.Temperature;
         }

@@ -38,10 +38,12 @@ namespace Baranggay_Health_Records.Data
 
         public bool? IsSenior { get; set; } = false;
 
+        public bool? isPrenate { get; set; } = false;
+
 
         //Resident Model Queries
 
-        public int? GetID()
+        public int GetID()
         {
             return this.ID;
         }
