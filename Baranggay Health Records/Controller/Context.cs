@@ -270,7 +270,7 @@ namespace Baranggay_Health_Records.Controller
         {
             using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
-                var residentHealthStatuses = connection.Query<ResidentHealthStatusModel>("SELECT * FROM resident_health_status").ToList();
+                var residentHealthStatuses = connection.Query<ResidentHealthStatusModel>("SELECT * FROM rhs").ToList();
                 Console.WriteLine("Fetching Resident Health Status Data");
                 return residentHealthStatuses;
             }
@@ -288,11 +288,11 @@ namespace Baranggay_Health_Records.Controller
 
 
         //Single Query
-        public ResidentModel? GetResident(int ID)
+        public ResidentModel GetResident(int? ID)
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                ResidentModel? resident = null; // Initialize with null
+                ResidentModel resident = new ResidentModel(); 
 
                 string query = "SELECT * FROM Resident WHERE ID = @ID";
                 try
@@ -313,7 +313,7 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public HouseholdModel? GetHousehold(int ID)
+        public HouseholdModel? GetHousehold(int? ID)
         {
             using (var connection = _sqlConnector.GetConnection())
             {
@@ -338,14 +338,14 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public ResidentHealthStatusModel? GetResidentHealthStatus(int ID)
+        public ResidentHealthStatusModel? GetResidentHealthStatus(int? ID)
         {
 
             using (var connection = _sqlConnector.GetConnection())
             {
                 ResidentHealthStatusModel? residentHealthStatus = null; // Initialize with null
 
-                string query = "SELECT * FROM resident_health_status WHERE ResidentID = @ID";
+                string query = "SELECT * FROM rhs WHERE ResidentID = @ID";
                 try
                 {
                     residentHealthStatus = connection.QuerySingleOrDefault<ResidentHealthStatusModel>(query, new { ID });
@@ -407,7 +407,7 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM resident_health_status WHERE TypeofIllness = @IllnessType";
+                string query = "SELECT COUNT(*) FROM rhs WHERE TypeofIllness = @IllnessType";
 
                 try
                 {
@@ -472,7 +472,7 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = @"
-                    INSERT INTO resident_health_status (ResidentId, Typeofillness, Weight, Height, Temperature, BloodPressure)
+                    INSERT INTO rhs (ResidentId, Typeofillness, Weight, Height, Temperature, BloodPressure)
                     VALUES (@ResidentId, @Typeofillness, @Weight, @Height, @Temperature, @BloodPressure);
                     SELECT LAST_INSERT_ID();
                     ";
@@ -510,6 +510,22 @@ namespace Baranggay_Health_Records.Controller
                 Console.WriteLine(e);
                 return -1;
             }
+        }
+
+
+        public void UpdateResident(ResidentModel model)
+        {
+
+        }
+
+        public void UpdateHousehold(HouseholdModel model)
+        {
+
+        }
+
+        public void UpdateResidentHeatlthStatus(ResidentHealthStatusModel model)
+        {
+
         }
     }
 }

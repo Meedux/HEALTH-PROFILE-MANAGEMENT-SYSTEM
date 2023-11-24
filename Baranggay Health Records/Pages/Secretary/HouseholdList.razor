@@ -74,11 +74,19 @@
 </div>
 
 @code {
-    public List<ResidentModel> resident = new List<ResidentModel>(); 
+    public List<ResidentModel> resident = new List<ResidentModel>();
+    public List<HouseholdModel> households = new List<HouseholdModel>();
     protected override void OnInitialized()
     {
-        List<HouseholdModel> households = context.GetHouseholds();
+        households = context.GetHouseholds();
+        resident = context.GetResidents();
 
         //Something Filter idk lmao
+    }
+
+    private int GetFamilyMemberCount(int memberId)
+    {
+        HouseholdModel? household = households.Find(h => h.MemberID == memberId);
+        return household?.FamilyCount ?? 0;
     }
 }

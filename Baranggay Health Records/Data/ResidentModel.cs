@@ -113,6 +113,9 @@ namespace Baranggay_Health_Records.Data
             return this.Purok;
         }
 
-
+        public int GetHouseholdNumber()
+        {
+            return this.Household_number;
+        }
     }
 }

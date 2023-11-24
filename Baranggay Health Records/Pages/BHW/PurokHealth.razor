@@ -1,12 +1,12 @@
 ﻿@layout BHWLayout
-@page "/bhw/purok-health"
+@page "/bhw/{purok}/purok-health"
 @using Baranggay_Health_Records.Shared
 @inject Context context
 
 <div class="container" style="margin-top: 86px;">
     <div class="row">
         <div class="col">
-            <h1>Purok 1A Health Dashboard</h1>
+            <h1>Purok @purok Health Dashboard</h1>
         </div>
     </div>
     <div class="row" style="margin-bottom: 26px;">
@@ -42,6 +42,7 @@
 </div>
 
 @code {
+    [Parameter] public string purok { get; set; } = "";
     public int FluCount { get; set; } = 0;
     public int MalnourishedCount { get; set; } = 0;
     public int MeaslesCount { get; set; } = 0;

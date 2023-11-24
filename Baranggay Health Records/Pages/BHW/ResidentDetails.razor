@@ -1,23 +1,77 @@
-﻿@page "/bhw/resident/{id}"
+﻿@page "/bhw/resident/{ID:int}"
 @layout BHWLayout
+@inject Context context
 
 <div class="container" style="margin-top: 86px;">
     <h1 class="text-center">User Details</h1>
 </div>
 <div class="container">
     <div class="row">
-        <div class="col text-center"><img class="rounded-circle img-fluid" width="300" height="80" src="../assets/img/avatar-dhg.png"></div>
+        <div class="col text-center"><img class="rounded-circle img-fluid" width="300" height="80" src="https://cdn-icons-png.flaticon.com/512/1253/1253756.png"></div>
         <div class="col">
             <div class="row">
-                <div class="col text-end"><button class="btn btn-primary" type="button"><i class="fa fa-edit"></i></button></div>
+                <div class="col d-flex justify-content-end mb-3">
+                    @if(isEdit){
+                        <button class="btn btn-success mr-2" @onclick="UpdateInformation">Update Information</button>
+                        <a class="btn btn-warning" href="/bhw/resident/@ID">Exit</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" href="/bhw/resident/@ID?isEdit=true">Edit</a>
+                    }
+                </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <p style="font-size: 26px;"><strong>First Name</strong>: @firstName</p>
-                    <p style="font-size: 26px;"><strong>Last Name</strong>: @lastName</p>
-                    <p style="font-size: 26px;"><strong>Middle Name</strong>: @middleName</p>
-                    <p style="font-size: 26px;"><strong>Age</strong>: @age</p>
-                    <p style="font-size: 26px;"><strong>Date of Birth</strong>: @dob.ToString()</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        <strong>First Name</strong>:
+                        @if(isEdit){
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_firstName" />
+                        }
+                        else{
+                             @firstName
+                           }
+                    </p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        <strong>Last Name</strong>:
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_lastName" />
+                        }
+                        else
+                        {
+                            @lastName
+                        }
+                    </p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        <strong>Middle Name</strong>: 
+                         @if(isEdit){
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_middleName" />
+                        }
+                        else{
+                             @middleName
+                           }    
+                    </p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        <strong>Age</strong>: 
+                         @if(isEdit){
+                            <input type="number" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_age" />
+                        }
+                        else{
+                             @age
+                        }    
+                    </p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        <strong>Date of Birth</strong>:
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_dob" />
+                        }
+                        else
+                        {
+                            @dob
+                        }
+                    </p>
                 </div>
             </div>
         </div>
@@ -29,7 +83,16 @@
                     <p style="font-size: 26px;font-weight: bold;">Gender:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">@gender</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_gender" />
+                        }
+                        else
+                        {
+                            @gender
+                        }
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -37,7 +100,16 @@
                     <p style="font-size: 26px;font-weight: bold;">Civil Status:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">@civil_status</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_civil_status" />
+                        }
+                        else
+                        {
+                            @civil_status
+                        }
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -45,7 +117,16 @@
                     <p style="font-size: 26px;font-weight: bold;">Religion:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">@religion</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_religion" />
+                        }
+                        else
+                        {
+                            @religion
+                        }
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -53,7 +134,16 @@
                     <p style="font-size: 26px;font-weight: bold;">Occupation:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">@occupation</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_occupation" />
+                        }
+                        else
+                        {
+                            @occupation
+                        }
+                     </p>
                 </div>
             </div>
             <div class="row">
@@ -61,7 +151,16 @@
                     <p style="font-size: 26px;font-weight: bold;">Highest Educational Attainment:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">@ed_attain</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_ed_attain" />
+                        }
+                        else
+                        {
+                            @ed_attain
+                        }
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -69,7 +168,17 @@
                     <p style="font-size: 26px;font-weight: bold;">Household Number:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">#@household_number</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        #
+                        @if (isEdit)
+                        {
+                            <input type="number" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_household_number" />
+                        }
+                        else
+                        {
+                            @household_number
+                        }
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -77,7 +186,16 @@
                     <p style="font-size: 26px;font-weight: bold;">Purok:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">@purok</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_purok" />
+                        }
+                        else
+                        {
+                            @purok
+                        }
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -85,7 +203,16 @@
                     <p style="font-size: 26px;font-weight: bold;">Status:</p>
                 </div>
                 <div class="col">
-                    <p style="font-size: 26px;">@status_type</p>
+                    <p style="font-size: 26px;" class="d-flex align-items-center">
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_status_type" />
+                        }
+                        else
+                        {
+                            @status_type
+                        }
+                    </p>
                 </div>
             </div>
         </div>
@@ -106,23 +233,68 @@
             <tbody>
                 <tr>
                     <td>Type of Illness(If Any)</td>
-                    <td>None</td>
+                    <td>
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_illness_type" />
+                        }
+                        else
+                        {
+                            @illness_type
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td>Weight</td>
-                    <td>50kg</td>
+                    <td>
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_weight" />
+                        }
+                        else
+                        {
+                            @weight
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td>Height</td>
-                    <td>186cm</td>
+                    <td>
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_height" />
+                        }
+                        else
+                        {
+                            @height
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td>Temperature</td>
-                    <td>35c</td>
+                    <td>
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_temperature" />
+                        }
+                        else
+                        {
+                            @temperature
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td>Blood Pressure</td>
-                    <td>60/240</td>
+                    <td>
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_bloodPressure" />
+                        }
+                        else
+                        {
+                            @bloodPressure
+                        }
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -130,29 +302,130 @@
 </div>
 
 @code {
-    [Parameter] public int? ID { get; set; }
+    [Parameter] public int? ID { get; set; } = 0;
 
-    String? firstName        {get; set;}
-    String? middleName       {get; set;}
-    String? lastName         {get; set;}
-    String? suffix           {get; set;}
-    DateTime? dob            {get; set;}
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public bool isEdit { get; set; } = true;
+
+    String firstName        {get; set;} = "";
+    String middleName       {get; set;} = "";
+    String lastName         {get; set;} = "";
+    String suffix           {get; set;} = "";
+    String dob { get; set; } = "";
     int? age                 {get; set;}
-    String? gender           {get; set;}
-    String? civil_status     {get; set;}
-    String? religion         {get; set;}
-    String? occupation       {get; set;}
-    String? fathers_name     {get; set;}
-    String? mothers_name     {get; set;}
-    String? head             {get; set;}
-    int? num_of_fam          {get; set;}
-    String? ed_attain        {get; set;}
-    int? household_number    {get; set;}
-    String? purok            {get; set;}
-    String? status_type      {get; set;}
+    String gender           {get; set;} = "";
+    String civil_status     {get; set;} = "";
+    String religion         {get; set;} = "";
+    String occupation       {get; set;} = "";
+    String fathers_name     {get; set;} = "";
+    String mothers_name     {get; set;} = "";
+    String head             {get; set;} = "";
+    int? num_of_fam         {get; set;}
+    String ed_attain        {get; set;} = "";
+    int? household_number   {get; set;}
+    String purok            {get; set;} = "";
+    String status_type      {get; set;} = "";
+    String illness_type     {get; set;} = "";
+    String weight           {get; set;} = "";
+    String height           {get; set;} = "";
+    String temperature      {get; set;} = "";
+    String bloodPressure    {get; set;} = "";
+
+
+    String edited_firstName { get; set; } = "";
+    String edited_middleName { get; set; } = "";
+    String edited_lastName { get; set; } = "";
+    String edited_suffix { get; set; } = "";
+    String edited_dob { get; set; } = "";
+    int? edited_age { get; set; }
+    String edited_gender { get; set; } = "";
+    String edited_civil_status { get; set; } = "";
+    String edited_religion { get; set; } = "";
+    String edited_occupation { get; set; } = "";
+    String edited_fathers_name { get; set; } = "";
+    String edited_mothers_name { get; set; } = "";
+    String edited_head { get; set; } = "";
+    int? edited_num_of_fam { get; set; }
+    String edited_ed_attain { get; set; } = "";
+    int? edited_household_number { get; set; }
+    String edited_purok { get; set; } = "";
+    String edited_status_type { get; set; } = "";
+    String edited_illness_type { get; set; } = "";
+    String edited_weight { get; set; } = "";
+    String edited_height { get; set; } = "";
+    String edited_temperature { get; set; } = "";
+    String edited_bloodPressure { get; set; } = "";
 
     protected override void OnInitialized()
     {
         Console.WriteLine($"Fetching user Data and Health status data with the user ID of {ID}");
+        ResidentModel resident = context.GetResident(ID);
+        HouseholdModel? household = context.GetHousehold(ID);
+        ResidentHealthStatusModel? RHS = context.GetResidentHealthStatus(ID);
+
+
+        //Fill up the Resident Details
+        firstName = resident.GetResidentFirstName();
+        lastName = resident.GetResidentLastName();
+        middleName = resident.GetResidentMiddleName();
+        age = resident.GetResidentAge();
+        dob = resident.GetResidentDOB();
+        gender = resident.GetResidentGender();
+        civil_status = resident.GetResidentCivilStatus();
+        religion = resident.GetResidentReligion();
+        occupation = resident.GetOccupation();
+        ed_attain = resident.GetEducationalAttainment();
+        household_number = resident.GetHouseholdNumber();
+        purok = resident.GetPurok();
+        // status_type = resident.GetResidentCivilStatus();
+
+        //Fill up the Household Details
+        fathers_name = household.GetFathersName();
+        mothers_name = household.GetMothersName();
+        head = household.GetHeadofFamily();
+        num_of_fam = household.GetFamilyCount();
+
+        //Fill up the RHS Details
+        illness_type = RHS.GetType();
+        weight = RHS.GetWeight();
+        height = RHS.GetHeight();
+        temperature = RHS.GetTemperature();
+        bloodPressure = RHS.GetBloodPressure();
+
+        //same for the edited parts
+        //Fill up the Resident Details
+        edited_firstName = resident.GetResidentFirstName();
+        edited_lastName = resident.GetResidentLastName();
+        edited_middleName = resident.GetResidentMiddleName();
+        edited_age = resident.GetResidentAge();
+        edited_dob = resident.GetResidentDOB();
+        edited_gender = resident.GetResidentGender();
+        edited_civil_status = resident.GetResidentCivilStatus();
+        edited_religion = resident.GetResidentReligion();
+        edited_occupation = resident.GetOccupation();
+        edited_ed_attain = resident.GetEducationalAttainment();
+        edited_household_number = resident.GetHouseholdNumber();
+        edited_purok = resident.GetPurok();
+        // status_type = resident.GetResidentCivilStatus();
+
+        //Fill up the Household Details
+        edited_fathers_name = household.GetFathersName();
+        edited_mothers_name = household.GetMothersName();
+        edited_head = household.GetHeadofFamily();
+        edited_num_of_fam = household.GetFamilyCount();
+
+        //Fill up the RHS Details
+        edited_illness_type = RHS.GetType();
+        edited_weight = RHS.GetWeight();
+        edited_height = RHS.GetHeight();
+        edited_temperature = RHS.GetTemperature();
+        edited_bloodPressure = RHS.GetBloodPressure();
+    }
+
+
+    private void UpdateInformation()
+    {
+        
     }
 }
