@@ -276,6 +276,16 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public List<ResidentHealthStatusModel> GetResidentHealthStatusesByIllness(string? illness)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residentHealthStatuses = connection.Query<ResidentHealthStatusModel>($"SELECT * FROM rhs WHERE Typeofillness = '{illness}'").ToList();
+                Console.WriteLine("Fetching Resident Health Status Data");
+                return residentHealthStatuses;
+            }
+        }
+
         public List<ResidentMedicineModel> GetMedicines()
         {
             using(MySqlConnection connection = _sqlConnector.GetConnection())
@@ -283,6 +293,52 @@ namespace Baranggay_Health_Records.Controller
                 var residentMedicines = connection.Query<ResidentMedicineModel>("SELECT * FROM medicine").ToList();
                 Console.WriteLine("Fetching Medicine Data");
                 return residentMedicines;
+            }
+        }
+
+        public List<ResidentModel> GetPurokByAdult(string? purok)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE age >= 18 AND purok = @purok", new { purok = purok }).ToList();
+                Console.WriteLine("Fetching Resident Data");
+                return residents;
+            }
+        }
+
+        public List<ResidentModel> GetPurokByMinor(string? purok)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE age < 18 AND purok = @purok", new { purok = purok }).ToList();
+                Console.WriteLine("Fetching Resident Data");
+                return residents;
+            }
+        }
+
+        public List<ResidentModel> GetPurokBySenior(string? purok)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE age >= 60 AND purok = @purok", new { purok = purok }).ToList();
+                Console.WriteLine("Fetching Resident Data");
+                return residents;
+            }
+        }
+
+        public List<HouseholdModel> GetHouseholdByPurok(string? purok)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var query = @"
+                SELECT h.* 
+                FROM household h
+                INNER JOIN resident u ON h.MemberID = u.ID
+                WHERE u.Purok = @Purok";
+
+                var households = connection.Query<HouseholdModel>(query, new { Purok = purok }).ToList();
+                Console.WriteLine("Fetching Household Data");
+                return households;
             }
         }
 

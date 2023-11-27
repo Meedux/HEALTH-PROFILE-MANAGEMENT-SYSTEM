@@ -31,10 +31,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <PurokHouseholdRow ID="01" LastName="Juan" FirstName="Cjay" MiddleName="Juan" Members="1" />
 
-                                @foreach (ResidentModel resident in adults)
+                                @foreach (ResidentModel resident in residents)
                                 {
+                                    
                                     <PurokHouseholdRow ID="@resident.ID"
                                               LastName="@resident.LastName"
                                               FirstName="@resident.FirstName"
@@ -64,12 +64,13 @@
 @code {
     [Parameter] public String? purok { get; set; }
 
-    public List<ResidentModel> adults = new List<ResidentModel>();
+    public List<HouseholdModel> adults = new List<HouseholdModel>();
+    public List<ResidentModel> residents = new List<ResidentModel>();
 
     protected override void OnInitialized()
     {
-        adults = context.GetResidents();
-
-        //Filter Residents and filter the purok
+        adults = context.GetHouseholdByPurok(purok);
+        List<int?> adultMemberIds = adults.Select(a => a.MemberID).ToList();
+        residents = context.GetResidents().Where(r => adultMemberIds.Contains(r.ID)).ToList();
     }
 }

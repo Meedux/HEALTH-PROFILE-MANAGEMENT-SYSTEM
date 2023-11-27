@@ -68,7 +68,7 @@
 
     protected override void OnInitialized()
     {
-        adults = context.GetResidents();
+        adults = context.GetPurokByMinor(purok);
 
         //Filter Residents for below 18 and filter the purok
     }

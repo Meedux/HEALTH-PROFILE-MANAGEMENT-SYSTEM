@@ -44,13 +44,15 @@
                                 <HouseholdRow ID="01" Lastname="Juan" Firstname="Cjay" Middlename="Juan" Member="3" Purok="1" />
                                 @foreach(ResidentModel household in resident)
                                 {
+                                    string stringurl = $"/secretary/household/details/{household.GetID()}";
                                     <HouseholdRow 
                                         ID="@household.GetID()" 
                                         Lastname="@household.GetResidentLastName()" 
                                         Firstname="@household.GetResidentFirstName()" 
                                         Middlename="@household.GetResidentMiddleName()" 
                                         Member="@household.Num_of_fam" 
-                                        Purok="@household.GetPurok()" />
+                                        Purok="@household.GetPurok()" 
+                                        stringurl="@stringurl"/>
 
                                 }
                             </tbody>

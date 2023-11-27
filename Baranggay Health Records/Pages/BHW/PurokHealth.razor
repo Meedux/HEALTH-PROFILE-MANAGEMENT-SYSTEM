@@ -11,32 +11,32 @@
     </div>
     <div class="row" style="margin-bottom: 26px;">
         <div class="col">
-            <PurokHealthCard Name="Flu" Count="@FluCount"/>
+            <PurokHealthCard Purok="@purok" Name="Flu" Count="@FluCount"/>
         </div>
         <div class="col">
-            <PurokHealthCard Name="Malnourished" Count="@MalnourishedCount" />
+            <PurokHealthCard Purok="@purok" Name="Malnourished" Count="@MalnourishedCount" />
         </div>
         <div class="col">
-            <PurokHealthCard Name="Measles" Count="@MeaslesCount" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 26px;">
-        <div class="col">
-            <PurokHealthCard Name="Tuberculosis" Count="@TuberculosisCount" />
-        </div>
-        <div class="col">
-            <PurokHealthCard Name="Prenatal" Count="@PrenatalCount" />
-        </div>
-        <div class="col">
-            <PurokHealthCard Name="Deworming" Count="@DewormingCount" />
+            <PurokHealthCard Purok="@purok" Name="Measles" Count="@MeaslesCount" />
         </div>
     </div>
     <div class="row" style="margin-bottom: 26px;">
         <div class="col">
-            <PurokHealthCard Name="Households" Count="@HouseholdCount" />
+            <PurokHealthCard Purok="@purok" Name="Tuberculosis" Count="@TuberculosisCount" />
         </div>
         <div class="col">
-            <PurokHealthCard Name="Senior Citizen" Count="@SeniorCitizenCount" />
+            <PurokHealthCard Purok="@purok" Name="Prenatal" Count="@PrenatalCount" />
+        </div>
+        <div class="col">
+            <PurokHealthCard Purok="@purok" Name="Deworming" Count="@DewormingCount" />
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 26px;">
+        <div class="col">
+            <PurokHealthCard Purok="@purok" Name="Households" Count="@HouseholdCount" />
+        </div>
+        <div class="col">
+            <PurokHealthCard Purok="@purok" Name="Senior Citizen" Count="@SeniorCitizenCount" />
         </div>
     </div>
 </div>

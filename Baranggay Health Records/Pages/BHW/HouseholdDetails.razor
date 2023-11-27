@@ -1,4 +1,4 @@
-﻿@page "/bhw/household/details/{ID}"
+﻿@page "/bhw/household/details/{ID:int}"
 @layout BHWLayout
 @inject Context context
 
@@ -7,17 +7,62 @@
 </div>
 <div class="container" style="margin-top: 44px;">
     <div class="row">
-        <div class="col text-center"><img class="rounded-circle img-fluid" width="300" height="80" src="../assets/img/avatar-dhg.png"></div>
+        <div class="col text-center"><img class="rounded-circle img-fluid" width="300" height="80" src="https://static.thenounproject.com/png/690650-200.png"></div>
         <div class="col">
             <div class="row">
-                <div class="col text-end"><button class="btn btn-primary" type="button"><i class="fa fa-edit"></i></button></div>
+                <div class="col d-flex justify-content-end mb-3">
+                    @if (isEdit)
+                    {
+                        <button class="btn btn-success mr-2" @onclick="UpdateInformation">Update Information</button>
+                        <a class="btn btn-warning" href="/bhw/household/details/@ID">Exit</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" href="/bhw/household/details/@ID?isEdit=true">Edit</a>
+                    }
+                </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <p style="font-size: 26px;"><strong>Head of The Family</strong>: Family Name&nbsp;</p>
-                    <p style="font-size: 26px;"><strong>Father's Name</strong>: Family Name</p>
-                    <p style="font-size: 26px;"><strong>Mother's Name</strong>: Family Name</p>
-                    <p style="font-size: 26px;"><strong>Members</strong>: 10</p>
+                    <p style="font-size: 26px;"><strong>Head of The Family</strong>: 
+                        @if(isEdit){
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_head" />
+                        }
+                        else
+                        {
+                            @household.GetHeadofFamily()
+                        } 
+                    </p>
+                    <p style="font-size: 26px;"><strong>Father's Name</strong>: 
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_fathersName" />
+                        }
+                        else
+                        {
+                            @household.GetFathersName()
+                        }
+                    </p>
+                    <p style="font-size: 26px;"><strong>Mother's Name</strong>: 
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_mothersName" />
+                        }
+                        else
+                        {
+                            @household.GetMothersName()
+                        }
+                    </p>
+                    <p style="font-size: 26px;"><strong>Members</strong>: 
+                        @if (isEdit)
+                        {
+                            <input type="number" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_count" />
+                        }
+                        else
+                        {
+                            @household.GetFamilyCount()
+                        }
+                    </p>
                 </div>
             </div>
         </div>
@@ -27,7 +72,16 @@
 @code {
     [Parameter] public int? ID { get; set; }
 
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public bool isEdit { get; set; } = false;
+
     HouseholdModel household = new HouseholdModel();
+
+    public string edited_head { get; set; } = "";
+    public string edited_fathersName { get; set; } = "";
+    public string edited_mothersName { get; set; } = "";
+    public int edited_count { get; set; } = 0;
 
     protected override void OnInitialized()
     {
@@ -45,5 +99,13 @@
                 break;
             }
         }
+    }
+
+    private void UpdateInformation()
+    {
+        HouseholdModel householdModel = new HouseholdModel();
+
+
+
     }
 }
