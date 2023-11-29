@@ -31,15 +31,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <MinorRow ID="01" LastName="Juan" FirstName="Cjay" MiddleName="Juan" Age="19" />
 
                                 @foreach (ResidentModel resident in adults)
                                 {
+                                    string stringurl = $"/secretary/resident/{resident.GetID()}";
                                     <MinorRow ID="@resident.ID"
                                               LastName="@resident.LastName"
                                               FirstName="@resident.FirstName"
                                               MiddleName="@resident.MiddleName"
-                                              Age="@resident.Age" />
+                                              Age="@resident.Age"
+                                              stringurl="@stringurl"
+                                              />
                                 }
                             </tbody>
                         </table>

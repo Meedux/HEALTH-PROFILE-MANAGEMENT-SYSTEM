@@ -27,8 +27,8 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Age</label>
-                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-1" name="gender"><label class="form-check-label" for="formCheck-1">Male</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-2" name="gender"><label class="form-check-label" for="formCheck-2">Female</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-1" name="gender" @onchange="@(() => gender = "Male")"><label class="form-check-label" for="formCheck-1">Male</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-2" name="gender" @onchange="@(() => gender = "Female")"><label class="form-check-label" for="formCheck-2">Female</label></div>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
@@ -61,7 +61,7 @@
         @* <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0"><label class="form-label">Civil Status</label><input @bind="civi" class="form-control" type="text" placeholder="Ex. Single"></div>
         </div> *@
-    </form><button @onclick="AddResident" class="btn btn-success" type="button" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;">ADD</button><button class="btn btn-danger" type="button" style="margin-top: 20px;margin-bottom: 40px;">Cancel</button>
+    </form><button @onclick="AddResident" class="btn btn-success" type="button" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;">ADD</button><a class="btn btn-danger" href="/secretary/" style="margin-top: 20px;margin-bottom: 40px;">Cancel</a>
 </div>
 
 @code {
