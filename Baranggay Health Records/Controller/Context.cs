@@ -150,7 +150,25 @@ namespace Baranggay_Health_Records.Controller
 
         public int GetTotalNewBorn()
         {
-            return 100;
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    int currentYear = DateTime.Now.Year;
+
+                    const string query = @"
+                SELECT COUNT(*) FROM resident WHERE SUBSTRING(dob, -4) = @CurrentYear;
+            ";
+
+                    int totalCount = connection.ExecuteScalar<int>(query, new { CurrentYear = currentYear });
+                    return totalCount;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1; 
+            }
         }
 
         public int GetTotalHouseholds()
@@ -192,7 +210,23 @@ namespace Baranggay_Health_Records.Controller
 
         public int GetTotalIllnessesOccured()
         {
-            return 100;
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                SELECT COUNT(*) FROM rhs WHERE Typeofillness IS NOT NULL AND Typeofillness != '';
+            ";
+
+                    int totalCount = connection.ExecuteScalar<int>(query);
+                    return totalCount;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
         }
 
         public int GetTotalPrenates()
@@ -569,19 +603,112 @@ namespace Baranggay_Health_Records.Controller
         }
 
 
-        public void UpdateResident(ResidentModel model)
+        public void UpdateResident(ResidentModel model, int? ID)
         {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                UPDATE Resident
+                SET FirstName = @FirstName, MiddleName = @MiddleName, LastName = @LastName,
+                    Suffix = @Suffix, Dob = @Dob, Age = @Age, Gender = @Gender,
+                    Civil_status = @Civil_status, Religion = @Religion, Occupation = @Occupation,
+                    Ed_attain = @Ed_attain, Household_number = @Household_number,
+                    Purok = @Purok, IsPWD = @IsPWD, IsSenior = @IsSenior
+                WHERE ID = @ID;
+            ";
 
+                    connection.Execute(query, new
+                    {
+                        model.FirstName,
+                        model.MiddleName,
+                        model.LastName,
+                        model.Suffix,
+                        model.Dob,
+                        model.Age,
+                        model.Gender,
+                        model.Civil_status,
+                        model.Religion,
+                        model.Occupation,
+                        model.Ed_attain,
+                        model.Household_number,
+                        model.Purok,
+                        model.IsPWD,
+                        model.IsSenior,
+                        ID
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // Handle exceptions as needed
+            }
         }
 
-        public void UpdateHousehold(HouseholdModel model)
+        public void UpdateHousehold(HouseholdModel model, int? ID)
         {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                UPDATE household
+                SET FathersName = @FathersName, MothersName = @MothersName,
+                    HeadofFamily = @HeadofFamily, Member = @Member, FamilyCount = @FamilyCount
+                WHERE MemberID = @ID;
+            ";
 
+                    connection.Execute(query, new
+                    {
+                        model.FathersName,
+                        model.MothersName,
+                        model.HeadofFamily,
+                        model.Member,
+                        model.FamilyCount,
+                        ID
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // Handle exceptions as needed
+            }
         }
 
-        public void UpdateResidentHeatlthStatus(ResidentHealthStatusModel model)
+        public void UpdateResidentHealthStatus(ResidentHealthStatusModel model, int? ID)
         {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                UPDATE rhs
+                SET Typeofillness = @Typeofillness, Weight = @Weight, Height = @Height,
+                    Temperature = @Temperature, BloodPressure = @BloodPressure
+                WHERE ResidentId = @ID;
+            ";
 
+                    connection.Execute(query, new
+                    {
+                        model.Typeofillness,
+                        model.Weight,
+                        model.Height,
+                        model.Temperature,
+                        model.BloodPressure,
+                        ID
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // Handle exceptions as needed
+            }
         }
+
+
     }
 }

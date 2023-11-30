@@ -78,7 +78,7 @@ namespace Baranggay_Health_Records.Data
             return this.Dob;
         }
 
-        public int? GetResidentAge()
+        public int GetResidentAge()
         {
             return this.Age;
         }

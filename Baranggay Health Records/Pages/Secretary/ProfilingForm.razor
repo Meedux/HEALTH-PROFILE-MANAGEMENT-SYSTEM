@@ -89,6 +89,7 @@
     void AddResident()
     {
         ResidentModel res = new ResidentModel();
+        HouseholdModel household = new HouseholdModel();
 
         res.FirstName = firstName;
         res.MiddleName = middleName;
@@ -103,6 +104,9 @@
         res.Ed_attain = ed_attain;
         res.Household_number = household_number;
         res.Purok = purok;
+
+
+
 
         if(
             firstName != "" ||
@@ -125,7 +129,15 @@
             status_type != ""
         )
         {
-            context.CreateResident(res);
+            int id = context.CreateResident(res);
+            household.HeadofFamily = head;
+            household.MemberID = id;
+            household.FathersName = fathers_name;
+            household.MothersName = mothers_name;
+            household.Member = firstName + middleName + lastName;
+            household.FamilyCount = num_of_fam;
+            context.CreateHousehold(household);
+
         }
 
         firstName = "";
@@ -145,6 +157,10 @@
         household_number = 0;
         purok = "";
         status_type = "";
+        head = "";
+        fathers_name = "";
+        mothers_name = "";
+        num_of_fam = 0;
 
         Console.WriteLine(context.GetAllResidents());
         Console.WriteLine("Item Added to Residents!");
