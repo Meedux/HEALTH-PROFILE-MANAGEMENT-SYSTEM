@@ -28,7 +28,10 @@
                             <tbody>
                                 @foreach (ArchiveModel archive in Archives)
                                 {
-                                    <ArchiveRow Name="@archive.GetName()" Date="@archive.GetDate()" />
+                                    <ArchiveRow Name="@archive.GetName()"
+                                                Type="@archive.GetReferenceType()"
+                                                ID="@archive.GetReferenceID()"
+                                                Date="@archive.GetDate()" />
                                 }
                             </tbody>
                         </table>

@@ -285,7 +285,7 @@ namespace Baranggay_Health_Records.Controller
             using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
                 var archives = connection.Query<ArchiveModel>("SELECT * FROM archive").ToList();
-                Console.WriteLine("Fetching Resident Data");
+                Console.WriteLine("Fetching Archive Data");
                 return archives;
             }
         } 
@@ -801,6 +801,26 @@ namespace Baranggay_Health_Records.Controller
             {
                 Console.WriteLine(e);
                 return false;
+            }
+        }
+
+        public void UnArchive(int ID, string type)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                        DELETE FROM archive
+                        WHERE ReferenceID = @ID AND Type = @Type;
+                    ";
+
+                    connection.Execute(query, new { ID = ID, Type = type });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
