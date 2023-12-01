@@ -705,12 +705,29 @@ namespace Baranggay_Health_Records.Controller
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                // Handle exceptions as needed
             }
         }
 
         public void ArchiveData(string name, string type, int dataId)
         {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    var todayDate = DateTime.Today.ToString("MM/dd/yyyy");
+
+                    const string query = @"
+                        INSERT INTO archive (Name, Archive_Type, Archive_ReferenceID, Date)
+                        VALUES (@Name, @Archive_Type, @Archive_ReferenceID, @Date);
+                    ";
+
+                    connection.Execute(query, new { Name = name, Archive_Type = type, Archive_ReferenceID = dataId, Date = todayDate });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
         }
 
@@ -722,8 +739,8 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'household'";
-                    int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
-                    return count > 0;
+                    int count = connection.ExecuteScalar<int>(query, new { ID = item.MemberID });
+                    return !(count > 0);
                 }
             }
             catch (Exception e)
@@ -741,7 +758,7 @@ namespace Baranggay_Health_Records.Controller
                 {
                     const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'resident'";
                     int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
-                    return count > 0;
+                    return !(count > 0);
                 }
             }
             catch (Exception e)
@@ -758,8 +775,8 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'rhs'";
-                    int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
-                    return count > 0;
+                    int count = connection.ExecuteScalar<int>(query, new { ID = item.ResidentId });
+                    return !(count > 0);
                 }
             }
             catch (Exception e)
@@ -777,7 +794,7 @@ namespace Baranggay_Health_Records.Controller
                 {
                     const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'medicine'";
                     int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
-                    return count > 0;
+                    return !(count > 0);
                 }
             }
             catch (Exception e)

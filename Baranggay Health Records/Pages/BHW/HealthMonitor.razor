@@ -41,8 +41,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <HealthMonitorRow ID="01" FullName="Juan Dela Cruz" BirthDate="01/01/2001" Age="1" Gender="Male" TypeofIllness="Covid" Height="187cm" Weight="59kg" BP="90/140" Temp="38c" Purok="1" Date="01/01/2001" />
-
                                 @foreach (ResidentModel? res in Residents)
                                 {
                                     @foreach (ResidentHealthStatusModel? rhs in residentHealthStatuses)

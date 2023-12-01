@@ -1,5 +1,6 @@
 ﻿<tr>
     <td class="text-truncate" style="max-width: 200px;">@Name</td>
+    <td class="text-truncate" style="max-width: 200px;">@Type</td>
     <td class="text-truncate" style="max-width: 200px;">@Date</td>
     <td>
         <div class="btn-group" role="group">
@@ -20,6 +21,9 @@
 @code {
     [Parameter]
     public String? Name { get; set; }
+
+    [Parameter]
+    public String? Type { get; set; }
 
     [Parameter]
     public String? Date { get; set; }

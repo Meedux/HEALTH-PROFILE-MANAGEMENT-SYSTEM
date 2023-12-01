@@ -1,4 +1,7 @@
-﻿<tr>
+﻿@inject Context context
+@inject NavigationManager NavigationManager
+
+<tr>
     <td class="text-truncate" style="max-width: 200px;">@ID</td>
     <td class="text-truncate" style="max-width: 200px;">@LastName</td>
     <td>@FirstName</td>
@@ -21,6 +24,13 @@
         </a>
     </td>
     <td class="text-center">
+        <button style="border: none;outline: none;cursor: pointer;" @onclick="ArchiveData">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-archive-fill fs-5 text-primary">
+                <path d="M8.457 1.706a.5.5 0 0 0-.834 0L2.088 8H1.5A1.5 1.5 0 0 0 0 9.5v4a1.5 1.5 0 0 0 1.5 1.5h13a1.5 1.5 0 0 0 1.5-1.5v-4A1.5 1.5 0 0 0 14.912 8h-.588l-5.535-6.294zM2 10.5v1a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-1H2z" />
+            </svg>
+        </button>
+    </td>
+    <td class="text-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-trash-fill fs-5 text-primary" style="/*color: var(--bs-red) !important;*/">
             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
         </svg>
@@ -28,10 +38,17 @@
 </tr>
 
 @code {
-    [Parameter] public int? ID { get; set; }
+    [Parameter] public int ID { get; set; }
     [Parameter] public String? LastName { get; set; }
     [Parameter] public String? FirstName { get; set; }
     [Parameter] public String? MiddleName { get; set; }
     [Parameter] public int? Age { get; set; }
     [Parameter] public String? stringurl { get; set; }
+
+    private void ArchiveData()
+    {
+        string FullName = "Mr./Ms. " + LastName;
+        context.ArchiveData(FullName, "resident", ID);
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
 }
