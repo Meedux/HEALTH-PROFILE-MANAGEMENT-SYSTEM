@@ -33,14 +33,17 @@
                             <tbody>
                                 @foreach (ResidentModel resident in adults)
                                 {
-                                    string stringurl = $"/secretary/resident/{resident.GetID()}";
-                                    <PurokSeniorCitizenRow ID="@resident.ID"
-                                              LastName="@resident.LastName"
-                                              FirstName="@resident.FirstName"
-                                              MiddleName="@resident.MiddleName"
-                                              Age="@resident.Age" 
-                                              stringurl="@stringurl"
-                                              />
+                                    @if (context.isArchived(resident))
+                                    {
+                                        string stringurl = $"/secretary/resident/{resident.GetID()}";
+                                        <PurokSeniorCitizenRow ID="@resident.ID"
+                                        LastName="@resident.LastName"
+                                        FirstName="@resident.FirstName"
+                                        MiddleName="@resident.MiddleName"
+                                        Age="@resident.Age" 
+                                        stringurl="@stringurl"
+                                        />
+                                    }
                                 }
                             </tbody>
                         </table>

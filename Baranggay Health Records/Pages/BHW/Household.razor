@@ -44,13 +44,17 @@
                                 @foreach (ResidentModel household in resident)
                                 {
                                     string stringurl = $"/bhw/household/details/{household.GetID()}";
-                                    <HouseholdRow ID="@household.GetID()"
-                                                  Lastname="@household.GetResidentLastName()"
-                                                  Firstname="@household.GetResidentFirstName()"
-                                                  Middlename="@household.GetResidentMiddleName()"
-                                                  Member="@GetFamilyMemberCount(household.GetID())"
-                                                  Purok="@household.GetPurok()" 
-                                                  stringurl="@stringurl"/>
+
+                                    @if (context.isArchived(household))
+                                    {
+                                        <HouseholdRow ID="@household.GetID()"
+                                                      Lastname="@household.GetResidentLastName()"
+                                                      Firstname="@household.GetResidentFirstName()"
+                                                      Middlename="@household.GetResidentMiddleName()"
+                                                      Member="@GetFamilyMemberCount(household.GetID())"
+                                                      Purok="@household.GetPurok()" 
+                                                      stringurl="@stringurl"/>
+                                    }
                                 }
                             </tbody>
                         </table>

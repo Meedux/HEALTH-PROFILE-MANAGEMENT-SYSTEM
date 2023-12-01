@@ -709,6 +709,86 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public void ArchiveData(string name, string type, int dataId)
+        {
+
+        }
+
+
+        public bool isArchived(HouseholdModel item)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'household'";
+                    int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
+                    return count > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public bool isArchived(ResidentModel item)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'resident'";
+                    int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
+                    return count > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public bool isArchived(ResidentHealthStatusModel item)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'rhs'";
+                    int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
+                    return count > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public bool isArchived(ResidentMedicineModel item)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'medicine'";
+                    int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
+                    return count > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
 
     }
 }
+
+

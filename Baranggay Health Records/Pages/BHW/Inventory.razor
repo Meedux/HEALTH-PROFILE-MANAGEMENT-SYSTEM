@@ -48,18 +48,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <MedicineRow ID="01" MedicineName="Paracetamol" MedicineDescription="Sakit Ulo" Quality="3" Stock="97" ExpirationDate="09/12/2024" ReleaseDate="09/12/2024" />
-                                <MedicineRow ID="02" MedicineName="Paracetamol" MedicineDescription="Sakit Ulo" Quality="3" Stock="97" ExpirationDate="09/12/2024" ReleaseDate="09/12/2024" />
                             
                                 @foreach (ResidentMedicineModel medicine in residentMedicines)
                                 {
-                                    <MedicineRow ID="@medicine.GetID()"
-                                                 MedicineName="@medicine.GetMedicineName()"
-                                                 MedicineDescription="@medicine.GetDescription()"
-                                                 Quality="@medicine.GetQuality()"
-                                                 Stock="@medicine.GetStock()"
-                                                 ExpirationDate="@medicine.GetExpirationDate()"
-                                                 ReleaseDate="@medicine.GetReleaseDate()" />
+                                    @if (context.isArchived(medicine))
+                                    {   
+                                        <MedicineRow ID="@medicine.GetID()"
+                                                     MedicineName="@medicine.GetMedicineName()"
+                                                     MedicineDescription="@medicine.GetDescription()"
+                                                     Quality="@medicine.GetQuality()"
+                                                     Stock="@medicine.GetStock()"
+                                                     ExpirationDate="@medicine.GetExpirationDate()"
+                                                     ReleaseDate="@medicine.GetReleaseDate()" />
+                                    }
                                 }
                             </tbody>
                         </table>

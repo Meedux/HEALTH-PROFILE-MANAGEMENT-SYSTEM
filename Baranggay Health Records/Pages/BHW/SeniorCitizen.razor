@@ -45,14 +45,17 @@
                                 <SeniorCitizenRow ID="01" LastName="Dela Cruz" FirstName="Cjay" MiddleName="Juan" Age="18" Gender="Male" Purok="1A"/>
                                 @foreach(ResidentModel seniors in Seniors)
                                 {
-                                    <SeniorCitizenRow 
-                                        ID="@seniors.GetID()" 
-                                        LastName="@seniors.GetResidentLastName()"
-                                        FirstName="@seniors.GetResidentFirstName()"
-                                        MiddleName="@seniors.GetResidentMiddleName()" 
-                                        Age="@seniors.GetResidentAge()" 
-                                        Gender="@seniors.GetResidentGender()" 
-                                        Purok="@seniors.GetPurok()" />
+                                    @if (context.isArchived(seniors))
+                                    {
+                                        <SeniorCitizenRow 
+                                            ID="@seniors.GetID()" 
+                                            LastName="@seniors.GetResidentLastName()"
+                                            FirstName="@seniors.GetResidentFirstName()"
+                                            MiddleName="@seniors.GetResidentMiddleName()" 
+                                            Age="@seniors.GetResidentAge()" 
+                                            Gender="@seniors.GetResidentGender()" 
+                                            Purok="@seniors.GetPurok()" />
+                                    }
                                 }
                             </tbody>
                         </table>

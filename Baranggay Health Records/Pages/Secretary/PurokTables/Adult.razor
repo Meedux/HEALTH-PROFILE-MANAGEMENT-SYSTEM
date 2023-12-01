@@ -34,14 +34,17 @@
 
                                 @foreach(ResidentModel resident in adults){
                                     string stringurl = $"/secretary/resident/{resident.GetID()}";
-                                    <AdultRow 
+                                    @if (context.isArchived(resident))
+                                    {
+                                        <AdultRow 
                                         ID="@resident.ID"
                                         LastName="@resident.LastName"
                                         FirstName="@resident.FirstName"
                                         MiddleName="@resident.MiddleName"
                                         Age="@resident.Age"
                                         stringurl="@stringurl"
-                                    />
+                                        />
+                                    }
                                 }
                             </tbody>
                         </table>

@@ -42,6 +42,30 @@
                             </thead>
                             <tbody>
                                 <HealthMonitorRow ID="01" FullName="Juan Dela Cruz" BirthDate="01/01/2001" Age="1" Gender="Male" TypeofIllness="Covid" Height="187cm" Weight="59kg" BP="90/140" Temp="38c" Purok="1" Date="01/01/2001" />
+
+                                @foreach (ResidentModel? res in Residents)
+                                {
+                                    @foreach (ResidentHealthStatusModel? rhs in residentHealthStatuses)
+                                    {
+                                        @if (res.GetID() == rhs.ResidentId)
+                                        {
+                                            ResidentModel temp = res;
+                                            @if(context.isArchived(temp)){
+                                                <HealthMonitorRow 
+                                                                ID="@res.GetID()"
+                                                                FullName="@res.GetResidentFirstName()"
+                                                                BirthDate="@res.GetResidentDOB()"
+                                                                Age="@res.GetResidentAge()"
+                                                                Gender="@res.GetResidentGender()"
+                                                                Height="@rhs.GetHeight()"
+                                                                Weight="@rhs.GetWeight()"
+                                                                BP="@rhs.GetBloodPressure()"
+                                                                Temp="@rhs.GetTemperature()"
+                                                                Date="January, 01, 2023" />
+                                            }
+                                        }
+                                    }
+                                }
                                 
                             </tbody>
                         </table>
