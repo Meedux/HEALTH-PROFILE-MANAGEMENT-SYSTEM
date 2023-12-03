@@ -80,7 +80,12 @@
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Type of illness</label><input @bind="typeOfIllness" class="form-control" type="text" placeholder="Ex. Flu" required=""></div>
+            <Select TValue="int" @bind-Value="typeOfIllnessID" Placeholder="Select illness...">
+                @foreach (var illness in Illnesses)
+                {
+                    <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
+                }
+            </Select>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
@@ -137,10 +142,25 @@
     List<String> Immunization = new List<String>();
     String weight = "";
     String height = "";
-    String typeOfIllness = "";
+    int typeOfIllnessID = 0;
     String temperature = "";
     String bloodPressure = "";
     String medicine = "";
+
+    public List<IllnessModel> Illnesses = new List<IllnessModel>();
+
+    protected override void OnInitialized()
+    {
+        Illnesses = context.GetIllnesses();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Illnesses = context.GetIllnesses();
+        }
+    }
 
 
     public void AddResident()
@@ -166,7 +186,7 @@
         var resID = context.CreateResident(newResident);
 
         newRHS.ResidentId = resID;
-        newRHS.Typeofillness = typeOfIllness;
+        newRHS.TypeofillnessID = typeOfIllnessID;
         newRHS.Weight = weight;
         newRHS.Height = height;
         newRHS.Temperature = temperature;
@@ -200,7 +220,7 @@
         Immunization.Clear();
         weight = "";
         height = "";
-        typeOfIllness = "";
+        typeOfIllnessID = 0;
         temperature = "";
         bloodPressure = "";
         medicine = "";

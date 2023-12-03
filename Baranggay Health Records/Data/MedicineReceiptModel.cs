@@ -6,7 +6,7 @@ namespace Baranggay_Health_Records.Data
     {
         public int? ID { get; set; }
 
-        [Required] public String? NewArrival { get; set; }
+        [Required] public string? NewArrival { get; set; }
         [Required] public int? NewArrivalID { get; set; }
         [Required] public int? OldStock { get; set; }
         [Required] public DateTime? ExpirationDate { get; set; }
@@ -14,32 +14,32 @@ namespace Baranggay_Health_Records.Data
 
         public int? GetID()
         {
-            return this.ID;
+            return ID;
         }
 
-        public String? GetNewArrival()
+        public string? GetNewArrival()
         {
-            return this.NewArrival;
+            return NewArrival;
         }
 
         public int? GetNewArrivalID()
         {
-            return this.NewArrivalID;
+            return NewArrivalID;
         }
 
         public int? GetOldStock()
         {
-            return this.OldStock;
+            return OldStock;
         }
 
         public DateTime? GetExpirationDate()
         {
-            return this.ExpirationDate;
+            return ExpirationDate;
         }
 
         public int? MonthlyDistribution()
         {
-            return this.MonthlyDistrobution;
+            return MonthlyDistrobution;
         }
     }
 }

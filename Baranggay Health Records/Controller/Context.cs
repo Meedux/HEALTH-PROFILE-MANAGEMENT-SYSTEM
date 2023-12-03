@@ -330,6 +330,16 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public List<IllnessModel> GetIllnesses()
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var ill = connection.Query<IllnessModel>("SELECT * FROM illness").ToList();
+                Console.WriteLine("Fetching Medicine Data");
+                return ill;
+            }
+        }
+
         public List<ResidentModel> GetPurokByAdult(string? purok)
         {
             using (MySqlConnection connection = _sqlConnector.GetConnection())
@@ -493,20 +503,20 @@ namespace Baranggay_Health_Records.Controller
 
         //Purok Health Details
 
-        public int GetIllnessCount(string illnessType)
+        public int GetIllnessCount(int ID)
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM rhs WHERE TypeofIllness = @IllnessType";
+                string query = "SELECT Occurence FROM illness WHERE ID = @ID";
 
                 try
                 {
-                    int illnessCount = connection.QuerySingle<int>(query, new { IllnessType = illnessType });
+                    int illnessCount = connection.QuerySingle<int>(query, new { ID });
                     return illnessCount;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error getting {illnessType} count: {ex.Message}");
+                    Console.WriteLine(ex);
                     return -1; // or any suitable error value
                 }
             }
@@ -562,12 +572,12 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = @"
-                    INSERT INTO rhs (ResidentId, Typeofillness, Weight, Height, Temperature, BloodPressure)
-                    VALUES (@ResidentId, @Typeofillness, @Weight, @Height, @Temperature, @BloodPressure);
+                    INSERT INTO rhs (ResidentId, TypeofillnessID, Weight, Height, Temperature, BloodPressure)
+                    VALUES (@ResidentId, @TypeofillnessID, @Weight, @Height, @Temperature, @BloodPressure);
                     SELECT LAST_INSERT_ID();
                     ";
 
-                    int newRHS_ID = connection.ExecuteScalar<int>(query, new { ResidentId = RHS.ResidentId, Typeofillness = RHS.Typeofillness, Weight = RHS.Weight, Height = RHS.Height, Temperature = RHS.Temperature, BloodPressure = RHS.BloodPressure });
+                    int newRHS_ID = connection.ExecuteScalar<int>(query, new { ResidentId = RHS.ResidentId, TypeofillnessID = RHS.TypeofillnessID, Weight = RHS.Weight, Height = RHS.Height, Temperature = RHS.Temperature, BloodPressure = RHS.BloodPressure });
                     return newRHS_ID;
                 }
             }
@@ -686,14 +696,14 @@ namespace Baranggay_Health_Records.Controller
                 {
                     const string query = @"
                 UPDATE rhs
-                SET Typeofillness = @Typeofillness, Weight = @Weight, Height = @Height,
+                SET TypeofillnessID = @TypeofillnessID, Weight = @Weight, Height = @Height,
                     Temperature = @Temperature, BloodPressure = @BloodPressure
                 WHERE ResidentId = @ID;
             ";
 
                     connection.Execute(query, new
                     {
-                        model.Typeofillness,
+                        model.TypeofillnessID,
                         model.Weight,
                         model.Height,
                         model.Temperature,
@@ -717,7 +727,7 @@ namespace Baranggay_Health_Records.Controller
                     var todayDate = DateTime.Today.ToString("MM/dd/yyyy");
 
                     const string query = @"
-                        INSERT INTO archive (Name, Archive_Type, Archive_ReferenceID, Date)
+                        INSERT INTO archive (Name, Type, ReferenceID, Date)
                         VALUES (@Name, @Archive_Type, @Archive_ReferenceID, @Date);
                     ";
 
@@ -738,7 +748,7 @@ namespace Baranggay_Health_Records.Controller
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'household'";
+                    const string query = "SELECT COUNT(*) FROM archive WHERE ReferenceID = @ID AND Type = 'household'";
                     int count = connection.ExecuteScalar<int>(query, new { ID = item.MemberID });
                     return !(count > 0);
                 }
@@ -756,7 +766,7 @@ namespace Baranggay_Health_Records.Controller
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'resident'";
+                    const string query = "SELECT COUNT(*) FROM archive WHERE ReferenceID = @ID AND Type = 'resident'";
                     int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
                     return !(count > 0);
                 }
@@ -774,7 +784,7 @@ namespace Baranggay_Health_Records.Controller
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'rhs'";
+                    const string query = "SELECT COUNT(*) FROM archive WHERE ReferenceID = @ID AND Type = 'rhs'";
                     int count = connection.ExecuteScalar<int>(query, new { ID = item.ResidentId });
                     return !(count > 0);
                 }
@@ -792,7 +802,7 @@ namespace Baranggay_Health_Records.Controller
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    const string query = "SELECT COUNT(*) FROM archive WHERE Archive_ReferenceID = @ID AND Archive_Type = 'medicine'";
+                    const string query = "SELECT COUNT(*) FROM archive WHERE ReferenceID = @ID AND Type = 'medicine'";
                     int count = connection.ExecuteScalar<int>(query, new { ID = item.ID });
                     return !(count > 0);
                 }
@@ -824,7 +834,52 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public void AddIllness(IllnessModel ill)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                        INSERT INTO Illness (IllnessName, RecommendedMedicine, MedicineID, Occurence)
+                        VALUES (@IllnessName, @RecommendedMedicine, @MedicineID, @Occurence);
+                    ";
 
+                    connection.Execute(query, new
+                    {
+                        ill.IllnessName,
+                        ill.RecommendedMedicine, 
+                        ill.MedicineID,
+                        Occurence = 0
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void IncrementIllness(int ID)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                        UPDATE illness
+                        SET Occurence = Occurence + 1
+                        WHERE ID = @ID;
+                    ";
+
+                    connection.Execute(query, new { ID });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
     }
 }
 

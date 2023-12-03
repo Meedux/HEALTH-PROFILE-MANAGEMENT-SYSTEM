@@ -8,51 +8,51 @@ namespace Baranggay_Health_Records.Data
         public int? ID { get; set; }
 
 
-        [Required] public String? MedicineName { get; set; }
+        [Required] public string MedicineName { get; set; }
 
-        [Required] public String? Description { get; set; }
+        [Required] public string? Description { get; set; }
 
         [Required] public int? Quality { get; set; }
 
-        [Required] public String? ExpirationDate { get; set; }
+        [Required] public string? ExpirationDate { get; set; }
 
-        [Required] public String? ReleaseDate { get; set; }
+        [Required] public string? ReleaseDate { get; set; }
 
         [Required] public int? Stock { get; set; }
 
         public int? GetID()
         {
-            return this.ID;
+            return ID;
         }
 
         public int? GetStock()
         {
-            return this.Stock;
+            return Stock;
         }
 
-        public String? GetMedicineName()
+        public string? GetMedicineName()
         {
-            return this.MedicineName;
+            return MedicineName;
         }
 
-        public String? GetDescription()
+        public string? GetDescription()
         {
-            return this.Description;
+            return Description;
         }
 
         public int? GetQuality()
         {
-            return this.Quality;
+            return Quality;
         }
 
-        public String? GetExpirationDate()
+        public string? GetExpirationDate()
         {
-            return this.ExpirationDate;
+            return ExpirationDate;
         }
 
-        public String? GetReleaseDate()
+        public string? GetReleaseDate()
         {
-            return this.ReleaseDate;
+            return ReleaseDate;
         }
     }
 }

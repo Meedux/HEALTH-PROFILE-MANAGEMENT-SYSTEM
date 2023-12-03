@@ -24,14 +24,14 @@ namespace Baranggay_Health_Records.Data
         public string? Dob { get; set; } = "";
 
         [Range(0, 200)]
-        public int Age { get; set;} 
+        public int Age { get; set; }
         public string? Gender { get; set; } = "";
         public string? Civil_status { get; set; } = "";
         public string? Religion { get; set; } = "";
         public string? Occupation { get; set; } = "";
-        public int Num_of_fam { get; set; } 
+        public int Num_of_fam { get; set; }
         public string? Ed_attain { get; set; } = "";
-        public int Household_number { get; set;} 
+        public int Household_number { get; set; }
         public string? Purok { get; set; } = "";
 
         public bool? IsPWD { get; set; } = false;
@@ -45,77 +45,77 @@ namespace Baranggay_Health_Records.Data
 
         public int GetID()
         {
-            return this.ID;
+            return ID;
         }
 
         public int? GetResidentID()
         {
-            return this.ID;
+            return ID;
         }
 
-        public String? GetResidentFirstName()
+        public string? GetResidentFirstName()
         {
-            return this.FirstName;
+            return FirstName;
         }
 
-        public String? GetResidentMiddleName()
+        public string? GetResidentMiddleName()
         {
-            return this.MiddleName;
+            return MiddleName;
         }
 
-        public String? GetResidentLastName()
+        public string? GetResidentLastName()
         {
-            return this.LastName;
+            return LastName;
         }
 
-        public String? GetResidentSuffix()
+        public string? GetResidentSuffix()
         {
-            return this.Suffix;
+            return Suffix;
         }
 
-        public String? GetResidentDOB()
+        public string? GetResidentDOB()
         {
-            return this.Dob;
+            return Dob;
         }
 
         public int GetResidentAge()
         {
-            return this.Age;
+            return Age;
         }
 
-        public String? GetResidentGender()
+        public string? GetResidentGender()
         {
-            return this.Gender;
+            return Gender;
         }
 
-        public String? GetResidentCivilStatus()
+        public string? GetResidentCivilStatus()
         {
-            return this.Civil_status;
+            return Civil_status;
         }
 
-        public String? GetResidentReligion()
+        public string? GetResidentReligion()
         {
-            return this.Religion;
+            return Religion;
         }
 
-        public String? GetOccupation()
+        public string? GetOccupation()
         {
-            return this.Occupation;
+            return Occupation;
         }
 
-        public String? GetEducationalAttainment()
+        public string? GetEducationalAttainment()
         {
-            return this.Ed_attain;
+            return Ed_attain;
         }
 
-        public String? GetPurok()
+        public string? GetPurok()
         {
-            return this.Purok;
+            return Purok;
         }
 
         public int GetHouseholdNumber()
         {
-            return this.Household_number;
+            return Household_number;
         }
     }
 }

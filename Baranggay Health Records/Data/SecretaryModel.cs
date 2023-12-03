@@ -7,31 +7,31 @@ namespace Baranggay_Health_Records.Data
         public int ID { get; set; }
 
         [Required]
-        public String? UserName { get; set; }
+        public string? UserName { get; set; }
 
         [Required]
 
-        public String? Password { get; set; }
+        public string? Password { get; set; }
 
         [Required]
-        public String? FirstName {  get; set; }
+        public string? FirstName { get; set; }
 
         [Required]
-        public String? LastName { get; set; }
+        public string? LastName { get; set; }
 
         public int? GetID()
         {
-            return this.ID;
+            return ID;
         }
 
-        public String? GetAccountUserName()
+        public string? GetAccountUserName()
         {
-            return this.UserName;
+            return UserName;
         }
 
-        public String? GetAccountPassword()
+        public string? GetAccountPassword()
         {
-            return this.Password;
+            return Password;
         }
     }
 }

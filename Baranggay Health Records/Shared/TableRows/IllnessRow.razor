@@ -1,0 +1,21 @@
+﻿<tr>
+    <td class="text-truncate" style="max-width: 200px;">@ID</td>
+    <td class="text-truncate" style="max-width: 200px;">@IllnessName</td>
+    <td class="text-truncate" style="max-width: 200px;">@RecommendedMedicine</td>
+    <td>@Occurence</td>
+</tr>
+
+@code {
+
+    [Parameter]
+    public int? ID { get; set; }
+
+    [Parameter]
+    public String? IllnessName { get; set; }
+
+    [Parameter]
+    public String? RecommendedMedicine { get; set; }
+
+    [Parameter]
+    public int Occurence { get; set; }
+}

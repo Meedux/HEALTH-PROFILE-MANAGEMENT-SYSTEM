@@ -3,26 +3,26 @@
     public class ArchiveModel
     {
         public int? ID { get; set; }
-        public String? Name { get; set; }
+        public string? Name { get; set; }
 
-        public String? Type { get; set; }
+        public string? Type { get; set; }
 
         public int ReferenceID { get; set; }
 
 
-        public String? Date { get; set; }
+        public string? Date { get; set; }
 
         public int? GetID()
         {
             return this.ID;
         }
 
-        public String? GetName()
+        public string? GetName()
         {
             return this.Name;
         }
 
-        public String? GetReferenceType()
+        public string? GetReferenceType()
         {
             return this.Type;
         }
@@ -32,7 +32,7 @@
             return this.ReferenceID;
         }
 
-        public String? GetDate()
+        public string? GetDate()
         {
             return this.Date;
         }

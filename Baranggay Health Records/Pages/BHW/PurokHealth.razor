@@ -9,28 +9,28 @@
             <h1>Purok @purok Health Dashboard</h1>
         </div>
     </div>
-    <div class="row" style="margin-bottom: 26px;">
-        <div class="col">
-            <PurokHealthCard Purok="@purok" Name="Flu" Count="@FluCount"/>
-        </div>
-        <div class="col">
-            <PurokHealthCard Purok="@purok" Name="Malnourished" Count="@MalnourishedCount" />
-        </div>
-        <div class="col">
-            <PurokHealthCard Purok="@purok" Name="Measles" Count="@MeaslesCount" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 26px;">
-        <div class="col">
-            <PurokHealthCard Purok="@purok" Name="Tuberculosis" Count="@TuberculosisCount" />
-        </div>
-        <div class="col">
-            <PurokHealthCard Purok="@purok" Name="Prenatal" Count="@PrenatalCount" />
-        </div>
-        <div class="col">
-            <PurokHealthCard Purok="@purok" Name="Deworming" Count="@DewormingCount" />
-        </div>
-    </div>
+
+    @{
+
+        for (int i = 0; i < ill.Count; i++)
+        {
+            if (i % 3 == 0)
+            {
+                @:<div class="row" style="margin-bottom: 26px;">
+            }
+
+            <div class="col">
+                <PurokHealthCard Purok="@purok" Name="@ill[i].GetName()" Count="@ill[i].GetOccurence()" />
+            </div>
+
+            if ((i + 1) % 3 == 0 || i == ill.Count - 1)
+            {
+                @:</div>
+            }
+        }
+    }
+
+    
     <div class="row" style="margin-bottom: 26px;">
         <div class="col">
             <PurokHealthCard Purok="@purok" Name="Households" Count="@HouseholdCount" />
@@ -43,21 +43,16 @@
 
 @code {
     [Parameter] public string purok { get; set; } = "";
-    public int FluCount { get; set; } = 0;
-    public int MalnourishedCount { get; set; } = 0;
-    public int MeaslesCount { get; set; } = 0;
-    public int TuberculosisCount { get; set; } = 0;
     public int PrenatalCount { get; set; } = 0;
     public int DewormingCount { get; set; } = 0;
     public int HouseholdCount { get; set; } = 0;
     public int SeniorCitizenCount { get; set; } = 0;
 
+    List<IllnessModel> ill = new List<IllnessModel>();
+
     protected override void OnInitialized()
     {
-        FluCount = context.GetIllnessCount("Flu");
-        MalnourishedCount = context.GetIllnessCount("Malnourished");
-        MeaslesCount = context.GetIllnessCount("Measles");
-        TuberculosisCount = context.GetIllnessCount("Tuberculosis");
+        ill = context.GetIllnesses();
         PrenatalCount = context.GetPrenatalCount();
         DewormingCount = context.GetDewormingCount();
         HouseholdCount = context.GetHouseholdCount();

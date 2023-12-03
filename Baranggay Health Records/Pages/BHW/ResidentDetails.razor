@@ -327,7 +327,7 @@
     int? household_number   {get; set;}
     String purok            {get; set;} = "";
     String status_type      {get; set;} = "";
-    String illness_type     {get; set;} = "";
+    int illness_type     {get; set;}
     String weight           {get; set;} = "";
     String height           {get; set;} = "";
     String temperature      {get; set;} = "";
@@ -352,7 +352,7 @@
     int edited_household_number { get; set; }
     String edited_purok { get; set; } = "";
     String edited_status_type { get; set; } = "";
-    String edited_illness_type { get; set; } = "";
+    int edited_illness_type { get; set; }
     String edited_weight { get; set; } = "";
     String edited_height { get; set; } = "";
     String edited_temperature { get; set; } = "";
@@ -448,7 +448,7 @@
         householdModel.FamilyCount = edited_num_of_fam;
 
         ResidentHealthStatusModel rHSM = new ResidentHealthStatusModel();
-        rHSM.Typeofillness = edited_illness_type;
+        rHSM.TypeofillnessID = edited_illness_type;
         rHSM.Weight = edited_weight;
         rHSM.Height = edited_height;
         rHSM.Temperature = edited_temperature;

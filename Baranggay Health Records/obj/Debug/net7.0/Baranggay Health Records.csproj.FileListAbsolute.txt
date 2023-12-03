@@ -52,3 +52,16 @@ C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Record
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.csproj.AssemblyReference.cache
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\obj\Debug\net7.0\Baranggay Health Records.csproj.CopyComplete
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Dapper.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Blazorise.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Blazorise.Licensing.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\DeepCloner.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.AspNetCore.Authorization.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.AspNetCore.Components.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.AspNetCore.Components.Forms.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.AspNetCore.Components.Web.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.AspNetCore.Metadata.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.JSInterop.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Blazorise.Bootstrap5.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Blazorise.Icons.FontAwesome.dll
