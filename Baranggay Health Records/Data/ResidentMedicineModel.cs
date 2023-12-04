@@ -5,54 +5,54 @@ namespace Baranggay_Health_Records.Data
 {
     public class ResidentMedicineModel
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
 
 
-        [Required] public string MedicineName { get; set; }
+        [Required] public string MedicineName { get; set; } = "";
 
         [Required] public string? Description { get; set; }
 
-        [Required] public int? Quality { get; set; }
+        [Required] public int Quality { get; set; }
 
         [Required] public string? ExpirationDate { get; set; }
 
-        [Required] public string? ReleaseDate { get; set; }
+        [Required] public string ReleaseDate { get; set; } = "";
 
-        [Required] public int? Stock { get; set; }
+        [Required] public int Stock { get; set; }
 
-        public int? GetID()
+        public int GetID()
         {
-            return ID;
+            return this.ID;
         }
 
-        public int? GetStock()
+        public int GetStock()
         {
-            return Stock;
+            return this.Stock;
         }
 
         public string? GetMedicineName()
         {
-            return MedicineName;
+            return this.MedicineName;
         }
 
         public string? GetDescription()
         {
-            return Description;
+            return this.Description;
         }
 
         public int? GetQuality()
         {
-            return Quality;
+            return this.Quality;
         }
 
         public string? GetExpirationDate()
         {
-            return ExpirationDate;
+            return this.ExpirationDate;
         }
 
-        public string? GetReleaseDate()
+        public string GetReleaseDate()
         {
-            return ReleaseDate;
+            return this.ReleaseDate;
         }
     }
 }

@@ -18,11 +18,13 @@
   <ItemGroup>
     <Content Remove="Pages\Secretary\HouseholdDetails.razor" />
     <Content Remove="Shared\Navbar.razor" />
+    <Content Remove="Shared\TableRows\InventoryMedicineRow.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Pages\Secretary\HouseholdDetails.razor" />
     <None Include="Shared\Navbar.razor" />
+    <None Include="Shared\TableRows\InventoryMedicineRow.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,10 +41,15 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Secretary\HouseholdDetails.razor" />
+    <_ContentIncludedByDefault Remove="Shared\TableRows\InventoryMedicineRow.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\TableRows\InventoryMedicineRow.razor" />
   </ItemGroup>
 
 </Project>

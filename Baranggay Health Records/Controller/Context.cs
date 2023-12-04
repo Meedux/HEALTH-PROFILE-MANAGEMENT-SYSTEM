@@ -12,14 +12,10 @@ namespace Baranggay_Health_Records.Controller
     {
 
         public List<ResidentModel>? Residents { get; set; } = new List<ResidentModel>();
-
         public List<HouseholdModel>? Households { get; set; } = new List<HouseholdModel>();
         public List<ResidentHealthStatusModel>? ResidentHealthStatus { get; set; } = new List<ResidentHealthStatusModel>();
-
         public String PurokHealthViewTracker = "Purok 1A";
-
         private readonly SQLConnector _sqlConnector;
-
         public Context(IConfiguration configuration)
         {
             _sqlConnector = new SQLConnector(configuration);
@@ -167,7 +163,7 @@ namespace Baranggay_Health_Records.Controller
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return -1; 
+                return -1;
             }
         }
 
@@ -210,16 +206,14 @@ namespace Baranggay_Health_Records.Controller
 
         public int GetTotalIllnessesOccured()
         {
+            int totalOccurrence = 0;
+
             try
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    const string query = @"
-                SELECT COUNT(*) FROM rhs WHERE Typeofillness IS NOT NULL AND Typeofillness != '';
-            ";
-
-                    int totalCount = connection.ExecuteScalar<int>(query);
-                    return totalCount;
+                    const string query = "SELECT SUM(Occurence) FROM Illness";
+                    totalOccurrence = connection.QueryFirstOrDefault<int>(query);
                 }
             }
             catch (Exception e)
@@ -227,6 +221,9 @@ namespace Baranggay_Health_Records.Controller
                 Console.WriteLine(e);
                 return -1;
             }
+
+            return totalOccurrence;
+
         }
 
         public int GetTotalPrenates()
@@ -288,7 +285,7 @@ namespace Baranggay_Health_Records.Controller
                 Console.WriteLine("Fetching Archive Data");
                 return archives;
             }
-        } 
+        }
 
         public List<ResidentModel> GetResidents()
         {
@@ -322,7 +319,7 @@ namespace Baranggay_Health_Records.Controller
 
         public List<ResidentMedicineModel> GetMedicines()
         {
-            using(MySqlConnection connection = _sqlConnector.GetConnection())
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
                 var residentMedicines = connection.Query<ResidentMedicineModel>("SELECT * FROM medicine").ToList();
                 Console.WriteLine("Fetching Medicine Data");
@@ -392,7 +389,7 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                ResidentModel resident = new ResidentModel(); 
+                ResidentModel resident = new ResidentModel();
 
                 string query = "SELECT * FROM Resident WHERE ID = @ID";
                 try
@@ -408,7 +405,7 @@ namespace Baranggay_Health_Records.Controller
                 {
                     Console.WriteLine($"Error getting resident: {ex.Message}");
                 }
-                
+
                 return resident;
             }
         }
@@ -522,6 +519,23 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+
+        public List<ResidentModel> GetIllnessesByIllnessID(int? ID)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var query = @"
+                    SELECT r.* 
+                    FROM resident r
+                    JOIN rhs ON r.ID = rhs.ResidentId
+                    WHERE rhs.IllnessID = @ID";
+
+                var residents = connection.Query<ResidentModel>(query, new { ID }).ToList();
+                Console.WriteLine("Fetching Resident Data");
+                return residents;
+            }
+        }
+
         public int GetDewormingCount()
         {
             return 200;
@@ -609,6 +623,58 @@ namespace Baranggay_Health_Records.Controller
             {
                 Console.WriteLine(e);
                 return -1;
+            }
+        }
+
+        public int AddMedicine(ResidentMedicineModel medicine)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                        INSERT INTO medicine (MedicineName, Description, Quality, ExpirationDate, ReleaseDate, Stock)
+                        VALUES (@MedicineName, @Description, @Quality, @ExpirationDate, @ReleaseDate, @Stock);
+                        SELECT LAST_INSERT_ID();";
+
+                    int newMedicineId = connection.ExecuteScalar<int>(query, new {
+                        MedicineName = medicine.MedicineName,
+                        Description = medicine.Description,
+                        Quality = medicine.Quality,
+                        ExpirationDate = medicine.ExpirationDate,
+                        ReleaseDate = medicine.ReleaseDate,
+                        Stock = 0
+                    });
+                    return newMedicineId;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+        }
+
+        public void UpdateMedicineStock(int medicineID, int newStock)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                    UPDATE medicine SET stock = @newStock WHERE ID = @medicineID
+                    ";
+
+                    connection.Execute(query, new
+                    {
+                       newStock,
+                       medicineID
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
@@ -880,6 +946,74 @@ namespace Baranggay_Health_Records.Controller
                 Console.WriteLine(e);
             }
         }
+
+        public void DeleteMedicine(int? ID)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "DELETE FROM medicine WHERE ID = @ID";
+                    connection.Execute(query, new { ID });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void DeleteResident(int? ID)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "DELETE FROM resident WHERE ID = @ID";
+                    connection.Execute(query, new { ID });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void DeleteRHS(int ID)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "DELETE FROM rhs WHERE ID = @ID";
+                    connection.Execute(query, new { ID });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void DeleteHousehold(int? ID)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "DELETE FROM household WHERE ID = @ID";
+                    connection.Execute(query, new { ID });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+
+
+
     }
 }
 

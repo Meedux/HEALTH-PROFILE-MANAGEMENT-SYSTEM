@@ -1,0 +1,33 @@
+﻿@layout BHWLayout
+@using Baranggay_Health_Records.Shared
+@page "/bhw/illness/{ID:int}"
+@inject Context context
+@inject NavigationManager NavigationManager
+
+<div class="container" style="margin-top: 115px;">
+    <h1 class="text-center">Recorded Illnesses</h1>
+</div>
+
+
+   @* Render the Residents in a Table with Corresponding Rows ID, Name, Age, Date of Birth*@
+@code {
+    [Parameter]
+    public int? ID { get; set; }
+
+    string IllnessName = "";
+    List<ResidentModel> illnesses = new List<ResidentModel>();
+
+    protected override void OnInitialized()
+    {
+        illnesses = context.GetIllnessesByIllnessID(ID);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            illnesses = context.GetIllnessesByIllnessID(ID);
+        }
+    }
+
+}
