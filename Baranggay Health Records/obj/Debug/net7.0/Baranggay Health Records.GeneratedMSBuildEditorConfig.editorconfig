@@ -192,6 +192,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFRhYmxlUm93c1xIb3VzZWhvbGRSb3cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/TableRows/IllnessDataRow.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFRhYmxlUm93c1xJbGxuZXNzRGF0YVJvdy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/herre/Documents/Blazor/Baranggay Health Records/Baranggay Health Records/Shared/TableRows/IllnessRow.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFRhYmxlUm93c1xJbGxuZXNzUm93LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
