@@ -78,4 +78,14 @@
         List<int?> adultMemberIds = adults.Select(a => a.MemberID).ToList();
         residents = context.GetResidents().Where(r => adultMemberIds.Contains(r.ID)).ToList();
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            adults = context.GetHouseholdByPurok(purok);
+            List<int?> adultMemberIds = adults.Select(a => a.MemberID).ToList();
+            residents = context.GetResidents().Where(r => adultMemberIds.Contains(r.ID)).ToList();
+        }
+    }
 }

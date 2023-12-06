@@ -105,6 +105,14 @@
         PopulateDashboard();
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            PopulateDashboard();
+        }
+    }
+
     public int? TotalIllnessOccuredCount { get; set; } = 1000;
 
     public int? MedicineCount { get; set; } = 0;

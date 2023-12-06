@@ -59,4 +59,12 @@
     {
         Archives = context.GetArchives();
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Archives = context.GetArchives();
+        }
+    }
 }

@@ -88,6 +88,15 @@
         //Something Filter idk lmao
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            households = context.GetHouseholds();
+            resident = context.GetResidents();
+        }
+    }
+
     private int GetFamilyMemberCount(int memberId)
     {
         HouseholdModel? household = households.Find(h => h.MemberID == memberId);

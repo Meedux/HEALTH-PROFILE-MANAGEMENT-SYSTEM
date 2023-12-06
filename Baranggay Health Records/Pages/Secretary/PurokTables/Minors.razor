@@ -77,4 +77,12 @@
 
         //Filter Residents for below 18 and filter the purok
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            adults = context.GetPurokByMinor(purok);
+        }
+    }
 }

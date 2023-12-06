@@ -94,8 +94,15 @@
         Console.WriteLine($"Fetching Table Data with the Purok number of {Purok} and Illness type of {Illness}");
         Residents = context.GetResidents();
         residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness);
+    }
 
-
-
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Console.WriteLine($"Fetching Table Data with the Purok number of {Purok} and Illness type of {Illness}");
+            Residents = context.GetResidents();
+            residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness);
+        }
     }
 }

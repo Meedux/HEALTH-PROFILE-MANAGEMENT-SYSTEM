@@ -58,4 +58,17 @@
         HouseholdCount = context.GetHouseholdCount();
         SeniorCitizenCount = context.GetSeniorCitizenCount();
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ill = context.GetIllnesses();
+            PrenatalCount = context.GetPrenatalCount();
+            DewormingCount = context.GetDewormingCount();
+            HouseholdCount = context.GetHouseholdCount();
+            SeniorCitizenCount = context.GetSeniorCitizenCount();
+        }
+        }
+    }
 }

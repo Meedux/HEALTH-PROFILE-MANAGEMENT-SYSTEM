@@ -77,4 +77,13 @@
 
         //Filter Residents that are recent in date of birth and filter the purok
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            adults = context.GetResidents();
+
+        }
+    }
 }

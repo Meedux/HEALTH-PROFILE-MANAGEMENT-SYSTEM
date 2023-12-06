@@ -807,6 +807,46 @@ namespace Baranggay_Health_Records.Controller
 
         }
 
+        public void DeleteData(string type, int dataId)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    if (type.Equals("resident", StringComparison.OrdinalIgnoreCase))
+                    {
+                        connection.Execute(
+                            @"DELETE FROM resident WHERE ID = @DataId;
+                              DELETE FROM rhs WHERE ResidentId = @DataId;
+                              DELETE FROM household WHERE MemberID = @DataId",
+                            new { DataId = dataId });
+                    }
+                    else if (type.Equals("rhs", StringComparison.OrdinalIgnoreCase))
+                    {
+                        connection.Execute(
+                            @"DELETE FROM rhs WHERE ID = @DataId;
+                              DELETE FROM resident WHERE ID = (SELECT ResidentId FROM rhs WHERE ID = @DataId);
+                              DELETE FROM household WHERE MemberID = (SELECT ResidentId FROM rhs WHERE ID = @DataId)",
+                            new { DataId = dataId });
+                    }
+                    else if (type.Equals("household", StringComparison.OrdinalIgnoreCase))
+                    {
+                        connection.Execute(
+                            @"DELETE FROM resident WHERE ID = (SELECT MemberID FROM household WHERE MemberID = @DataId);
+                              DELETE FROM rhs WHERE ResidentId = (SELECT MemberID FROM household WHERE MemberID = @DataId);
+                              DELETE FROM household WHERE MemberID = @DataId",
+                            new { DataId = dataId });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // Handle the exception
+            }
+
+        }
+
 
         public bool isArchived(HouseholdModel item)
         {

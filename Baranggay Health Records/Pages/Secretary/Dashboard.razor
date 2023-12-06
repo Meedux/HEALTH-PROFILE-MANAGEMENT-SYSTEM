@@ -66,6 +66,13 @@
     {
         PopulateDashboard();
     }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            PopulateDashboard();
+        }
+    }
 
     public int? ResidentsCount { get; set; } = 0;
 
@@ -88,6 +95,5 @@
         AdultCount = context.GetTotalAdultCount();
         NewBornCount = context.GetTotalNewBorn();
         HouseholdCount = context.GetTotalHouseholds();
-
     }
 }
