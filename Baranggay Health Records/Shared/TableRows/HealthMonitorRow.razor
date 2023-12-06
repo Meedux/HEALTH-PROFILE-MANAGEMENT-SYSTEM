@@ -93,7 +93,7 @@
 
     private void DeleteData()
     {
-        context.DeleteData("rhs", ID);
+        context.DeleteResident(ID);
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }

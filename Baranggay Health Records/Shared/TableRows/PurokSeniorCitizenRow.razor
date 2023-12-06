@@ -57,7 +57,7 @@
 
     private void DeleteData()
     {
-        context.DeleteData("resident", ID);
+        context.DeleteHousehold(ID);
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }

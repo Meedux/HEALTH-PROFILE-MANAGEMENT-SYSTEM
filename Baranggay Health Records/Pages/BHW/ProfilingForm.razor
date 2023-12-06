@@ -49,7 +49,17 @@
             <div class="col-xl-12 offset-xl-0"><label class="form-label">Total Number of Family</label><input @bind="num_of_fam" class="form-control" type="text" placeholder="Ex. College" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Purok</label><input @bind="purok" class="form-control" type="text" placeholder="Ex. 1A" required=""></div>
+            <div class="col-xl-12 offset-xl-0">
+                <label class="form-label">Purok</label>
+                <Select TValue="string" @bind-Value="@purok" Placeholder="Select Purok....">
+                    @foreach (var pur in purokList)
+                    {
+                        <SelectItem Value="@pur">@pur</SelectItem>
+                    }
+                </Select>
+            </div>
+
+            
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
@@ -80,12 +90,15 @@
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <Select TValue="int" @bind-Value="typeOfIllnessID" Placeholder="Select illness...">
-                @foreach (var illness in Illnesses)
-                {
-                    <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
-                }
-            </Select>
+            <div class="col-xl-12 offset-xl-0">
+                <label class="form-label">Illness Type</label>
+                    <Select TValue="int" @bind-Value="typeOfIllnessID" Placeholder="Select illness...">
+                        @foreach (var illness in Illnesses)
+                        {
+                            <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
+                        }
+                    </Select>
+            </div>
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
@@ -147,6 +160,8 @@
     String bloodPressure = "";
     String medicine = "";
 
+    string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+
     public List<IllnessModel> Illnesses = new List<IllnessModel>();
 
     protected override void OnInitialized()
@@ -201,6 +216,8 @@
 
         context.CreateHousehold(newHousehold);
         context.CreateResidentHealthStatus(newRHS);
+
+        context.IncrementIllness(typeOfIllnessID);
 
         firstName = "";
         middleName = "";

@@ -74,7 +74,7 @@
 
     private void DeleteData()
     {
-        context.DeleteData("rhs", ID);
+        context.DeleteRHS(ID);
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }

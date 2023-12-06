@@ -341,7 +341,7 @@ namespace Baranggay_Health_Records.Controller
         {
             using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
-                var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE age >= 18 AND purok = @purok", new { purok = purok }).ToList();
+                var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE age >= 18 AND purok = @purok AND age < 60", new { purok = purok }).ToList();
                 Console.WriteLine("Fetching Resident Data");
                 return residents;
             }
@@ -356,6 +356,7 @@ namespace Baranggay_Health_Records.Controller
                 return residents;
             }
         }
+
 
         public List<ResidentModel> GetPurokBySenior(string? purok)
         {
@@ -528,7 +529,7 @@ namespace Baranggay_Health_Records.Controller
                     SELECT r.* 
                     FROM resident r
                     JOIN rhs ON r.ID = rhs.ResidentId
-                    WHERE rhs.IllnessID = @ID";
+                    WHERE rhs.TypeofillnessID = @ID";
 
                 var residents = connection.Query<ResidentModel>(query, new { ID }).ToList();
                 Console.WriteLine("Fetching Resident Data");
@@ -813,24 +814,27 @@ namespace Baranggay_Health_Records.Controller
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    if (type.Equals("resident", StringComparison.OrdinalIgnoreCase))
+                    if (type == "resident")
                     {
+                        Console.WriteLine("Resident");
                         connection.Execute(
                             @"DELETE FROM resident WHERE ID = @DataId;
                               DELETE FROM rhs WHERE ResidentId = @DataId;
                               DELETE FROM household WHERE MemberID = @DataId",
                             new { DataId = dataId });
                     }
-                    else if (type.Equals("rhs", StringComparison.OrdinalIgnoreCase))
+                    else if (type == "rhs")
                     {
+                        Console.WriteLine("RHS");
                         connection.Execute(
                             @"DELETE FROM rhs WHERE ID = @DataId;
                               DELETE FROM resident WHERE ID = (SELECT ResidentId FROM rhs WHERE ID = @DataId);
                               DELETE FROM household WHERE MemberID = (SELECT ResidentId FROM rhs WHERE ID = @DataId)",
                             new { DataId = dataId });
                     }
-                    else if (type.Equals("household", StringComparison.OrdinalIgnoreCase))
+                    else if (type == "household")
                     {
+                        Console.WriteLine("Household");
                         connection.Execute(
                             @"DELETE FROM resident WHERE ID = (SELECT MemberID FROM household WHERE MemberID = @DataId);
                               DELETE FROM rhs WHERE ResidentId = (SELECT MemberID FROM household WHERE MemberID = @DataId);
@@ -842,11 +846,69 @@ namespace Baranggay_Health_Records.Controller
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                // Handle the exception
             }
 
         }
 
+        public void DeleteResident(int dataId)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    Console.WriteLine("Resident");
+                    connection.Execute(
+                        @"DELETE FROM resident WHERE ID = @DataId;
+                              DELETE FROM rhs WHERE ResidentId = @DataId;
+                              DELETE FROM household WHERE MemberID = @DataId",
+                        new { DataId = dataId });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void DeleteRHS(int dataId)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    Console.WriteLine("RHS");
+                    connection.Execute(
+                        @"DELETE FROM rhs WHERE ID = @DataId;
+                              DELETE FROM resident WHERE ID = (SELECT ResidentId FROM rhs WHERE ID = @DataId);
+                              DELETE FROM household WHERE MemberID = (SELECT ResidentId FROM rhs WHERE ID = @DataId)",
+                        new { DataId = dataId });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void DeleteHousehold(int dataId)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    Console.WriteLine("Household");
+                    connection.Execute(
+                        @"DELETE FROM resident WHERE ID = (SELECT MemberID FROM household WHERE MemberID = @DataId);
+                              DELETE FROM rhs WHERE ResidentId = (SELECT MemberID FROM household WHERE MemberID = @DataId);
+                              DELETE FROM household WHERE MemberID = @DataId",
+                        new { DataId = dataId });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
 
         public bool isArchived(HouseholdModel item)
         {
@@ -1003,56 +1065,53 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public void DeleteResident(int? ID)
-        {
-            try
-            {
-                using (var connection = _sqlConnector.GetConnection())
-                {
-                    const string query = "DELETE FROM resident WHERE ID = @ID";
-                    connection.Execute(query, new { ID });
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
+        //public void DeleteResident(int? ID)
+        //{
+        //    try
+        //    {
+        //        using (var connection = _sqlConnector.GetConnection())
+        //        {
+        //            const string query = "DELETE FROM resident WHERE ID = @ID";
+        //            connection.Execute(query, new { ID });
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //    }
+        //}
 
-        public void DeleteRHS(int ID)
-        {
-            try
-            {
-                using (var connection = _sqlConnector.GetConnection())
-                {
-                    const string query = "DELETE FROM rhs WHERE ID = @ID";
-                    connection.Execute(query, new { ID });
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
+        //public void DeleteRHS(int ID)
+        //{
+        //    try
+        //    {
+        //        using (var connection = _sqlConnector.GetConnection())
+        //        {
+        //            const string query = "DELETE FROM rhs WHERE ID = @ID";
+        //            connection.Execute(query, new { ID });
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //    }
+        //}
 
-        public void DeleteHousehold(int? ID)
-        {
-            try
-            {
-                using (var connection = _sqlConnector.GetConnection())
-                {
-                    const string query = "DELETE FROM household WHERE ID = @ID";
-                    connection.Execute(query, new { ID });
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
-
-
+        //public void DeleteHousehold(int? ID)
+        //{
+        //    try
+        //    {
+        //        using (var connection = _sqlConnector.GetConnection())
+        //        {
+        //            const string query = "DELETE FROM household WHERE ID = @ID";
+        //            connection.Execute(query, new { ID });
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //    }
+        //}
 
     }
 }

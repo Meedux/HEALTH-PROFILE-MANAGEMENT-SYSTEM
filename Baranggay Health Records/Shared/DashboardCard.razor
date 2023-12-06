@@ -5,8 +5,11 @@
             <h3>@Name</h3>
         </div>
         <h2 class="text-center text-muted card-subtitle mb-2">@Count</h2>
+        @{
+            int progressInt = Progress.HasValue ? (int)Progress.Value : 0;
+        }
         <div class="progress">
-            <div class="progress-bar bg-danger" aria-valuenow="@Progress" aria-valuemin="0" aria-valuemax="100" style="width: @Progress%;"><span class="visually-hidden">@Progress%</span></div>
+            <div class="progress-bar bg-danger" aria-valuenow="@progressInt" aria-valuemin="0" aria-valuemax="100" style="width: @progressInt%;"><span class="visually-hidden">@progressInt%</span></div>
         </div>
     </div>
 </div>
@@ -16,7 +19,7 @@
     public String? Name { get; set; }
 
     [Parameter]
-    public String? Progress { get; set; }
+    public double? Progress { get; set; }
 
     [Parameter]
     public int? Count { get; set; }

@@ -4,7 +4,8 @@
             @ChildContent
             <h3>@Name</h3>
         </div>
-        <h2 class="text-center text-muted card-subtitle mb-2">@Count</h2><button class="btn btn-success" type="button">View</button>
+        <h2 class="text-center text-muted card-subtitle mb-2">@Count</h2>
+        <a class="btn btn-success" href="@url">View</a>
     </div>
 </div>
 
@@ -13,7 +14,10 @@
     public String? Name { get; set; }
 
     [Parameter]
-    public String? Count { get; set; }
+    public int Count { get; set; } = 0;
+
+    [Parameter]
+    public String? url { get; set; }
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
