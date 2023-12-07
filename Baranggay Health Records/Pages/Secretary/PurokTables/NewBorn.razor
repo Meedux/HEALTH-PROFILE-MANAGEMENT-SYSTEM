@@ -32,7 +32,7 @@
                             </thead>
                             <tbody>
 
-                                @foreach (ResidentModel resident in adults)
+                                @foreach (ResidentModel resident in newborn)
                                 {
                                     @if (context.isArchived(resident))
                                     {
@@ -50,7 +50,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="card-footer">
+                @* <div class="card-footer">
                     <nav>
                         <ul class="pagination pagination-sm mb-0 justify-content-center">
                             <li class="page-item"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
@@ -60,7 +60,7 @@
                             <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
                         </ul>
                     </nav>
-                </div>
+                </div> *@
             </div>
         </div>
     </div>
@@ -69,21 +69,18 @@
 @code {
     [Parameter] public String? purok { get; set; }
 
-    public List<ResidentModel> adults = new List<ResidentModel>();
+    public List<ResidentModel> newborn = new List<ResidentModel>();
 
     protected override void OnInitialized()
     {
-        adults = context.GetResidents();
-
-        //Filter Residents that are recent in date of birth and filter the purok
+        newborn = context.GetPurokByNewBorn(purok);
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            adults = context.GetResidents();
-
+            newborn = context.GetPurokByNewBorn(purok);
         }
     }
 }

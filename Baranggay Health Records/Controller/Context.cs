@@ -25,20 +25,26 @@ namespace Baranggay_Health_Records.Controller
 
         public bool Login(string? email, string? password, NavigationManager navigationManager)
         {
-            if (IsValidCredentials(email, password))
+            using (var connection = _sqlConnector.GetConnection())
             {
-                if (email == "bhw@gmail.com")
+                var query = "SELECT Type FROM accounts WHERE Email = @Email AND Password = @Password";
+                var type = connection.ExecuteScalar<string>(query, new { Email = email, Password = password });
+
+                if (type != "")
                 {
-                    Console.WriteLine("BHW");
-                    navigationManager.NavigateTo("/bhw/");
+                    if (type == "bhw")
+                    {
+                        Console.WriteLine("BHW");
+                        navigationManager.NavigateTo("/bhw/");
+                    }
+                    else if (type == "secretary")
+                    {
+                        navigationManager.NavigateTo("/secretary/");
+                    }
+                    return true;
                 }
-                else if (email == "secretary@gmail.com")
-                {
-                    navigationManager.NavigateTo("/secretary/");
-                }
-                return true;
+                return false;
             }
-            return false;
         }
 
         private bool IsValidCredentials(string? email, string? password)
@@ -364,6 +370,17 @@ namespace Baranggay_Health_Records.Controller
             {
                 var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE age >= 60 AND purok = @purok", new { purok = purok }).ToList();
                 Console.WriteLine("Fetching Resident Data");
+                return residents;
+            }
+        }
+
+        public List<ResidentModel> GetPurokByNewBorn(string? purok)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                int currentYear = DateTime.Now.Year;
+                var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE SUBSTRING(dob, -4) = @CurrentYear;", new { CurrentYear = currentYear }).ToList();
+                Console.WriteLine("Fetching New Born Data");
                 return residents;
             }
         }
