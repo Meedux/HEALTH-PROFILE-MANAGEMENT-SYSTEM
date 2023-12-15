@@ -50,9 +50,7 @@
 
     private void ArchiveData()
     {
-        string FullName = FirstName + " " + MiddleName + " " + LastName;
         string household = "Mr/Ms. " + LastName + "'s Household";
-        context.ArchiveData(FullName, "resident", ID);
         context.ArchiveData(household, "household", ID);
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }

@@ -32,7 +32,6 @@ C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Record
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\K4os.Hash.xxHash.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\MySql.Data.dll
-C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\BouncyCastle.Crypto.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\System.Drawing.Common.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
@@ -65,3 +64,7 @@ C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Record
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Microsoft.JSInterop.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Blazorise.Bootstrap5.dll
 C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\Blazorise.Icons.FontAwesome.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\DocumentFormat.OpenXml.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\DocumentFormat.OpenXml.Framework.dll
+C:\Users\herre\Documents\Blazor\Baranggay Health Records\Baranggay Health Records\bin\Debug\net7.0\System.IO.Packaging.dll

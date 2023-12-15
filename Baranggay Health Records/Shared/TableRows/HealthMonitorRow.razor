@@ -86,7 +86,6 @@
 
     private void ArchiveData()
     {
-        context.ArchiveData(FullName, "resident", ID);
         context.ArchiveData(FullName, "rhs", ID);
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }

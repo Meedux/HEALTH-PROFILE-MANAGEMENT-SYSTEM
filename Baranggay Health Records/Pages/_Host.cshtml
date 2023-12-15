@@ -32,5 +32,23 @@
 
     <script src="_framework/blazor.server.js"></script>
     @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> *@
+    <script>
+        window.downloadFile = function (data) {
+            const byteArray = window.atob(data.ByteArray);
+            const byteNumbers = new Array(byteArray.length);
+            for (let i = 0; i < byteArray.length; i++) {
+                byteNumbers[i] = byteArray.charCodeAt(i);
+            }
+            const byteArrayBlob = new Blob([new Uint8Array(byteNumbers)], { type: "application/octet-stream" });
+            const blobUrl = URL.createObjectURL(byteArrayBlob);
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.setAttribute('download', data.FileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+        };
+    </script>
 </body>
 </html>

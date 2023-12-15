@@ -79,12 +79,12 @@
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Prenatal?</label>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" id="prenateYes" name="prenate" checked="@(isPrenate == true)" @onchange="@(() => isPWD = true)">
+                    <input class="form-check-input" type="radio" id="prenateYes" name="prenate" checked="@(isPrenate == true)" @onchange="@(() => isPrenate = true)">
                     <label class="form-check-label" for="prenateYes">Yes</label>
                 </div>
 
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" id="prenateNo" name="prenate" checked="@(isPrenate == false)" @onchange="@(() => isPWD = false)">
+                    <input class="form-check-input" type="radio" id="prenateNo" name="prenate" checked="@(isPrenate == false)" @onchange="@(() => isPrenate = false)">
                     <label class="form-check-label" for="prenateNo">No</label>
                 </div>
             </div>
