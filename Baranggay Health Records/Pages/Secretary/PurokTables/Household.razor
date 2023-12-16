@@ -7,11 +7,11 @@
     <h1>Purok @purok - Households</h1>
 </div>
 <div class="container" style="margin-top: 25px;">
-    @* <div class="row d-xxl-flex justify-content-xxl-center">
-        <div class="col-lg-10 d-lg-flex align-items-lg-center">
-            <div class="input-group"><span class="input-group-text">Search</span><input class="form-control" type="text"><button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button></div>
+    <div class="row">
+        <div class="col d-flex justify-content-between">
+            <Button Color="Color.Primary" Clicked="@GenerateRecord">Generate Record</Button>
         </div>
-    </div> *@
+    </div>
     <div class="row justify-content-center" style="margin-top: 24px;">
         <div class="col-xl-10 col-xxl-9">
             <div class="card shadow">
@@ -38,11 +38,11 @@
                                     {
                                         string stringurl = $"/secretary/household/{resident.GetID()}";
                                         <PurokHouseholdRow ID="@resident.ID"
-                                        LastName="@resident.LastName"
-                                        FirstName="@resident.FirstName"
-                                        MiddleName="@resident.MiddleName"
-                                        Members="@resident.Num_of_fam" 
-                                        stringurl="@stringurl"
+                                                        LastName="@resident.LastName"
+                                                        FirstName="@resident.FirstName"
+                                                        MiddleName="@resident.MiddleName"
+                                                        Members="@resident.Num_of_fam" 
+                                                        stringurl="@stringurl"
                                         />
                                     }
                                 }
@@ -75,7 +75,7 @@
     protected override void OnInitialized()
     {
         adults = context.GetHouseholdByPurok(purok);
-        List<int?> adultMemberIds = adults.Select(a => a.MemberID).ToList();
+        List<int> adultMemberIds = adults.Select(a => a.MemberID).ToList();
         residents = context.GetResidents().Where(r => adultMemberIds.Contains(r.ID)).ToList();
     }
 
@@ -84,8 +84,13 @@
         if (firstRender)
         {
             adults = context.GetHouseholdByPurok(purok);
-            List<int?> adultMemberIds = adults.Select(a => a.MemberID).ToList();
+            List<int> adultMemberIds = adults.Select(a => a.MemberID).ToList();
             residents = context.GetResidents().Where(r => adultMemberIds.Contains(r.ID)).ToList();
         }
+    }
+
+    private void GenerateRecord()
+    {
+        context.GeneratePurokHousehold(purok, adults);
     }
 }

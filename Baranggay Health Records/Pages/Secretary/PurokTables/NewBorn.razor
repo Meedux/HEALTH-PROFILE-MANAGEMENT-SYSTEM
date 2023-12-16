@@ -7,11 +7,11 @@
     <h1>Purok @purok - New Born</h1>
 </div>
 <div class="container" style="margin-top: 25px;">
-    @* <div class="row d-flex justify-content-center">
-        <div class="col-lg-10 d-lg-flex align-items-lg-center">
-            <div class="input-group"><span class="input-group-text">Search</span><input class="form-control" type="text"><button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button></div>
+    <div class="row">
+        <div class="col d-flex justify-content-between">
+            <Button Color="Color.Primary" Clicked="@GenerateRecord">Generate Record</Button>
         </div>
-    </div> *@
+    </div>
     <div class="row justify-content-center" style="margin-top: 24px;">
         <div class="col-xl-10 col-xxl-9">
             <div class="card shadow">
@@ -82,5 +82,10 @@
         {
             newborn = context.GetPurokByNewBorn(purok);
         }
+    }
+
+    private void GenerateRecord()
+    {
+        context.GeneratePurokResident(purok, newborn);
     }
 }

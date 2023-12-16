@@ -6,52 +6,52 @@ namespace Baranggay_Health_Records.Data
     {
         public int ID { get; set; }
 
-        [Required] public string? FathersName { get; set; }
+        [Required] public string FathersName { get; set; } = "";
 
-        [Required] public string? MothersName { get; set; }
+        [Required] public string MothersName { get; set; } = "";
 
-        [Required] public string? HeadofFamily { get; set; }
+        [Required] public string HeadofFamily { get; set; } = "";
 
-        [Required] public string? Member { get; set; }
+        [Required] public string Member { get; set; } = "";
 
-        [Required] public int? MemberID { get; set; }
+        [Required] public int MemberID { get; set; }
 
         [Required] public int FamilyCount { get; set; }
 
         public int GetFamilyCount()
         {
-            return FamilyCount;
+            return this.FamilyCount;
         }
 
-        public int? GetID()
+        public int GetID()
         {
-            return ID;
+            return this.ID;
         }
 
-        public string? GetFathersName()
+        public string GetFathersName()
         {
-            return FathersName;
+            return this.FathersName;
         }
 
-        public string? GetMothersName()
+        public string GetMothersName()
         {
-            return MothersName;
+            return this.MothersName;
         }
 
-        public string? GetHeadofFamily()
+        public string GetHeadofFamily()
         {
-            return HeadofFamily;
+            return this.HeadofFamily;
         }
 
 
-        public string? GetMember()
+        public string GetMember()
         {
-            return Member;
+            return this.Member;
         }
 
-        public int? GetMemberID()
+        public int GetMemberID()
         {
-            return MemberID;
+            return this.MemberID;
         }
     }
 }

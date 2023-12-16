@@ -34,22 +34,22 @@ namespace Baranggay_Health_Records.Data
             return this.TypeofillnessID;
         }
 
-        public string? GetWeight()
+        public string GetWeight()
         {
             return this.Weight;
         }
 
-        public string? GetHeight()
+        public string GetHeight()
         {
             return this.Height;
         }
 
-        public string? GetTemperature()
+        public string GetTemperature()
         {
             return this.Temperature;
         }
 
-        public string? GetBloodPressure()
+        public string GetBloodPressure()
         {
             return this.BloodPressure;
         }

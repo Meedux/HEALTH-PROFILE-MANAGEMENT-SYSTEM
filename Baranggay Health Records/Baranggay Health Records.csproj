@@ -19,14 +19,12 @@
     <Content Remove="Pages\Secretary\HouseholdDetails.razor" />
     <Content Remove="Shared\Navbar.razor" />
     <Content Remove="Shared\TableRows\InventoryMedicineRow.razor" />
-    <Content Remove="Shared\TableRows\ResidentRow.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Pages\Secretary\HouseholdDetails.razor" />
     <None Include="Shared\Navbar.razor" />
     <None Include="Shared\TableRows\InventoryMedicineRow.razor" />
-    <None Include="Shared\TableRows\ResidentRow.razor" />
   </ItemGroup>
 
   <ItemGroup>

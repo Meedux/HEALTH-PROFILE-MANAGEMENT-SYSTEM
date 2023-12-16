@@ -1,6 +1,14 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\Households.docx",
+      "PackagePath": "staticwebassets\\Households.docx"
+    },
+    {
+      "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\ResidentHealthStatusList.docx",
+      "PackagePath": "staticwebassets\\ResidentHealthStatusList.docx"
+    },
+    {
       "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\Residents.docx",
       "PackagePath": "staticwebassets\\Residents.docx"
     },

@@ -8,11 +8,11 @@
     <h1 class="text-center">Purok @Purok?.ToUpper() - Illness @Illness?.ToUpper()</h1>
 </div>
 <div class="container" style="margin-top: 25px;">
-    @* <div class="row d-flex justify-content-center">
-        <div class="col-lg-10 d-lg-flex align-items-lg-center">
-            <div class="input-group"><span class="input-group-text">Search</span><input class="form-control" type="text"><button class="btn btn-primary" type="button">Search<i class="fas fa-search"></i></button></div>
+    <div class="row">
+        <div class="col d-flex justify-content-between">
+            <Button Color="Color.Primary" Clicked="@GenerateRecord">Generate Record</Button>
         </div>
-    </div> *@
+    </div>
     <div class="row justify-content-center" style="margin-top: 24px;">
         <div class="col-xl-10 col-xxl-9">
             <div class="card shadow">
@@ -86,14 +86,16 @@
     [Parameter]
     public String? Illness { get; set; }
 
-    public List<ResidentModel>? Residents { get; set; } = new List<ResidentModel>();
-    public List<ResidentHealthStatusModel>? residentHealthStatuses { get; set; } = new List<ResidentHealthStatusModel>();
+    public List<ResidentModel> Residents { get; set; } = new List<ResidentModel>();
+    public List<ResidentHealthStatusModel> residentHealthStatuses { get; set; } = new List<ResidentHealthStatusModel>();
+    public List<IllnessModel> illnesses { get; set; } = new List<IllnessModel>();
 
     protected override void OnInitialized()
     {
         Console.WriteLine($"Fetching Table Data with the Purok number of {Purok} and Illness type of {Illness}");
         Residents = context.GetResidents();
         residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness);
+        illnesses = context.GetIllnesses();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -103,6 +105,12 @@
             Console.WriteLine($"Fetching Table Data with the Purok number of {Purok} and Illness type of {Illness}");
             Residents = context.GetResidents();
             residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness);
+            illnesses = context.GetIllnesses();
         }
+    }
+
+    private void GenerateRecord()
+    {
+        context.GenerateRHS(residentHealthStatuses, illnesses, Residents);
     }
 }

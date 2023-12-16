@@ -1100,17 +1100,57 @@ namespace Baranggay_Health_Records.Controller
 
             using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
             {
-                // Create the MainDocumentPart and its body
+                // Add a main document part
                 MainDocumentPart mainPart = document.AddMainDocumentPart();
                 mainPart.Document = new Document();
-                Body body = new Body();
-                mainPart.Document.Append(body);
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = @"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Residents Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                // Set the reference to the header
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                mainPart.Document.Body.Append(sectionProperties);
 
                 // Create the table and its properties
                 Table table = new Table();
                 TableProperties props = new TableProperties(
-                        new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
-                        new TableBorders(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
                         new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
                         new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
                         new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
@@ -1155,6 +1195,429 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public void GeneratePurokResident(string? purok, List<ResidentModel> residents)
+        {
+            string fileName = $"Purok {purok} Residents.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = $@"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Purok {purok} Residents Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                // Set the reference to the header
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                mainPart.Document.Body.Append(sectionProperties);
+
+                // Create the table and its properties
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                // Table headers
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Full Name"),
+                    CreateHeaderCell("Age"),
+                    CreateHeaderCell("Gender"),
+                    CreateHeaderCell("Household Number"),
+                    CreateHeaderCell("Purok")
+                );
+                table.AppendChild(headerRow);
+
+                // Populate table with resident data
+                Console.WriteLine(residents.Count);
+                foreach (var resident in residents)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(resident.GetID().ToString()),
+                        CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
+                        CreateTableCell(resident.Age.ToString()),
+                        CreateTableCell(resident.GetResidentGender()),
+                        CreateTableCell(resident.GetHouseholdNumber().ToString()),
+                        CreateTableCell(resident.GetPurok())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+            }
+        }
+
+
+        public void GenerateHousehold(List<HouseholdModel> households)
+        {
+            string fileName = "Households.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = @"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Households Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                // Set the reference to the header
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                mainPart.Document.Body.Append(sectionProperties);
+
+                // Create the table and its properties
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                // Table headers
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Father's Name"),
+                    CreateHeaderCell("Mother's Name"),
+                    CreateHeaderCell("Member"),
+                    CreateHeaderCell("Family Count")
+                );
+                table.AppendChild(headerRow);
+                foreach (var household in households)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(household.GetID().ToString()),
+                        CreateTableCell(household.GetFathersName()),
+                        CreateTableCell(household.GetMothersName()),
+                        CreateTableCell(household.GetMember()),
+                        CreateTableCell(household.GetFamilyCount().ToString())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+            }
+        }
+
+        public void GeneratePurokHousehold(string? purok, List<HouseholdModel> households)
+        {
+            string fileName = $"Purok {purok} Households.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = $@"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Purok {purok} Households Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                // Set the reference to the header
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                mainPart.Document.Body.Append(sectionProperties);
+
+                // Create the table and its properties
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                // Table headers
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Father's Name"),
+                    CreateHeaderCell("Mother's Name"),
+                    CreateHeaderCell("Member"),
+                    CreateHeaderCell("Family Count")
+                );
+                table.AppendChild(headerRow);
+                foreach (var household in households)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(household.GetID().ToString()),
+                        CreateTableCell(household.GetFathersName()),
+                        CreateTableCell(household.GetMothersName()),
+                        CreateTableCell(household.GetMember()),
+                        CreateTableCell(household.GetFamilyCount().ToString())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+            }
+        }
+
+        public void GenerateRHS(List<ResidentHealthStatusModel> rhs, List<IllnessModel> illnesses, List<ResidentModel> residents)
+        {
+            string fileName = "ResidentHealthStatusList.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = @"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Resident Health Status list</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                // Set the reference to the header
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                mainPart.Document.Body.Append(sectionProperties);
+
+                // Create the table and its properties
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                // Table headers
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Resident Name"),
+                    CreateHeaderCell("Age"),
+                    CreateHeaderCell("Temperature"),
+                    CreateHeaderCell("Blood Pressure"),
+                    CreateHeaderCell("Type of Illness")
+                );
+                table.AppendChild(headerRow);
+
+                // Populate table with resident data
+                foreach (var rh in rhs)
+                {
+                    var illness = illnesses.FirstOrDefault(i => i.GetID() == rh.GetType());
+                    var resident = residents.FirstOrDefault(r => r.GetID() == rh.ResidentId);
+
+                    if (illness != null && resident != null)
+                    {
+                        TableRow dataRow = new TableRow();
+                        dataRow.Append(
+                            CreateTableCell(rh.GetID().ToString()),
+                            CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
+                            CreateTableCell(resident.Age.ToString()),
+                            CreateTableCell(rh.GetTemperature()),
+                            CreateTableCell(resident.GetHouseholdNumber().ToString()),
+                            CreateTableCell(illness.GetName())
+                        );
+                        table.AppendChild(dataRow);
+                    }
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+            }
+        }
 
         private TableCell CreateHeaderCell(string text)
         {

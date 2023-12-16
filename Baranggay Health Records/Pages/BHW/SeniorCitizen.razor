@@ -10,17 +10,11 @@
     </div>
 </div>
 <div class="container" style="margin-top: 25px;">
-    @* <div class="row">
-        <div class="col-lg-10 d-lg-flex align-items-lg-center">
-            <div class="input-group"><span class="input-group-text">Search</span><input class="form-control" type="text"><button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button></div>
+    <div class="row">
+        <div class="col d-flex justify-content-between">
+            <Button Color="Color.Primary" Clicked="@GenerateRecord">Generate Record</Button>
         </div>
-        <div class="col">
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button">Purok</button>
-                <div class="dropdown-menu"><a class="dropdown-item" href="#">Purok 1A</a><a class="dropdown-item" href="#">Purok 1A</a><a class="dropdown-item" href="#">Purok 2</a><a class="dropdown-item" href="#">Purok 3</a><a class="dropdown-item" href="#">Purok 4</a><a class="dropdown-item" href="#">Purok 5</a><a class="dropdown-item" href="#">Purok 6</a><a class="dropdown-item" href="#">Purok 7</a></div>
-            </div>
-        </div>
-    </div> *@
+    </div>
     <div class="row justify-content-center" style="margin-top: 24px;">
         <div class="col-xl-10 col-xxl-9">
             <div class="card shadow">
@@ -42,36 +36,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <SeniorCitizenRow ID="01" LastName="Dela Cruz" FirstName="Cjay" MiddleName="Juan" Age="18" Gender="Male" Purok="1A"/>
                                 @foreach(ResidentModel seniors in Seniors)
                                 {
                                     @if (context.isArchived(seniors))
                                     {
-                                        <SeniorCitizenRow 
-                                            ID="@seniors.GetID()" 
-                                            LastName="@seniors.GetResidentLastName()"
-                                            FirstName="@seniors.GetResidentFirstName()"
-                                            MiddleName="@seniors.GetResidentMiddleName()" 
-                                            Age="@seniors.GetResidentAge()" 
-                                            Gender="@seniors.GetResidentGender()" 
-                                            Purok="@seniors.GetPurok()" />
+                                        if(seniors.GetResidentAge() > 60)
+                                        {
+                                            <SeniorCitizenRow 
+                                                ID="@seniors.GetID()" 
+                                                LastName="@seniors.GetResidentLastName()"
+                                                FirstName="@seniors.GetResidentFirstName()"
+                                                MiddleName="@seniors.GetResidentMiddleName()" 
+                                                Age="@seniors.GetResidentAge()" 
+                                                Gender="@seniors.GetResidentGender()" 
+                                                Purok="@seniors.GetPurok()" />
+                                        }
                                     }
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
-                @* <div class="card-footer">
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0 justify-content-center">
-                            <li class="page-item"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-                        </ul>
-                    </nav>
-                </div> *@
             </div>
         </div>
     </div>
@@ -96,5 +81,10 @@
             Seniors = Residents;
         }
     }
-}
+
+    private void GenerateRecord()
+    {
+        var seniors = Seniors.Where(s => s.GetResidentAge() > 60).ToList();
+        context.GenerateResident(seniors);
+    }
 }
