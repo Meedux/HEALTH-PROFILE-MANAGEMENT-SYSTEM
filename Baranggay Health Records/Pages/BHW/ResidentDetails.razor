@@ -362,8 +362,8 @@
     {
         Console.WriteLine($"Fetching user Data and Health status data with the user ID of {ID}");
         ResidentModel resident = context.GetResident(ID);
-        HouseholdModel? household = context.GetHousehold(ID);
-        ResidentHealthStatusModel? RHS = context.GetResidentHealthStatus(ID);
+        HouseholdModel household = context.GetHousehold(ID);
+        ResidentHealthStatusModel RHS = context.GetResidentHealthStatus(ID);
 
 
         //Fill up the Resident Details
@@ -388,7 +388,7 @@
         num_of_fam = household.GetFamilyCount();
 
         //Fill up the RHS Details
-        illness_type = RHS.GetType();
+        illness_type = RHS.GetIllnessType();
         weight = RHS.GetWeight();
         height = RHS.GetHeight();
         temperature = RHS.GetTemperature();
@@ -417,7 +417,7 @@
         edited_num_of_fam = household.GetFamilyCount();
 
         //Fill up the RHS Details
-        edited_illness_type = RHS.GetType();
+        edited_illness_type = RHS.GetIllnessType();
         edited_weight = RHS.GetWeight();
         edited_height = RHS.GetHeight();
         edited_temperature = RHS.GetTemperature();

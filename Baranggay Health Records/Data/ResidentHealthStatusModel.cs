@@ -24,12 +24,12 @@ namespace Baranggay_Health_Records.Data
         [Required]
         public string BloodPressure { get; set; } = "";
 
-        public int? GetID()
+        public int GetID()
         {
             return this.ID;
         }
 
-        public int GetType()
+        public int GetIllnessType()
         {
             return this.TypeofillnessID;
         }

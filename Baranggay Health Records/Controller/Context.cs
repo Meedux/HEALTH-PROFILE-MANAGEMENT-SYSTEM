@@ -413,7 +413,7 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                ResidentModel resident = new ResidentModel();
+                ResidentModel? resident = new ResidentModel();
 
                 string query = "SELECT * FROM Resident WHERE ID = @ID";
                 try
@@ -430,11 +430,13 @@ namespace Baranggay_Health_Records.Controller
                     Console.WriteLine($"Error getting resident: {ex.Message}");
                 }
 
-                return resident;
+                ResidentModel temp = (resident != null) ? resident : new ResidentModel();
+
+                return temp;
             }
         }
 
-        public HouseholdModel? GetHousehold(int? ID)
+        public HouseholdModel GetHousehold(int? ID)
         {
             using (var connection = _sqlConnector.GetConnection())
             {
@@ -455,11 +457,13 @@ namespace Baranggay_Health_Records.Controller
                     Console.WriteLine($"Error getting Household: {ex.Message}");
                 }
 
-                return household;
+                HouseholdModel temp = (household != null) ? household : new HouseholdModel();
+
+                return temp;
             }
         }
 
-        public ResidentHealthStatusModel? GetResidentHealthStatus(int? ID)
+        public ResidentHealthStatusModel GetResidentHealthStatus(int? ID)
         {
 
             using (var connection = _sqlConnector.GetConnection())
@@ -481,7 +485,9 @@ namespace Baranggay_Health_Records.Controller
                     Console.WriteLine($"Error getting resident health status: {ex.Message}");
                 }
 
-                return residentHealthStatus;
+                ResidentHealthStatusModel temp = (residentHealthStatus != null) ? residentHealthStatus : new ResidentHealthStatusModel();
+
+                return temp;
             }
         }
 
@@ -1144,7 +1150,10 @@ namespace Baranggay_Health_Records.Controller
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
-                mainPart.Document.Body.Append(sectionProperties);
+                if(mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
 
                 // Create the table and its properties
                 Table table = new Table();
@@ -1195,9 +1204,9 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public void GeneratePurokResident(string? purok, List<ResidentModel> residents)
+        public void GeneratePurokResident(string? purok, string title, List<ResidentModel> residents)
         {
-            string fileName = $"Purok {purok} Residents.docx"; // Name of the generated file
+            string fileName = $"Purok {purok} {title}.docx"; // Name of the generated file
             string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
 
             if (File.Exists(file))
@@ -1237,7 +1246,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='36'/> <!-- Enlarge font size -->
                                             <w:b/>
                                         </w:rPr>
-                                        <w:t>Purok {purok} Residents Masterlist</w:t>
+                                        <w:t>Purok {purok} {title} Masterlist</w:t>
                                     </w:r>
                                 </w:p>
                             </w:hdr>";
@@ -1251,7 +1260,10 @@ namespace Baranggay_Health_Records.Controller
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
-                mainPart.Document.Body.Append(sectionProperties);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
 
                 // Create the table and its properties
                 Table table = new Table();
@@ -1359,7 +1371,10 @@ namespace Baranggay_Health_Records.Controller
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
-                mainPart.Document.Body.Append(sectionProperties);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
 
                 // Create the table and its properties
                 Table table = new Table();
@@ -1461,7 +1476,10 @@ namespace Baranggay_Health_Records.Controller
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
-                mainPart.Document.Body.Append(sectionProperties);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
 
                 // Create the table and its properties
                 Table table = new Table();
@@ -1563,7 +1581,10 @@ namespace Baranggay_Health_Records.Controller
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
-                mainPart.Document.Body.Append(sectionProperties);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
 
                 // Create the table and its properties
                 Table table = new Table();
@@ -1595,7 +1616,7 @@ namespace Baranggay_Health_Records.Controller
                 // Populate table with resident data
                 foreach (var rh in rhs)
                 {
-                    var illness = illnesses.FirstOrDefault(i => i.GetID() == rh.GetType());
+                    var illness = illnesses.FirstOrDefault(i => i.GetID() == rh.GetIllnessType());
                     var resident = residents.FirstOrDefault(r => r.GetID() == rh.ResidentId);
 
                     if (illness != null && resident != null)

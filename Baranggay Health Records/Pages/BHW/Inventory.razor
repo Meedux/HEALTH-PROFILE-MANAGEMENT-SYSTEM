@@ -116,7 +116,7 @@
                     </Field>
                     <Field>
                         <FieldLabel>Expiration Date: </FieldLabel>
-                        <p>@residentMedicines?.FirstOrDefault(m => m?.ID == residentMedicine?.ID).GetExpirationDate();</p>
+                        <p>@residentMedicines.FirstOrDefault(m => m.ID == residentMedicine.ID).GetExpirationDate();</p>
                     </Field>
                 }
             </ModalBody>
