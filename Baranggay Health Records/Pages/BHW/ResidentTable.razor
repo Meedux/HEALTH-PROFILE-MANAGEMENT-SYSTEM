@@ -1,4 +1,5 @@
 ﻿@layout BHWLayout
+@using Baranggay_Health_Records.Shared.TableRows
 @page "/bhw/residents"
 @inject Context context
 @inject IJSRuntime JSRuntime
@@ -28,8 +29,8 @@
                                     <th>Last Name</th>
                                     <th>First Name</th>
                                     <th>Middle Name</th>
+                                    <th>House #</th>
                                     <th>Purok</th>
-                                    <th></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -41,12 +42,13 @@
 
                                     @if (context.isArchived(household))
                                     {
-                                        <HouseholdRow ID="@household.GetID()"
+                                        <ResidentRow ID="@household.GetID()"
                                                       Lastname="@household.GetResidentLastName()"
                                                       Firstname="@household.GetResidentFirstName()"
                                                       Middlename="@household.GetResidentMiddleName()"
+                                                      HouseNumber="@household.GetHouseholdNumber()"
                                                       Purok="@household.GetPurok()"
-                                                      stringurl="@stringurl" />
+                                                      stringurl="@stringurl"/>
                                     }
                                 }
                             </tbody>
@@ -85,12 +87,12 @@
         }
     }
 
-    private async Task GenerateRecord()
+    private void GenerateRecord()
     {
         if (JSRuntime != null)
         {
-            var nonArchivedResidents = resident.Where(r => !context.isArchived(r)).ToList();
-            context.GenerateResident(nonArchivedResidents);
+            @* var nonArchivedResidents = resident.Where(r => !context.isArchived(r)).ToList(); *@
+            context.GenerateResident(resident);
         }
     }
 }

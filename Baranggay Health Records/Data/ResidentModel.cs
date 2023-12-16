@@ -25,14 +25,14 @@ namespace Baranggay_Health_Records.Data
 
         [Range(0, 200)]
         public int Age { get; set; }
-        public string? Gender { get; set; } = "";
+        public string Gender { get; set; } = "";
         public string? Civil_status { get; set; } = "";
         public string? Religion { get; set; } = "";
         public string? Occupation { get; set; } = "";
         public int Num_of_fam { get; set; }
         public string? Ed_attain { get; set; } = "";
         public int Household_number { get; set; }
-        public string? Purok { get; set; } = "";
+        public string Purok { get; set; } = "";
 
         public bool? IsPWD { get; set; } = false;
 
@@ -45,52 +45,52 @@ namespace Baranggay_Health_Records.Data
 
         public int GetID()
         {
-            return ID;
+            return this.ID;
         }
 
         public int? GetResidentID()
         {
-            return ID;
+            return this.ID;
         }
 
         public string? GetResidentFirstName()
         {
-            return FirstName;
+            return this.FirstName;
         }
 
         public string? GetResidentMiddleName()
         {
-            return MiddleName;
+            return this.MiddleName;
         }
 
         public string? GetResidentLastName()
         {
-            return LastName;
+            return this.LastName;
         }
 
         public string? GetResidentSuffix()
         {
-            return Suffix;
+            return this.Suffix;
         }
 
         public string? GetResidentDOB()
         {
-            return Dob;
+            return this.Dob;
         }
 
         public int GetResidentAge()
         {
-            return Age;
+            return this.Age;
         }
 
-        public string? GetResidentGender()
+        public string GetResidentGender()
         {
-            return Gender;
+            return this.Gender;
         }
 
         public string? GetResidentCivilStatus()
         {
-            return Civil_status;
+            return this.Civil_status;
         }
 
         public string? GetResidentReligion()
@@ -100,22 +100,22 @@ namespace Baranggay_Health_Records.Data
 
         public string? GetOccupation()
         {
-            return Occupation;
+            return this.Occupation;
         }
 
         public string? GetEducationalAttainment()
         {
-            return Ed_attain;
+            return this.Ed_attain;
         }
 
-        public string? GetPurok()
+        public string GetPurok()
         {
-            return Purok;
+            return this.Purok;
         }
 
         public int GetHouseholdNumber()
         {
-            return Household_number;
+            return this.Household_number;
         }
     }
 }

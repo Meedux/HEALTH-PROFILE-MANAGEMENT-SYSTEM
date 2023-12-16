@@ -1,24 +1,30 @@
 ﻿using Baranggay_Health_Records.Data;
 using Dapper;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using MySql.Data.MySqlClient;
-using System.Data;
-using System.Data.Common;
+using Microsoft.AspNetCore.Hosting;
+
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Baranggay_Health_Records.Controller
 {
     public class Context
     {
-
+       
         public List<ResidentModel>? Residents { get; set; } = new List<ResidentModel>();
         public List<HouseholdModel>? Households { get; set; } = new List<HouseholdModel>();
         public List<ResidentHealthStatusModel>? ResidentHealthStatus { get; set; } = new List<ResidentHealthStatusModel>();
         public String PurokHealthViewTracker = "Purok 1A";
         private readonly SQLConnector _sqlConnector;
-        public Context(IConfiguration configuration)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public Context(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _sqlConnector = new SQLConnector(configuration);
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -1082,53 +1088,87 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        //public void DeleteResident(int? ID)
-        //{
-        //    try
-        //    {
-        //        using (var connection = _sqlConnector.GetConnection())
-        //        {
-        //            const string query = "DELETE FROM resident WHERE ID = @ID";
-        //            connection.Execute(query, new { ID });
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e);
-        //    }
-        //}
+        public void GenerateResident(List<ResidentModel> residents)
+        {
+            string fileName = "Residents.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
 
-        //public void DeleteRHS(int ID)
-        //{
-        //    try
-        //    {
-        //        using (var connection = _sqlConnector.GetConnection())
-        //        {
-        //            const string query = "DELETE FROM rhs WHERE ID = @ID";
-        //            connection.Execute(query, new { ID });
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e);
-        //    }
-        //}
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
 
-        //public void DeleteHousehold(int? ID)
-        //{
-        //    try
-        //    {
-        //        using (var connection = _sqlConnector.GetConnection())
-        //        {
-        //            const string query = "DELETE FROM household WHERE ID = @ID";
-        //            connection.Execute(query, new { ID });
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e);
-        //    }
-        //}
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Create the MainDocumentPart and its body
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = new Body();
+                mainPart.Document.Append(body);
+
+                // Create the table and its properties
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                        new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                        new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                // Table headers
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Full Name"),
+                    CreateHeaderCell("Age"),
+                    CreateHeaderCell("Gender"),
+                    CreateHeaderCell("Household Number"),
+                    CreateHeaderCell("Purok")
+                );
+                table.AppendChild(headerRow);
+
+                // Populate table with resident data
+                Console.WriteLine(residents.Count);
+                foreach (var resident in residents)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(resident.GetID().ToString()),
+                        CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
+                        CreateTableCell(resident.Age.ToString()),
+                        CreateTableCell(resident.GetResidentGender()),
+                        CreateTableCell(resident.GetHouseholdNumber().ToString()),
+                        CreateTableCell(resident.GetPurok())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+            }
+        }
+
+
+        private TableCell CreateHeaderCell(string text)
+        {
+            return new TableCell(new Paragraph(new Run(new Text(text))))
+            {
+                TableCellProperties = new TableCellProperties(
+                    new TableCellWidth { Type = TableWidthUnitValues.Auto })
+            };
+        }
+
+        private TableCell CreateTableCell(string text)
+        {
+            return new TableCell(new Paragraph(new Run(new Text(text))));
+        }
 
     }
 }
