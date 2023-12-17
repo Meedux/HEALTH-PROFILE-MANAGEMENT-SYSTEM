@@ -33,30 +33,32 @@
     
     <div class="row" style="margin-bottom: 26px;">
         <div class="col">
-            <PurokHealthCard Purok="@purok" Name="Households" Count="@HouseholdCount" />
+            <PurokDataCard Purok="@purok" Name="Households" Count="@HouseholdCount" URL="@householdUrl" />
         </div>
         <div class="col">
-            <PurokHealthCard Purok="@purok" Name="Senior Citizen" Count="@SeniorCitizenCount" />
+            <PurokDataCard Purok="@purok" Name="Senior Citizen" Count="@SeniorCitizenCount" URL="@seniorUrl" />
         </div>
     </div>
 </div>
 
 @code {
     [Parameter] public string purok { get; set; } = "";
-    public int PrenatalCount { get; set; } = 0;
-    public int DewormingCount { get; set; } = 0;
     public int HouseholdCount { get; set; } = 0;
     public int SeniorCitizenCount { get; set; } = 0;
+
+    string householdUrl = "";
+    string seniorUrl = "";
 
     List<IllnessModel> ill = new List<IllnessModel>();
 
     protected override void OnInitialized()
     {
         ill = context.GetIllnesses();
-        PrenatalCount = context.GetPrenatalCount();
-        DewormingCount = context.GetDewormingCount();
-        HouseholdCount = context.GetHouseholdCount();
-        SeniorCitizenCount = context.GetSeniorCitizenCount();
+        HouseholdCount = context.GetPurokHouseholdCount(purok);
+        SeniorCitizenCount = context.GetPurokSeniorCitizenCount(purok);
+
+        householdUrl = $"bhw/{purok}/household";
+        seniorUrl = $"bhw/{purok}/senior-citizen";
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -64,8 +66,6 @@
         if (firstRender)
         {
             ill = context.GetIllnesses();
-            PrenatalCount = context.GetPrenatalCount();
-            DewormingCount = context.GetDewormingCount();
             HouseholdCount = context.GetHouseholdCount();
             SeniorCitizenCount = context.GetSeniorCitizenCount();
         }

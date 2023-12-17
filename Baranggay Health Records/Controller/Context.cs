@@ -1654,6 +1654,48 @@ namespace Baranggay_Health_Records.Controller
             return new TableCell(new Paragraph(new Run(new Text(text))));
         }
 
+
+        public int GetPurokHouseholdCount(string purok)
+        {
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM household h INNER JOIN resident r ON h.MemberID = r.ID WHERE r.Purok = @Purok";
+                return connection.ExecuteScalar<int>(query, new { Purok = purok });
+            }
+        }
+
+        public int GetPurokSeniorCitizenCount(string purok)
+        {
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM resident WHERE Purok = @Purok";
+                return connection.ExecuteScalar<int>(query, new { Purok = purok });
+            }
+        }
+
+        public List<HouseholdModel> GetPurokHouseholds(string purok)
+        {
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT * FROM household h INNER JOIN resident r ON h.MemberID = r.ID WHERE r.Purok = @Purok";
+                return connection.Query<HouseholdModel>(query, new { Purok = purok }).ToList();
+            }
+        }
+
+        public List<ResidentModel> GetPurokResidents(string purok)
+        {
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT * FROM resident WHERE Purok = @Purok";
+                return connection.Query<ResidentModel>(query, new { Purok = purok }).ToList();
+            }
+        }
+
+        /*public List<ResidentModel> GetPurokSeniorCitizen(string purok)
+        {
+
+        }*/
+
     }
 }
 

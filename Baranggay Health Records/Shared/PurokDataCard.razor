@@ -1,0 +1,16 @@
+﻿<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">@Name</h4>
+        <p class="card-text">Total: @Count</p><a class="btn btn-primary" href="@URL" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></a>
+    </div>
+</div>
+
+@code {
+    [Parameter] public String? Name { get; set; } = String.Empty;
+
+    [Parameter] public String? URL { get; set; } = String.Empty;
+
+    [Parameter] public int? Count { get; set; } = 0;
+
+    [Parameter] public string Purok { get; set; } = "";
+}
