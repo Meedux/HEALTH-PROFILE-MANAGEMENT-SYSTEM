@@ -10,7 +10,7 @@ namespace Baranggay_Health_Records.Data
         public int ResidentId { get; set; } = 0;
 
         [Required]
-        public int TypeofillnessID { get; set; }
+        public int TypeofillnessID { get; set; } = 0;
 
         [Required]
         public string Weight { get; set; } = "";

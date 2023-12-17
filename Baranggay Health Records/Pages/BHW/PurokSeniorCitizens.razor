@@ -1,7 +1,7 @@
 ﻿@layout BHWLayout
 @page "/bhw/{purok}/senior-citizen"
 @inject Context context
-
+@inject IJSRuntime JS
 <div class="container" style="margin-top: 80px;">
     <div class="row">
         <div class="col">
@@ -85,6 +85,6 @@
     private void GenerateRecord()
     {
         var seniors = Seniors.Where(s => s.GetResidentAge() > 60).ToList();
-        context.GenerateResident(seniors);
+        context.GenerateResident(seniors, JS);
     }
 }

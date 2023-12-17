@@ -2,7 +2,7 @@
 @using Baranggay_Health_Records.Shared
 @page "/bhw/purok-health/{Purok}/{Illness}"
 @inject Context context
-
+@inject IJSRuntime JS
 
 <div class="container" style="margin-top: 66px;">
     <h1 class="text-center">Purok @Purok?.ToUpper() - Illness @Illness?.ToUpper()</h1>
@@ -111,6 +111,6 @@
 
     private void GenerateRecord()
     {
-        context.GenerateRHS(residentHealthStatuses, illnesses, Residents);
+        context.GenerateRHS(residentHealthStatuses, illnesses, Residents, JS);
     }
 }

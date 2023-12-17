@@ -2,7 +2,7 @@
 @using Baranggay_Health_Records.Shared
 @layout SecretaryLayout
 @inject Context context
-
+@inject IJSRuntime JS
 <div class="container" style="margin-top: 82px;">
     <h1>Purok @purok - Senior Citizens</h1>
 </div>
@@ -87,6 +87,6 @@
 
     private void GenerateRecord()
     {
-        context.GeneratePurokResident(purok, "Senior Citizens", adults);
+        context.GeneratePurokResident(purok, "Senior Citizens", adults, JS);
     }
 }

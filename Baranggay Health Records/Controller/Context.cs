@@ -9,6 +9,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.JSInterop;
 
 namespace Baranggay_Health_Records.Controller
 {
@@ -1094,10 +1095,10 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public void GenerateResident(List<ResidentModel> residents)
+        public async void GenerateResident(List<ResidentModel> residents, IJSRuntime JS)
         {
             string fileName = "Residents.docx"; // Name of the generated file
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
 
             if (File.Exists(file))
             {
@@ -1201,13 +1202,17 @@ namespace Baranggay_Health_Records.Controller
                 // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
+
+                //await DownloadFileFromStream(fileName, file, JS);
             }
+
+            await DownloadFileFromStream(fileName, file, JS);
         }
 
-        public void GeneratePurokResident(string? purok, string title, List<ResidentModel> residents)
+        public async void GeneratePurokResident(string? purok, string title, List<ResidentModel> residents, IJSRuntime JS)
         {
             string fileName = $"Purok {purok} {title}.docx"; // Name of the generated file
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
 
             if (File.Exists(file))
             {
@@ -1311,14 +1316,16 @@ namespace Baranggay_Health_Records.Controller
                 // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
+
             }
+                await DownloadFileFromStream(fileName, file, JS);
         }
 
 
-        public void GenerateHousehold(List<HouseholdModel> households)
+        public async void GenerateHousehold(List<HouseholdModel> households, IJSRuntime JS)
         {
             string fileName = "Households.docx"; // Name of the generated file
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
 
             if (File.Exists(file))
             {
@@ -1417,13 +1424,15 @@ namespace Baranggay_Health_Records.Controller
                 // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
+
             }
+                await DownloadFileFromStream(fileName, file, JS);
         }
 
-        public void GeneratePurokHousehold(string? purok, List<HouseholdModel> households)
+        public async void GeneratePurokHousehold(string? purok, List<HouseholdModel> households, IJSRuntime JS)
         {
             string fileName = $"Purok {purok} Households.docx"; // Name of the generated file
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
 
             if (File.Exists(file))
             {
@@ -1522,13 +1531,15 @@ namespace Baranggay_Health_Records.Controller
                 // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
+
             }
+                await DownloadFileFromStream(fileName, file, JS);
         }
 
-        public void GenerateRHS(List<ResidentHealthStatusModel> rhs, List<IllnessModel> illnesses, List<ResidentModel> residents)
+        public async void GenerateRHS(List<ResidentHealthStatusModel> rhs, List<IllnessModel> illnesses, List<ResidentModel> residents, IJSRuntime JS)
         {
             string fileName = "ResidentHealthStatusList.docx"; // Name of the generated file
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName); // Path within wwwroot)
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
 
             if (File.Exists(file))
             {
@@ -1614,13 +1625,17 @@ namespace Baranggay_Health_Records.Controller
                 table.AppendChild(headerRow);
 
                 // Populate table with resident data
-                foreach (var rh in rhs)
+                Console.WriteLine(rhs.Count);
+                foreach (ResidentHealthStatusModel rh in rhs)
                 {
-                    var illness = illnesses.FirstOrDefault(i => i.GetID() == rh.GetIllnessType());
-                    var resident = residents.FirstOrDefault(r => r.GetID() == rh.ResidentId);
+                    IllnessModel? illness = illnesses.FirstOrDefault(i => i.GetID() == rh.GetIllnessType());
+                    ResidentModel? resident = residents.FirstOrDefault(r => r.GetID() == rh.ResidentId);
 
                     if (illness != null && resident != null)
                     {
+                        Console.WriteLine("Illness and resident found");
+                        Console.WriteLine($"Illness: {illness.GetName()} | Resident: {resident.GetResidentFirstName()} {resident.GetResidentLastName()}");
+
                         TableRow dataRow = new TableRow();
                         dataRow.Append(
                             CreateTableCell(rh.GetID().ToString()),
@@ -1632,12 +1647,25 @@ namespace Baranggay_Health_Records.Controller
                         );
                         table.AppendChild(dataRow);
                     }
+                    else
+                    {
+                        if (illness == null)
+                        {
+                            Console.WriteLine($"Illness with ID {rh.GetIllnessType()} not found");
+                        }
+                        if (resident == null)
+                        {
+                            Console.WriteLine($"Resident with ID {rh.ResidentId} not found");
+                        }
+                    }
                 }
 
                 // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
+
             }
+                await DownloadFileFromStream(fileName, file, JS);
         }
 
         private TableCell CreateHeaderCell(string text)
@@ -1691,10 +1719,20 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        /*public List<ResidentModel> GetPurokSeniorCitizen(string purok)
+        private Stream GetFileStream(string filePath)
         {
+            return File.OpenRead($@"{filePath}");
 
-        }*/
+        }
+
+        private async Task DownloadFileFromStream(string fileName, string filePath, IJSRuntime JS)
+        {
+            var fileStream = GetFileStream(filePath);
+            using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+            await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+            File.Delete(filePath);
+        }
 
     }
 }

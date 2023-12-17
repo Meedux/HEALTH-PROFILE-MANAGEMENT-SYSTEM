@@ -51,7 +51,7 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Purok</label>
-                <Select TValue="string" @bind-Value="@purok" Placeholder="Select Purok....">
+                <Select TValue="string" @bind-Value="@purok" Placeholder="Select Purok...." Class="form-control">
                     @foreach (var pur in purokList)
                     {
                         <SelectItem Value="@pur">@pur</SelectItem>
@@ -92,12 +92,13 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Illness Type</label>
-                    <Select TValue="int" @bind-Value="typeOfIllnessID" Placeholder="Select illness...">
-                        @foreach (var illness in Illnesses)
+                <Select TValue="int" @bind-Value="@illnessID" Placeholder="Select illness..." Class="form-control" @onchange="HandleChange">
+                    <SelectItem Value="0">Select Occuring Illness to The Resident</SelectItem>
+                    @foreach (var illness in Illnesses)
                         {
                             <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
                         }
-                    </Select>
+                   </Select>
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
@@ -155,7 +156,7 @@
     List<String> Immunization = new List<String>();
     String weight = "";
     String height = "";
-    int typeOfIllnessID = 0;
+    int illnessID { get; set; }
     String temperature = "";
     String bloodPressure = "";
     String medicine = "";
@@ -163,6 +164,13 @@
     string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
 
     public List<IllnessModel> Illnesses = new List<IllnessModel>();
+
+    void HandleChange(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToInt32(args.Value);
+        illnessID = selectedValue;
+        Console.WriteLine($"Selected illness ID: {illnessID}");
+    }
 
     protected override void OnInitialized()
     {
@@ -201,7 +209,7 @@
         var resID = context.CreateResident(newResident);
 
         newRHS.ResidentId = resID;
-        newRHS.TypeofillnessID = typeOfIllnessID;
+        newRHS.TypeofillnessID = illnessID;
         newRHS.Weight = weight;
         newRHS.Height = height;
         newRHS.Temperature = temperature;
@@ -217,7 +225,7 @@
         context.CreateHousehold(newHousehold);
         context.CreateResidentHealthStatus(newRHS);
 
-        context.IncrementIllness(typeOfIllnessID);
+        context.IncrementIllness(illnessID);
 
         firstName = "";
         middleName = "";
@@ -237,7 +245,7 @@
         Immunization.Clear();
         weight = "";
         height = "";
-        typeOfIllnessID = 0;
+        illnessID = 0;
         temperature = "";
         bloodPressure = "";
         medicine = "";
