@@ -191,7 +191,13 @@
                     <p style="font-size: 26px;">
                         @if (isEdit)
                         {
-                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_purok" />
+                            <Select TValue="string" @bind-Value="@purok" Placeholder="Select Purok...." Class="form-control" @onchange="ChangePurok">
+                                <SelectItem Value="String.Empty">Select Purok Where the Resident Currently Resides</SelectItem>
+                                @foreach (string pur in purokList)
+                                {
+                                    <SelectItem Value="@pur">@pur</SelectItem>
+                                }
+                            </Select>
                         }
                         else
                         {
@@ -211,7 +217,7 @@
     [SupplyParameterFromQuery]
     public bool isEdit { get; set; } = true;
 
-
+    string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
     String firstName { get; set; } = "";
     String middleName { get; set; } = "";
     String lastName { get; set; } = "";
@@ -247,6 +253,13 @@
     String edited_ed_attain { get; set; } = "";
     int edited_household_number { get; set; }
     String edited_purok { get; set; } = "";
+
+    void ChangePurok(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToString(args.Value);
+        edited_purok = (selectedValue != null) ? selectedValue : "";
+        Console.WriteLine($"Selected Purok: {purok}");
+    }
 
     protected override void OnInitialized()
     {

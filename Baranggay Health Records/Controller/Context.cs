@@ -226,7 +226,8 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = "SELECT SUM(Occurence) FROM Illness";
-                    totalOccurrence = connection.QueryFirstOrDefault<int>(query);
+                    int? result = connection.QueryFirstOrDefault<int?>(query);
+                    totalOccurrence = result.GetValueOrDefault();
                 }
             }
             catch (Exception e)
@@ -236,7 +237,6 @@ namespace Baranggay_Health_Records.Controller
             }
 
             return totalOccurrence;
-
         }
 
         public int GetTotalPrenates()
@@ -320,11 +320,11 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public List<ResidentHealthStatusModel> GetResidentHealthStatusesByIllness(string? illness)
+        public List<ResidentHealthStatusModel> GetResidentHealthStatusesByIllness(int illness)
         {
             using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
-                var residentHealthStatuses = connection.Query<ResidentHealthStatusModel>($"SELECT * FROM rhs WHERE Typeofillness = '{illness}'").ToList();
+                var residentHealthStatuses = connection.Query<ResidentHealthStatusModel>($"SELECT * FROM rhs WHERE TypeofillnessID = '{illness}'").ToList();
                 Console.WriteLine("Fetching Resident Health Status Data");
                 return residentHealthStatuses;
             }
@@ -1734,6 +1734,26 @@ namespace Baranggay_Health_Records.Controller
             File.Delete(filePath);
         }
 
+
+        public string GetIllnessNameByID(int ID)
+        {
+            string? name = "";
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "SELECT IllnessName FROM illness WHERE ID = @ID";
+                    name = connection.QuerySingleOrDefault<string>(query, new { ID = ID });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return "ERROR";
+            }
+            string temp = (name != null) ? name : "";
+            return temp;
+        }
     }
 }
 

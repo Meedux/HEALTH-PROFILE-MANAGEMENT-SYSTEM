@@ -190,7 +190,13 @@
                     <p style="font-size: 26px;" class="d-flex align-items-center">
                         @if (isEdit)
                         {
-                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_purok" />
+                            <Select TValue="string" @bind-Value="@purok" Placeholder="Select Purok...." Class="form-control" @onchange="ChangePurok">
+                                <SelectItem Value="String.Empty">Select Purok Where the Resident Currently Resides</SelectItem>
+                                @foreach (string pur in purokList)
+                                {
+                                    <SelectItem Value="@pur">@pur</SelectItem>
+                                }
+                            </Select>
                         }
                         else
                         {
@@ -237,7 +243,13 @@
                     <td>
                         @if (isEdit)
                         {
-                            <input type="text" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_illness_type" />
+                            <Select TValue="int" @bind-Value="@edited_illness_typeID" Placeholder="Select illness..." Class="form-control" @onchange="HandleChange">
+                                <SelectItem Value="0">Select Occuring Illness to The Resident</SelectItem>
+                                @foreach (var illness in Illnesses)
+                                {
+                                    <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
+                                }
+                            </Select>
                         }
                         else
                         {
@@ -327,13 +339,14 @@
     int? household_number   {get; set;}
     String purok            {get; set;} = "";
     String status_type      {get; set;} = "";
-    int illness_type     {get; set;}
+    string illness_type     {get; set;} = "";
+    int illness_typeID { get; set; }
     String weight           {get; set;} = "";
     String height           {get; set;} = "";
     String temperature      {get; set;} = "";
     String bloodPressure    {get; set;} = "";
 
-
+    string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
     String edited_firstName { get; set; } = "";
     String edited_middleName { get; set; } = "";
     String edited_lastName { get; set; } = "";
@@ -352,11 +365,28 @@
     int edited_household_number { get; set; }
     String edited_purok { get; set; } = "";
     String edited_status_type { get; set; } = "";
-    int edited_illness_type { get; set; }
+    string edited_illness_type { get; set; } = "";
+    int edited_illness_typeID { get; set; }
     String edited_weight { get; set; } = "";
     String edited_height { get; set; } = "";
     String edited_temperature { get; set; } = "";
     String edited_bloodPressure { get; set; } = "";
+
+    void ChangePurok(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToString(args.Value);
+        edited_purok = (selectedValue != null) ? selectedValue : "";
+        Console.WriteLine($"Selected Purok: {purok}");
+    }
+    void HandleChange(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToInt32(args.Value);
+        edited_illness_typeID = selectedValue;
+        Console.WriteLine($"Selected illness ID: {edited_illness_typeID}");
+    }
+
+    public List<IllnessModel> Illnesses = new List<IllnessModel>();
+
 
     protected override void OnInitialized()
     {
@@ -388,7 +418,8 @@
         num_of_fam = household.GetFamilyCount();
 
         //Fill up the RHS Details
-        illness_type = RHS.GetIllnessType();
+        illness_type = context.GetIllnessNameByID(RHS.GetIllnessType());
+        illness_typeID = RHS.GetIllnessType();
         weight = RHS.GetWeight();
         height = RHS.GetHeight();
         temperature = RHS.GetTemperature();
@@ -417,7 +448,8 @@
         edited_num_of_fam = household.GetFamilyCount();
 
         //Fill up the RHS Details
-        edited_illness_type = RHS.GetIllnessType();
+        edited_illness_type = context.GetIllnessNameByID(RHS.GetIllnessType());
+        edited_illness_typeID = RHS.GetIllnessType();
         edited_weight = RHS.GetWeight();
         edited_height = RHS.GetHeight();
         edited_temperature = RHS.GetTemperature();
@@ -448,7 +480,7 @@
         householdModel.FamilyCount = edited_num_of_fam;
 
         ResidentHealthStatusModel rHSM = new ResidentHealthStatusModel();
-        rHSM.TypeofillnessID = edited_illness_type;
+        rHSM.TypeofillnessID = edited_illness_typeID;
         rHSM.Weight = edited_weight;
         rHSM.Height = edited_height;
         rHSM.Temperature = edited_temperature;

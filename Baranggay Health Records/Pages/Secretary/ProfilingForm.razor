@@ -55,8 +55,9 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Purok</label>
-                <Select TValue="string" @bind-Value="@purok" Placeholder="Select Purok...." Class="form-control">
-                    @foreach (var pur in purokList)
+                <Select TValue="string" @bind-Value="@purok" Placeholder="Select Purok...." Class="form-control" @onchange="ChangePurok">
+                    <SelectItem Value="String.Empty">Select Purok Where the Resident Currently Resides</SelectItem>
+                    @foreach (string pur in purokList)
                     {
                         <SelectItem Value="@pur">@pur</SelectItem>
                     }
@@ -92,6 +93,13 @@
     int household_number = 0;
     string purok = "";
     string status_type = "";
+
+    void ChangePurok(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToString(args.Value);
+        purok = (selectedValue != null) ? selectedValue : "";
+        Console.WriteLine($"Selected Purok: {purok}");
+    }
 
 
     void AddResident()
