@@ -109,6 +109,7 @@
             Residents = context.GetResidents();
             residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness);
             illnesses = context.GetIllnesses();
+            StateHasChanged();
         }
     }
 

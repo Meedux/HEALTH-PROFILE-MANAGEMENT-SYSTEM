@@ -65,6 +65,7 @@
         if (firstRender)
         {
             Archives = context.GetArchives();
+            StateHasChanged();
         }
     }
 }

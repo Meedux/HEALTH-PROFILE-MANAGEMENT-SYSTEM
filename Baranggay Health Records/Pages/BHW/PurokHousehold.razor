@@ -87,6 +87,7 @@
         {
             households = context.GetPurokHouseholds(purok);
             resident = context.GetPurokResidents(purok);
+            StateHasChanged();
         }
     }
 

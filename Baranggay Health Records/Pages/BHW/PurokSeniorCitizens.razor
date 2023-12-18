@@ -79,6 +79,7 @@
             List<ResidentModel> Residents = context.GetPurokResidents(purok);
 
             Seniors = Residents;
+            StateHasChanged();
         }
     }
 

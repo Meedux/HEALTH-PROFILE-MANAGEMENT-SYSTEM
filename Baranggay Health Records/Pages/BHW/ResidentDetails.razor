@@ -456,6 +456,77 @@
         edited_bloodPressure = RHS.GetBloodPressure();
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ResidentModel resident = context.GetResident(ID);
+            HouseholdModel household = context.GetHousehold(ID);
+            ResidentHealthStatusModel RHS = context.GetResidentHealthStatus(ID);
+
+
+            //Fill up the Resident Details
+            firstName = resident.GetResidentFirstName();
+            lastName = resident.GetResidentLastName();
+            middleName = resident.GetResidentMiddleName();
+            age = resident.GetResidentAge();
+            dob = resident.GetResidentDOB();
+            gender = resident.GetResidentGender();
+            civil_status = resident.GetResidentCivilStatus();
+            religion = resident.GetResidentReligion();
+            occupation = resident.GetOccupation();
+            ed_attain = resident.GetEducationalAttainment();
+            household_number = resident.GetHouseholdNumber();
+            purok = resident.GetPurok();
+            // status_type = resident.GetResidentCivilStatus();
+
+            //Fill up the Household Details
+            fathers_name = household.GetFathersName();
+            mothers_name = household.GetMothersName();
+            head = household.GetHeadofFamily();
+            num_of_fam = household.GetFamilyCount();
+
+            //Fill up the RHS Details
+            illness_type = context.GetIllnessNameByID(RHS.GetIllnessType());
+            illness_typeID = RHS.GetIllnessType();
+            weight = RHS.GetWeight();
+            height = RHS.GetHeight();
+            temperature = RHS.GetTemperature();
+            bloodPressure = RHS.GetBloodPressure();
+
+            //same for the edited parts
+            //Fill up the Resident Details
+            edited_firstName = resident.GetResidentFirstName();
+            edited_lastName = resident.GetResidentLastName();
+            edited_middleName = resident.GetResidentMiddleName();
+            edited_age = resident.GetResidentAge();
+            edited_dob = resident.GetResidentDOB();
+            edited_gender = resident.GetResidentGender();
+            edited_civil_status = resident.GetResidentCivilStatus();
+            edited_religion = resident.GetResidentReligion();
+            edited_occupation = resident.GetOccupation();
+            edited_ed_attain = resident.GetEducationalAttainment();
+            edited_household_number = resident.GetHouseholdNumber();
+            edited_purok = resident.GetPurok();
+            // status_type = resident.GetResidentCivilStatus();
+
+            //Fill up the Household Details
+            edited_fathers_name = household.GetFathersName();
+            edited_mothers_name = household.GetMothersName();
+            edited_head = household.GetHeadofFamily();
+            edited_num_of_fam = household.GetFamilyCount();
+
+            //Fill up the RHS Details
+            edited_illness_type = context.GetIllnessNameByID(RHS.GetIllnessType());
+            edited_illness_typeID = RHS.GetIllnessType();
+            edited_weight = RHS.GetWeight();
+            edited_height = RHS.GetHeight();
+            edited_temperature = RHS.GetTemperature();
+            edited_bloodPressure = RHS.GetBloodPressure();
+            StateHasChanged();
+        }
+    }
+
 
     private void UpdateInformation()
     {

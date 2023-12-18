@@ -85,8 +85,6 @@
     {
         households = context.GetHouseholds();
         resident = context.GetResidents();
-
-        //Something Filter idk lmao
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -95,6 +93,7 @@
         {
             households = context.GetHouseholds();
             resident = context.GetResidents();
+            StateHasChanged();
         }
     }
 
