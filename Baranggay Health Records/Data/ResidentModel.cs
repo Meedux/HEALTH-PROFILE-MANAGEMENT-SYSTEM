@@ -40,6 +40,8 @@ namespace Baranggay_Health_Records.Data
 
         public bool isPrenate { get; set; } = false;
 
+        public int IDNo { get; set; }
+
 
         //Resident Model Queries
 
@@ -116,6 +118,11 @@ namespace Baranggay_Health_Records.Data
         public int GetHouseholdNumber()
         {
             return this.Household_number;
+        }
+
+        public int GetIDNum()
+        {
+            return this.IDNo;
         }
     }
 }

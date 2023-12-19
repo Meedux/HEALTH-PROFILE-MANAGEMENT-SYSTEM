@@ -104,7 +104,12 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM Resident WHERE Age >= 60";
+                string query = @"
+            SELECT COUNT(*)
+            FROM resident r
+            LEFT JOIN Archive a ON r.ID = a.ReferenceID AND a.Type = 'Resident'
+            WHERE r.Age >= 60
+            AND a.ReferenceID IS NULL";
 
                 try
                 {
@@ -225,7 +230,14 @@ namespace Baranggay_Health_Records.Controller
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    const string query = "SELECT SUM(Occurence) FROM Illness";
+                    const string query = @"SELECT COUNT(DISTINCT rhs.ResidentId) AS TotalResidentsWithIllness
+                        FROM rhs rhs
+                        WHERE NOT EXISTS (
+                            SELECT 1
+                            FROM Archive
+                            WHERE ReferenceID = rhs.TypeofillnessID
+                            AND Type = 'resident' OR Type = 'rhs'
+                        )";
                     int? result = connection.QueryFirstOrDefault<int?>(query);
                     totalOccurrence = result.GetValueOrDefault();
                 }
@@ -535,8 +547,13 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT Occurence FROM illness WHERE ID = @ID";
-
+                string query = @"
+                    SELECT COUNT(*)
+                    FROM rhs
+                    INNER JOIN resident r ON rhs.ResidentId = r.ID
+                    LEFT JOIN Archive a ON r.ID = a.ReferenceID AND a.Type = 'rhs'
+                    WHERE rhs.TypeofIllnessID = @ID
+                    AND a.ReferenceID IS NULL";
                 try
                 {
                     int illnessCount = connection.QuerySingle<int>(query, new { ID });
@@ -545,7 +562,7 @@ namespace Baranggay_Health_Records.Controller
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                    return -1; // or any suitable error value
+                    return -1;
                 }
             }
         }
@@ -595,8 +612,8 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = @"
-                INSERT INTO Resident (FirstName, MiddleName, LastName, Suffix, Dob, Age, Gender, Civil_status, Religion, Occupation, Ed_attain, Household_number, Purok, IsPWD, IsSenior)
-                VALUES (@FirstName, @MiddleName, @LastName, @Suffix, @Dob, @Age, @Gender, @Civil_status, @Religion, @Occupation, @Ed_attain, @Household_number, @Purok, @IsPWD, @IsSenior);
+                INSERT INTO Resident (FirstName, MiddleName, LastName, Suffix, Dob, Age, Gender, Civil_status, Religion, Occupation, Ed_attain, Household_number, Purok, IsPWD, IsSenior, IDNo)
+                VALUES (@FirstName, @MiddleName, @LastName, @Suffix, @Dob, @Age, @Gender, @Civil_status, @Religion, @Occupation, @Ed_attain, @Household_number, @Purok, @IsPWD, @IsSenior, @IDNo);
                 SELECT LAST_INSERT_ID();";
 
                     int newResidentId = connection.ExecuteScalar<int>(query, resident);
@@ -722,7 +739,7 @@ namespace Baranggay_Health_Records.Controller
                     Suffix = @Suffix, Dob = @Dob, Age = @Age, Gender = @Gender,
                     Civil_status = @Civil_status, Religion = @Religion, Occupation = @Occupation,
                     Ed_attain = @Ed_attain, Household_number = @Household_number,
-                    Purok = @Purok, IsPWD = @IsPWD, IsSenior = @IsSenior
+                    Purok = @Purok, IsPWD = @IsPWD, IsSenior = @IsSenior, IDNo = @IDNo
                 WHERE ID = @ID;
             ";
 
@@ -743,6 +760,7 @@ namespace Baranggay_Health_Records.Controller
                         model.Purok,
                         model.IsPWD,
                         model.IsSenior,
+                        model.IDNo,
                         ID
                     });
                 }
@@ -824,11 +842,11 @@ namespace Baranggay_Health_Records.Controller
                     var todayDate = DateTime.Today.ToString("MM/dd/yyyy");
 
                     const string query = @"
-                        INSERT INTO archive (Name, Type, ReferenceID, Date)
-                        VALUES (@Name, @Archive_Type, @Archive_ReferenceID, @Date);
+                        INSERT INTO archive (Name, Type, ReferenceID)
+                        VALUES (@Name, @Archive_Type, @Archive_ReferenceID);
                     ";
 
-                    connection.Execute(query, new { Name = name, Archive_Type = type, Archive_ReferenceID = dataId, Date = todayDate });
+                    connection.Execute(query, new { Name = name, Archive_Type = type, Archive_ReferenceID = dataId});
                 }
             }
             catch (Exception e)
@@ -1095,6 +1113,120 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public async void GenerateSeniorResident(List<ResidentModel> residents, IJSRuntime JS)
+        {
+            string fileName = "Residents.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = @"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Senior Citizens Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                // Set the reference to the header
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
+
+                // Create the table and its properties
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                // Table headers
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Full Name"),
+                    CreateHeaderCell("Age"),
+                    CreateHeaderCell("Gender"),
+                    CreateHeaderCell("Household Number"),
+                    CreateHeaderCell("Purok")
+                );
+                table.AppendChild(headerRow);
+
+                // Populate table with resident data
+                Console.WriteLine(residents.Count);
+                foreach (var resident in residents)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(resident.GetIDNum().ToString()),
+                        CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
+                        CreateTableCell(resident.Age.ToString()),
+                        CreateTableCell(resident.GetResidentGender()),
+                        CreateTableCell(resident.GetHouseholdNumber().ToString()),
+                        CreateTableCell(resident.GetPurok())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+
+                //await DownloadFileFromStream(fileName, file, JS);
+            }
+
+            await DownloadFileFromStream(fileName, file, JS);
+        }
+
         public async void GenerateResident(List<ResidentModel> residents, IJSRuntime JS)
         {
             string fileName = "Residents.docx"; // Name of the generated file
@@ -1206,6 +1338,118 @@ namespace Baranggay_Health_Records.Controller
                 //await DownloadFileFromStream(fileName, file, JS);
             }
 
+            await DownloadFileFromStream(fileName, file, JS);
+        }
+
+        public async void GenerateSeniorPurokResident(string? purok, List<ResidentModel> residents, IJSRuntime JS)
+        {
+            string fileName = $"Purok {purok} Senior Citizens.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = $@"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Purok {purok} Senior Citizens Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                // Set the reference to the header
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
+
+                // Create the table and its properties
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                // Table headers
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Full Name"),
+                    CreateHeaderCell("Age"),
+                    CreateHeaderCell("Gender"),
+                    CreateHeaderCell("Household Number"),
+                    CreateHeaderCell("Purok")
+                );
+                table.AppendChild(headerRow);
+
+                // Populate table with resident data
+                Console.WriteLine(residents.Count);
+                foreach (var resident in residents)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(resident.GetIDNum().ToString()),
+                        CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
+                        CreateTableCell(resident.Age.ToString()),
+                        CreateTableCell(resident.GetResidentGender()),
+                        CreateTableCell(resident.GetHouseholdNumber().ToString()),
+                        CreateTableCell(resident.GetPurok())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+
+            }
             await DownloadFileFromStream(fileName, file, JS);
         }
 
@@ -1687,7 +1931,13 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM household h INNER JOIN resident r ON h.MemberID = r.ID WHERE r.Purok = @Purok";
+                string query = @"
+                    SELECT COUNT(*)
+                    FROM household h
+                    INNER JOIN resident r ON h.MemberID = r.ID
+                    LEFT JOIN Archive a ON r.ID = a.ReferenceID AND a.Type = 'household'
+                    WHERE r.Purok = @Purok
+                    AND a.ReferenceID IS NULL"; 
                 return connection.ExecuteScalar<int>(query, new { Purok = purok });
             }
         }
@@ -1696,9 +1946,17 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM resident WHERE Purok = @Purok";
+                string query = @"
+                    SELECT COUNT(*)
+                    FROM resident r
+                    LEFT JOIN Archive a ON r.ID = a.ReferenceID AND a.Type = 'Resident'
+                    WHERE r.Purok = @Purok 
+                    AND r.Age >= 60
+                    AND a.ReferenceID IS NULL"; 
+
                 return connection.ExecuteScalar<int>(query, new { Purok = purok });
             }
+
         }
 
         public List<HouseholdModel> GetPurokHouseholds(string purok)
@@ -1753,6 +2011,24 @@ namespace Baranggay_Health_Records.Controller
             }
             string temp = (name != null) ? name : "";
             return temp;
+        }
+
+        public bool isIllnessNone(ResidentHealthStatusModel rhs)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "SELECT COUNT(*) FROM rhs WHERE TypeofIllnessID != 0 AND ID = @ID";
+                    int count = connection.ExecuteScalar<int>(query, new { ID = rhs.GetID() });
+                    return (count > 0);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
         }
     }
 }

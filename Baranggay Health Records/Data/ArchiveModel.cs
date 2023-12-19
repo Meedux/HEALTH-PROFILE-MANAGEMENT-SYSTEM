@@ -9,8 +9,7 @@
 
         public int ReferenceID { get; set; }
 
-
-        public string? Date { get; set; }
+        public DateTime Date { get; set; }
 
         public int? GetID()
         {
@@ -34,7 +33,7 @@
 
         public string? GetDate()
         {
-            return this.Date;
+            return this.Date.ToShortDateString();
         }
     }
 }

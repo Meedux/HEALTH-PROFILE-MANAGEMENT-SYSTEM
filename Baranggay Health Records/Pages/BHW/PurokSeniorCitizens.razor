@@ -42,7 +42,7 @@
                                     {
                                         if (seniors.GetResidentAge() > 60)
                                         {
-                                            <SeniorCitizenRow ID="@seniors.GetID()"
+                                            <SeniorCitizenRow ID="@seniors.GetIDNum()"
                                                               LastName="@seniors.GetResidentLastName()"
                                                               FirstName="@seniors.GetResidentFirstName()"
                                                               MiddleName="@seniors.GetResidentMiddleName()"
@@ -86,6 +86,6 @@
     private void GenerateRecord()
     {
         var seniors = Seniors.Where(s => s.GetResidentAge() > 60).ToList();
-        context.GenerateResident(seniors, JS);
+        context.GenerateSeniorPurokResident(purok, seniors, JS);
     }
 }

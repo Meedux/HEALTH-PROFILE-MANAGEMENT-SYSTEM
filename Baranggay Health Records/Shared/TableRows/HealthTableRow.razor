@@ -68,12 +68,14 @@
     private void ArchiveData()
     {
         context.ArchiveData(Name, "rhs", ID);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private void DeleteData()
     {
         context.DeleteRHS(ID);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }

@@ -1,4 +1,6 @@
-﻿<div class="card">
+﻿@inject Context context 
+
+<div class="card">
     <div class="card-body">
         <h4 class="card-title">@Name</h4>
         <p class="card-text">Total: @Count</p><a class="btn btn-primary" href="/bhw/purok-health/@Purok/@ID" style="width: 100%;height: 100%;"><strong>View&nbsp;</strong></a>
@@ -8,10 +10,25 @@
 @code {
     [Parameter] public String? Name { get; set; } = String.Empty;
 
-    [Parameter] public int? Count { get; set; } = 0;
+    public int Count { get; set; } = 0;
 
     [Parameter] public int ID { get; set; } = 0;
 
 
     [Parameter] public string Purok { get; set; } = "";
+
+    protected override void OnInitialized()
+    {
+        Count = context.GetIllnessCount(ID);
+        StateHasChanged();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Count = context.GetIllnessCount(ID);
+            StateHasChanged();
+        }
+    }
 }

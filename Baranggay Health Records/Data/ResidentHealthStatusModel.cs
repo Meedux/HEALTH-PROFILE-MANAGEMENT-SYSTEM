@@ -24,6 +24,9 @@ namespace Baranggay_Health_Records.Data
         [Required]
         public string BloodPressure { get; set; } = "";
 
+        [Required]
+        public DateTime DiagnosedDate { get; set; }
+
         public int GetID()
         {
             return this.ID;
@@ -52,6 +55,11 @@ namespace Baranggay_Health_Records.Data
         public string GetBloodPressure()
         {
             return this.BloodPressure;
+        }
+
+        public string GetDiagnosedDate()
+        {
+            return this.DiagnosedDate.ToShortDateString();
         }
     }
 }

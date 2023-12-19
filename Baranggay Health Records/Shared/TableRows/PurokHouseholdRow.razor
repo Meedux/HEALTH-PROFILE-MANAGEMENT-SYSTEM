@@ -52,12 +52,14 @@
     {
         string household = "Mr/Ms. " + LastName + "'s Household";
         context.ArchiveData(household, "household", ID);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private void DeleteData()
     {
         context.DeleteHousehold(ID);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }

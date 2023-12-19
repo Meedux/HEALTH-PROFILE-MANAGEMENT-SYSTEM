@@ -96,7 +96,7 @@
             <ModalBody>
                 <Field>
                     <FieldLabel>Medicine Name: </FieldLabel>
-                    <Select @bind-SelectedValue="@residentMedicine.ID" TValue="int">
+                    <Select @bind-SelectedValue="@residentMedicine.ID" TValue="int" Class="form-control">
                         <SelectItem value="@none">None</SelectItem>
                         @foreach (var medicine in residentMedicines)
                         {

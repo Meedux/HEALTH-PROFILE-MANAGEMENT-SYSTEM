@@ -1,4 +1,6 @@
-﻿<tr>
+﻿@inject Context context
+
+<tr>
     <td class="text-truncate" style="max-width: 200px;">@ID</td>
     <td class="text-truncate" style="max-width: 200px;">@IllnessName</td>
     <td class="text-truncate" style="max-width: 200px;">@RecommendedMedicine</td>
@@ -10,12 +12,14 @@
                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
             </svg>
         </a>
+
+
     </td>
 </tr>
 
 @code {
     [Parameter]
-    public int? ID { get; set; }
+    public int ID { get; set; }
 
     [Parameter]
     public String? IllnessName { get; set; }
@@ -23,6 +27,19 @@
     [Parameter]
     public String? RecommendedMedicine { get; set; }
 
-    [Parameter]
     public int Occurence { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Occurence = context.GetIllnessCount(ID);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Occurence = context.GetIllnessCount(ID);
+            StateHasChanged();
+        }
+    }
 }

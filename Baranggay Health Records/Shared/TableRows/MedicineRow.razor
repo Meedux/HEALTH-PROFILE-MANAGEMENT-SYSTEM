@@ -51,6 +51,7 @@
     private void Delete()
     {
         context.DeleteMedicine(ID);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 

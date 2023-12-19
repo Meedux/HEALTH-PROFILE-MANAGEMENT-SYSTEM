@@ -24,6 +24,16 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0"><label class="form-label">Age</label><input @bind="age" class="form-control" type="number" placeholder="age" required=""></div>
         </div>
+
+        @if (age >= 60)
+        {
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-xl-12 offset-xl-0">
+                    <label class="form-label">Senior Citizen ID No.</label>
+                    <input @bind="id_no" class="form-control" type="number" placeholder="0000" required="">
+                </div>
+            </div>
+        }
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Age</label>
@@ -93,6 +103,7 @@
     int household_number = 0;
     string purok = "";
     string status_type = "";
+    int id_no = 0;
 
     void ChangePurok(ChangeEventArgs args)
     {
@@ -106,6 +117,7 @@
     {
         ResidentModel res = new ResidentModel();
         HouseholdModel household = new HouseholdModel();
+        ResidentHealthStatusModel rhs = new ResidentHealthStatusModel();
 
         res.FirstName = firstName;
         res.MiddleName = middleName;
@@ -120,6 +132,7 @@
         res.Ed_attain = ed_attain;
         res.Household_number = household_number;
         res.Purok = purok;
+        res.IDNo = id_no;
 
 
 
@@ -152,7 +165,10 @@
             household.MothersName = mothers_name;
             household.Member = firstName + middleName + lastName;
             household.FamilyCount = num_of_fam;
+
+            rhs.ResidentId = id;
             context.CreateHousehold(household);
+            context.CreateResidentHealthStatus(rhs);
 
         }
 

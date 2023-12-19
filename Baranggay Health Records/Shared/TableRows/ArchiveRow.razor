@@ -38,6 +38,7 @@
     private void UnArchiveData()
     {
         context.UnArchive(ID, Type);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);   
     }
 }

@@ -18,11 +18,25 @@
             <div class="col"><label class="form-label">Suffix</label><input @bind="suffix" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Date of Birth</label><input @bind="dob" class="form-control" type="text" placeholder="mm/dd/yyyy" required=""></div>
+            <div class="col-xl-12 offset-xl-0">
+                <label class="form-label">Date of Birth</label>
+                <input @bind="dob" class="form-control" type="text" placeholder="mm/dd/yyyy" required="">
+            </div>
         </div>
+        
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0"><label class="form-label">Age</label><input @bind="age" class="form-control" type="text" placeholder="age" required=""></div>
         </div>
+
+        @if (age >= 60)
+        {
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-xl-12 offset-xl-0">
+                    <label class="form-label">Senior Citizen ID No.</label>
+                    <input @bind="id_no" class="form-control" type="number" placeholder="0000" required="">
+                </div>
+            </div>
+        }
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Gender</label>
@@ -94,7 +108,7 @@
             <div class="col-xl-12 offset-xl-0">
                 <label class="form-label">Illness Type</label>
                 <Select TValue="int" @bind-Value="@illnessID" Placeholder="Select illness..." Class="form-control" @onchange="HandleChange">
-                    <SelectItem Value="0">Select Occuring Illness to The Resident</SelectItem>
+                    <SelectItem Value="0">None</SelectItem>
                     @foreach (var illness in Illnesses)
                         {
                             <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
@@ -161,6 +175,8 @@
     String temperature = "";
     String bloodPressure = "";
     String medicine = "";
+    int id_no = 0;
+
 
     string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
 
@@ -209,6 +225,7 @@
                 IsPWD = isPWD,
                 IsSenior = isSenior,
                 isPrenate = isPrenate,
+                IDNo = id_no
             };
 
         ResidentHealthStatusModel newRHS = new ResidentHealthStatusModel();

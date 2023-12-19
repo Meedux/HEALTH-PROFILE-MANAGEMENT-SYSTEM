@@ -5,10 +5,15 @@
 @inject NavigationManager NavigationManager
 
 <div class="container" style="margin-top: 115px;">
-    <h1 class="text-center">Recorded Illnesses</h1>
+    <h1 class="text-center">Recorded Illnesses: @IllnessName.ToUpper()</h1>
 </div>
 
 <div class="container" style="margin-top: 21px;">
+    <div class="row">
+        <div class="col d-flex justify-content-between">
+            <Button Color="Color.Primary" Clicked="@Return">Return</Button>
+        </div>
+    </div>
     <div class="row justify-content-center" style="margin-top: 24px;">
         <div class="col-xl-10 col-xxl-9">
             <div class="card shadow">
@@ -60,7 +65,7 @@
 </div>
 @code {
     [Parameter]
-    public int? ID { get; set; }
+    public int ID { get; set; }
 
     string IllnessName = "";
     List<ResidentModel> illnesses = new List<ResidentModel>();
@@ -68,14 +73,21 @@
     protected override void OnInitialized()
     {
         illnesses = context.GetIllnessesByIllnessID(ID);
+        IllnessName = context.GetIllnessNameByID(ID);
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
+            IllnessName = context.GetIllnessNameByID(ID);
             illnesses = context.GetIllnessesByIllnessID(ID);
         }
     }
 
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo($"/bhw/illness", forceLoad: true);
+    }
 }

@@ -67,6 +67,9 @@
     public String? TypeofIllness { get; set; }
 
     [Parameter]
+    public int TypeofIllnessID { get; set; }
+
+    [Parameter]
     public String? Height { get; set; }
 
     [Parameter]
@@ -84,15 +87,32 @@
     [Parameter]
     public String? Date { get; set; }
 
+    protected override void OnInitialized()
+    {
+        TypeofIllness = context.GetIllnessNameByID(TypeofIllnessID);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            TypeofIllness = context.GetIllnessNameByID(TypeofIllnessID);
+            StateHasChanged();
+        }
+    }
+
     private void ArchiveData()
     {
         context.ArchiveData(FullName, "rhs", ID);
+        
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private void DeleteData()
     {
         context.DeleteResident(ID);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }

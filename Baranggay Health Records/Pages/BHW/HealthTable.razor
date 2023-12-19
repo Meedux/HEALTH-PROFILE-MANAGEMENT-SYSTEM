@@ -45,16 +45,22 @@
                                         {
                                             @if (context.isArchived(res))
                                             {
-                                                <HealthTableRow ID="@res.GetID()"
-                                                Name="@res.GetResidentFirstName()"
-                                                BirthDate="@res.GetResidentDOB()"
-                                                Age="@res.GetResidentAge()"
-                                                Gender="@res.GetResidentGender()"
-                                                Height="@rhs.GetHeight()"
-                                                Weight="@rhs.GetWeight()"
-                                                BloodPressure="@rhs.GetBloodPressure()"
-                                                Temperature="@rhs.GetTemperature()"
-                                                Date="January, 01, 2023" />
+                                                @if (context.isArchived(rhs))
+                                                {
+                                                    @if (!context.isIllnessNone(rhs))
+                                                    {
+                                                        <HealthTableRow ID="@res.GetID()"
+                                                        Name="@res.GetResidentFirstName()"
+                                                        BirthDate="@res.GetResidentDOB()"
+                                                        Age="@res.GetResidentAge()"
+                                                        Gender="@res.GetResidentGender()"
+                                                        Height="@rhs.GetHeight()"
+                                                        Weight="@rhs.GetWeight()"
+                                                        BloodPressure="@rhs.GetBloodPressure()"
+                                                        Temperature="@rhs.GetTemperature()"
+                                                        Date="@rhs.GetDiagnosedDate()" />
+                                                    }
+                                                }
                                             }
                                         }
                                     }

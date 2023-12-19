@@ -52,12 +52,14 @@
     {
         string FullName = "Mr./Mrs. " + LastName;
         context.ArchiveData(FullName, "resident", ID);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private void DeleteData()
     {
         context.DeleteHousehold(ID);
+        StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }
