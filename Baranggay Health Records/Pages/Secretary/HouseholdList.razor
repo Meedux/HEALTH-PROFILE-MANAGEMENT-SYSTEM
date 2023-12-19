@@ -48,14 +48,25 @@
                                     @if (context.isArchived(household))
                                     {
                                         string stringurl = $"/secretary/household/details/{household.GetID()}";
-                                        <HouseholdRow 
-                                        ID="@household.GetID()" 
-                                        Lastname="@household.GetResidentLastName()" 
-                                        Firstname="@household.GetResidentFirstName()" 
-                                        Middlename="@household.GetResidentMiddleName()" 
-                                        Member="@household.Num_of_fam" 
-                                        Purok="@household.GetPurok()" 
-                                        stringurl="@stringurl"/>
+                                        @foreach (HouseholdModel household1 in households)
+                                        {
+                                            @if (household1.GetMemberID() == household.GetID())
+                                            {
+                                                @if (context.isArchived(household1))
+                                                {
+                                                    @if (context.isArchived(household))
+                                                    {
+                                                        <HouseholdRow ID="@household.GetID()"
+                                                                      Lastname="@household.GetResidentLastName()"
+                                                                      Firstname="@household.GetResidentFirstName()"
+                                                                      Middlename="@household.GetResidentMiddleName()"
+                                                                      Member="@GetFamilyMemberCount(household.GetID())"
+                                                                      Purok="@household.GetPurok()"
+                                                                      stringurl="@stringurl" />
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             </tbody>

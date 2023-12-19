@@ -34,16 +34,22 @@
 
                                 @foreach (ResidentModel resident in residents)
                                 {
-                                    @if (context.isArchived(resident))
+                                    @foreach(HouseholdModel household in adults)
                                     {
-                                        string stringurl = $"/secretary/household/{resident.GetID()}";
-                                        <PurokHouseholdRow ID="@resident.ID"
-                                                        LastName="@resident.LastName"
-                                                        FirstName="@resident.FirstName"
-                                                        MiddleName="@resident.MiddleName"
-                                                        Members="@resident.Num_of_fam" 
-                                                        stringurl="@stringurl"
-                                        />
+                                        @if (context.isArchived(household))
+                                        {
+                                            @if (context.isArchived(resident))
+                                            {
+                                                string stringurl = $"/secretary/household/{resident.GetID()}";
+                                                <PurokHouseholdRow ID="@resident.ID"
+                                                                LastName="@resident.LastName"
+                                                                FirstName="@resident.FirstName"
+                                                                MiddleName="@resident.MiddleName"
+                                                                Members="@resident.Num_of_fam" 
+                                                                stringurl="@stringurl"
+                                                />
+                                            }
+                                        }
                                     }
                                 }
                             </tbody>
