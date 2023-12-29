@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "54pDFD2oX1kVE0HO+PRTdR/wHqKOlrv4QILUu8/CrvY=",
+  "Hash": "pV17uY6e48MG/UURPro4coFEjBgDubau0QJHUoT6KyI=",
   "Source": "Baranggay Health Records",
   "BasePath": "_content/Baranggay Health Records",
   "Mode": "Default",
@@ -763,23 +763,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\logo.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\Residents.docx",
-      "SourceId": "Baranggay Health Records",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\",
-      "BasePath": "_content/Baranggay Health Records",
-      "RelativePath": "Residents.docx",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Residents.docx"
     }
   ]
 }

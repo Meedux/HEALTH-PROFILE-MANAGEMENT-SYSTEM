@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\Residents.docx",
-      "PackagePath": "staticwebassets\\Residents.docx"
-    },
-    {
       "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
     },

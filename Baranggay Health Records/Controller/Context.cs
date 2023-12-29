@@ -681,17 +681,16 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = @"
-                        INSERT INTO medicine (MedicineName, Description, Quality, ExpirationDate, ReleaseDate, Stock)
-                        VALUES (@MedicineName, @Description, @Quality, @ExpirationDate, @ReleaseDate, @Stock);
+                        INSERT INTO medicine (MedicineName, Description, ExpirationDate, ReleaseDate, Stock)
+                        VALUES (@MedicineName, @Description, @ExpirationDate, @ReleaseDate, @Stock);
                         SELECT LAST_INSERT_ID();";
 
                     int newMedicineId = connection.ExecuteScalar<int>(query, new {
                         MedicineName = medicine.MedicineName,
                         Description = medicine.Description,
-                        Quality = medicine.Quality,
                         ExpirationDate = medicine.ExpirationDate,
                         ReleaseDate = medicine.ReleaseDate,
-                        Stock = 0
+                        Stock = medicine.Stock
                     });
                     return newMedicineId;
                 }
@@ -1125,12 +1124,9 @@ namespace Baranggay_Health_Records.Controller
 
             using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
             {
-                // Add a main document part
                 MainDocumentPart mainPart = document.AddMainDocumentPart();
                 mainPart.Document = new Document();
                 Body body = mainPart.Document.AppendChild(new Body());
-
-                // Add a header part
                 HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
 
                 string headerMarkup = @"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
@@ -1165,7 +1161,6 @@ namespace Baranggay_Health_Records.Controller
                     streamWriter.Write(headerMarkup);
                 }
 
-                // Set the reference to the header
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
@@ -1173,8 +1168,6 @@ namespace Baranggay_Health_Records.Controller
                 {
                     mainPart.Document.Body.Append(sectionProperties);
                 }
-
-                // Create the table and its properties
                 Table table = new Table();
                 TableProperties props = new TableProperties(
                     new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
@@ -1189,7 +1182,6 @@ namespace Baranggay_Health_Records.Controller
                 );
                 table.AppendChild<TableProperties>(props);
 
-                // Table headers
                 TableRow headerRow = new TableRow();
                 headerRow.Append(
                     CreateHeaderCell("ID"),
@@ -1200,9 +1192,8 @@ namespace Baranggay_Health_Records.Controller
                     CreateHeaderCell("Purok")
                 );
                 table.AppendChild(headerRow);
-
-                // Populate table with resident data
                 Console.WriteLine(residents.Count);
+
                 foreach (var resident in residents)
                 {
                     TableRow dataRow = new TableRow();
@@ -1216,12 +1207,8 @@ namespace Baranggay_Health_Records.Controller
                     );
                     table.AppendChild(dataRow);
                 }
-
-                // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
-
-                //await DownloadFileFromStream(fileName, file, JS);
             }
 
             await DownloadFileFromStream(fileName, file, JS);
@@ -1229,9 +1216,8 @@ namespace Baranggay_Health_Records.Controller
 
         public async void GenerateResident(List<ResidentModel> residents, IJSRuntime JS)
         {
-            string fileName = "Residents.docx"; // Name of the generated file
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
-
+            string fileName = "Residents.docx";
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName);
             if (File.Exists(file))
             {
                 File.Delete(file);
@@ -1239,12 +1225,9 @@ namespace Baranggay_Health_Records.Controller
 
             using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
             {
-                // Add a main document part
                 MainDocumentPart mainPart = document.AddMainDocumentPart();
                 mainPart.Document = new Document();
                 Body body = mainPart.Document.AppendChild(new Body());
-
-                // Add a header part
                 HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
 
                 string headerMarkup = @"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
@@ -1279,7 +1262,6 @@ namespace Baranggay_Health_Records.Controller
                     streamWriter.Write(headerMarkup);
                 }
 
-                // Set the reference to the header
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
@@ -1288,7 +1270,6 @@ namespace Baranggay_Health_Records.Controller
                     mainPart.Document.Body.Append(sectionProperties);
                 }
 
-                // Create the table and its properties
                 Table table = new Table();
                 TableProperties props = new TableProperties(
                     new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
@@ -1303,7 +1284,6 @@ namespace Baranggay_Health_Records.Controller
                 );
                 table.AppendChild<TableProperties>(props);
 
-                // Table headers
                 TableRow headerRow = new TableRow();
                 headerRow.Append(
                     CreateHeaderCell("ID"),
@@ -1315,7 +1295,6 @@ namespace Baranggay_Health_Records.Controller
                 );
                 table.AppendChild(headerRow);
 
-                // Populate table with resident data
                 Console.WriteLine(residents.Count);
                 foreach (var resident in residents)
                 {
@@ -1331,11 +1310,8 @@ namespace Baranggay_Health_Records.Controller
                     table.AppendChild(dataRow);
                 }
 
-                // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
-
-                //await DownloadFileFromStream(fileName, file, JS);
             }
 
             await DownloadFileFromStream(fileName, file, JS);
@@ -1393,7 +1369,6 @@ namespace Baranggay_Health_Records.Controller
                     streamWriter.Write(headerMarkup);
                 }
 
-                // Set the reference to the header
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
@@ -1402,7 +1377,6 @@ namespace Baranggay_Health_Records.Controller
                     mainPart.Document.Body.Append(sectionProperties);
                 }
 
-                // Create the table and its properties
                 Table table = new Table();
                 TableProperties props = new TableProperties(
                     new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
@@ -1417,7 +1391,6 @@ namespace Baranggay_Health_Records.Controller
                 );
                 table.AppendChild<TableProperties>(props);
 
-                // Table headers
                 TableRow headerRow = new TableRow();
                 headerRow.Append(
                     CreateHeaderCell("ID"),
@@ -1465,12 +1438,9 @@ namespace Baranggay_Health_Records.Controller
 
             using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
             {
-                // Add a main document part
                 MainDocumentPart mainPart = document.AddMainDocumentPart();
                 mainPart.Document = new Document();
                 Body body = mainPart.Document.AppendChild(new Body());
-
-                // Add a header part
                 HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
 
                 string headerMarkup = $@"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
@@ -1505,7 +1475,6 @@ namespace Baranggay_Health_Records.Controller
                     streamWriter.Write(headerMarkup);
                 }
 
-                // Set the reference to the header
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
@@ -1514,7 +1483,6 @@ namespace Baranggay_Health_Records.Controller
                     mainPart.Document.Body.Append(sectionProperties);
                 }
 
-                // Create the table and its properties
                 Table table = new Table();
                 TableProperties props = new TableProperties(
                     new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
@@ -1529,7 +1497,6 @@ namespace Baranggay_Health_Records.Controller
                 );
                 table.AppendChild<TableProperties>(props);
 
-                // Table headers
                 TableRow headerRow = new TableRow();
                 headerRow.Append(
                     CreateHeaderCell("ID"),
@@ -1541,7 +1508,6 @@ namespace Baranggay_Health_Records.Controller
                 );
                 table.AppendChild(headerRow);
 
-                // Populate table with resident data
                 Console.WriteLine(residents.Count);
                 foreach (var resident in residents)
                 {
@@ -1557,7 +1523,6 @@ namespace Baranggay_Health_Records.Controller
                     table.AppendChild(dataRow);
                 }
 
-                // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
 
@@ -1734,7 +1699,6 @@ namespace Baranggay_Health_Records.Controller
                     mainPart.Document.Body.Append(sectionProperties);
                 }
 
-                // Create the table and its properties
                 Table table = new Table();
                 TableProperties props = new TableProperties(
                     new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
@@ -1749,7 +1713,6 @@ namespace Baranggay_Health_Records.Controller
                 );
                 table.AppendChild<TableProperties>(props);
 
-                // Table headers
                 TableRow headerRow = new TableRow();
                 headerRow.Append(
                     CreateHeaderCell("ID"),
@@ -1772,7 +1735,6 @@ namespace Baranggay_Health_Records.Controller
                     table.AppendChild(dataRow);
                 }
 
-                // Append the table to the document body and save the document
                 body.Append(table);
                 mainPart.Document.Save();
 
@@ -1782,8 +1744,8 @@ namespace Baranggay_Health_Records.Controller
 
         public async void GenerateRHS(List<ResidentHealthStatusModel> rhs, List<IllnessModel> illnesses, List<ResidentModel> residents, IJSRuntime JS)
         {
-            string fileName = "ResidentHealthStatusList.docx"; // Name of the generated file
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
+            string fileName = "ResidentHealthStatusList.docx"; 
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); 
 
             if (File.Exists(file))
             {
@@ -1792,12 +1754,10 @@ namespace Baranggay_Health_Records.Controller
 
             using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
             {
-                // Add a main document part
                 MainDocumentPart mainPart = document.AddMainDocumentPart();
                 mainPart.Document = new Document();
                 Body body = mainPart.Document.AppendChild(new Body());
 
-                // Add a header part
                 HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
 
                 string headerMarkup = @"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
@@ -2019,7 +1979,7 @@ namespace Baranggay_Health_Records.Controller
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
-                    const string query = "SELECT COUNT(*) FROM rhs WHERE TypeofIllnessID != 0 AND ID = @ID";
+                    const string query = "SELECT COUNT(*) FROM rhs WHERE TypeofIllnessID = 0 AND ID = @ID";
                     int count = connection.ExecuteScalar<int>(query, new { ID = rhs.GetID() });
                     return (count > 0);
                 }
@@ -2028,6 +1988,43 @@ namespace Baranggay_Health_Records.Controller
             {
                 Console.WriteLine(e);
                 return false;
+            }
+        }
+
+        public List<MedicineReceiptModel> GetMedicineReceipt()
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var receipts = connection.Query<MedicineReceiptModel>("SELECT * FROM receipt").ToList();
+                return receipts;
+            }
+        }
+
+        public void AddReceipt(MedicineReceiptModel receipt)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                            INSERT INTO receipt (medicineId, residentId, quantity)
+                            VALUES (@medicineId, @residentId, @quantity);
+
+                            UPDATE medicine
+                            SET Stock = Stock - @quantity
+                            WHERE id = @medicineId;";
+
+                    connection.Execute(query, new
+                    {
+                        medicineId = receipt.GetMedicineID(),
+                        residentId = receipt.GetResidentID(),
+                        quantity = receipt.GetQuantity()
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }

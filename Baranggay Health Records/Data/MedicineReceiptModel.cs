@@ -4,42 +4,32 @@ namespace Baranggay_Health_Records.Data
 {
     public class MedicineReceiptModel
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
 
-        [Required] public string? NewArrival { get; set; }
-        [Required] public int? NewArrivalID { get; set; }
-        [Required] public int? OldStock { get; set; }
-        [Required] public DateTime? ExpirationDate { get; set; }
-        [Required] public int? MonthlyDistrobution { get; set; }
+        public int residentId { get; set; }
 
-        public int? GetID()
+        public int medicineId { get; set; }
+
+        public int quantity { get; set; }        
+
+        public int GetID()
         {
             return ID;
         }
 
-        public string? GetNewArrival()
+        public int GetResidentID()
         {
-            return NewArrival;
+            return this.residentId;
         }
 
-        public int? GetNewArrivalID()
+        public int GetQuantity()
         {
-            return NewArrivalID;
+            return this.quantity;
         }
 
-        public int? GetOldStock()
+        public int GetMedicineID()
         {
-            return OldStock;
-        }
-
-        public DateTime? GetExpirationDate()
-        {
-            return ExpirationDate;
-        }
-
-        public int? MonthlyDistribution()
-        {
-            return MonthlyDistrobution;
+            return this.medicineId;
         }
     }
 }

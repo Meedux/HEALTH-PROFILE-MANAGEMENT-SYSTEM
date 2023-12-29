@@ -36,7 +36,7 @@
                             <tbody>
                                 @foreach (ResidentModel household in resident)
                                 {
-                                    string stringurl = $"/bhw/resident/{household.GetID()}";
+                                    string stringurl = $"/secretary/resident/{household.GetID()}";
 
                                     @if (context.isArchived(household))
                                     {

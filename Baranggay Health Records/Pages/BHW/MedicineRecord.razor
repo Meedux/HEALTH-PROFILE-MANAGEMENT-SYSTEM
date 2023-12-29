@@ -4,7 +4,7 @@
 @inject NavigationManager NavigationManager
 
 <div class="container" style="margin-top: 115px;">
-    <h1 class="text-center">Medicine Records</h1>
+    <h1 class="text-center">Medicine Receipts</h1>
 </div>
 <div class="container" style="margin-top: 21px;">
     <div class="row">
@@ -12,7 +12,6 @@
             <div class="input-group"><span class="input-group-text">Search</span><input class="form-control" type="text"><button class="btn btn-primary" type="button">Search Item</button></div>
         </div> *@
         <div class="col d-flex justify-content-between">
-            <Button Color="Color.Primary" Clicked="@ShowModal">Add Medicine</Button>
             <Button Color="Color.Success" Type="ButtonType.Link" To="/bhw/inventory">Inventory</Button>
         </div>
     </div>
@@ -25,129 +24,69 @@
                             <thead>
                                 <tr>
                                     <th>ID No.</th>
-                                    <th>Medicine Name</th>
-                                    <th>Description</th>
-                                    <th>Quality</th>
-                                    <th>Stock</th>
-                                    <th>Expiration Date</th>
-                                    <th>Release Date</th>
+                                    <th>Resident Name</th>
+                                    <th>Medicine</th>
+                                    <th>Quantity</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(ResidentMedicineModel medicine in residentMedicines){
-                                    @if (context.isArchived(medicine))
-                                    {
-                                        <MedicineRow ID="@medicine.GetID()"
-                                                     MedicineName="@medicine.GetMedicineName()"
-                                                     MedicineDescription="@medicine.GetDescription()"
-                                                     Quality="@medicine.GetQuality()"
-                                                     Stock="@medicine.GetStock()"
-                                                     ExpirationDate="@medicine.GetExpirationDate()"
-                                                     ReleaseDate="@medicine.GetReleaseDate()" />
-                                    }
+                                @foreach (MedicineReceiptModel receipt in receipts)
+                                {
+                                    ResidentModel resident = residents.Find(e => e != null && e.GetResidentID() == receipt.GetResidentID());
+                                    ResidentMedicineModel medicine = medicines.Find(e => e != null && e.GetID() == receipt.GetMedicineID());
+
+                                    <tr>
+                                        <td>@receipt.GetID()</td>
+                                        <td>
+                                            @if (resident != null)
+                                            {
+                                                @($"{resident.GetResidentFirstName()} {resident.GetResidentLastName()}")
+                                            }
+                                            else
+                                            {
+                                                <span>Resident Not Found</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (medicine != null)
+                                            {
+                                                @medicine.GetMedicineName()
+                                            }
+                                            else
+                                            {
+                                                <span>Medicine Not Found</span>
+                                            }
+                                        </td>
+                                        <td>@receipt.GetQuantity()</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
-                @* <div class="card-footer">
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0 justify-content-center">
-                            <li class="page-item"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-                        </ul>
-                    </nav>
-                </div> *@
             </div>
         </div>
     </div>
-    <Modal @ref="@AddMedicineForm">
-        <ModalContent Centered>
-            <ModalHeader>
-                <ModalTitle>
-                    Add Medicine Record
-                </ModalTitle>
-            </ModalHeader>
-            <ModalBody>
-                <Field>
-                    <FieldLabel>
-                        Medicine Name
-                    </FieldLabel>
-                    <TextEdit Placeholder="Ex. Paracetamol" @bind-Text="@newMedicine.MedicineName" />
-                </Field>
-
-                <Field>
-                    <FieldLabel>
-                        Medicine Description
-                    </FieldLabel>
-                    <TextEdit Placeholder="Ex. For Dry Throat and Coughs" @bind-Text="@newMedicine.Description"/>
-                </Field>
-
-                <Field>
-                    <FieldLabel>
-                        Medicine Quality
-                    </FieldLabel>
-                    <NumericEdit TValue="int" @bind-Value="@newMedicine.Quality"/>
-                </Field>
-
-                <Field>
-                    <FieldLabel>
-                        Medicine Expiration Date
-                    </FieldLabel>
-                    <TextEdit Placeholder="mm/yyyy" @bind-Text="@newMedicine.ExpirationDate"/>
-                </Field>
-
-                <Field>
-                    <FieldLabel>
-                        Medicine Release Date
-                    </FieldLabel>
-                    <TextEdit Placeholder="mm/dd/yyyy" @bind-Text="@newMedicine.ReleaseDate"/>
-                </Field>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
-                <Button Color="Color.Primary" Clicked="@AddMedicine">Save Changes</Button>
-            </ModalFooter>
-        </ModalContent>
-    </Modal>
 </div>
 
 @code {
-    public List<ResidentMedicineModel> residentMedicines { get; set; } = new List<ResidentMedicineModel>();
-    ResidentMedicineModel newMedicine = new ResidentMedicineModel();
-    Modal AddMedicineForm = new Modal();
+    public List<MedicineReceiptModel> receipts { get; set; } = new List<MedicineReceiptModel>();
+    public List<ResidentModel> residents { get; set; } = new List<ResidentModel>();
+    public List<ResidentMedicineModel> medicines { get; set; } = new List<ResidentMedicineModel>();
 
     protected override void OnInitialized()
     {
-        residentMedicines = context.GetMedicines();
+        receipts = context.GetMedicineReceipt();
+        residents = context.GetResidents();
+        medicines = context.GetMedicines();
     }
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            residentMedicines = context.GetMedicines();
+            receipts = context.GetMedicineReceipt();
+            residents = context.GetResidents();
+            medicines = context.GetMedicines();
         }
-    }
-    private Task ShowModal()
-    {
-        return AddMedicineForm.Show();
-    }
-    private void HideModal()
-    {
-        newMedicine.MedicineName = "";
-        newMedicine.Description = "";
-        newMedicine.Quality = 0;
-        newMedicine.ExpirationDate = "";
-        newMedicine.ReleaseDate = "";
-        AddMedicineForm.Hide();
-    }
-    private void AddMedicine()
-    {
-        context.AddMedicine(newMedicine);
-        HideModal();
-        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }

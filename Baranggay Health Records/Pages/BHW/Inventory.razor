@@ -26,11 +26,12 @@
 </div> *@
 <div class="container" style="margin-top: 21px;">
     <div class="row">
-        <div class="col-lg-10 d-lg-flex align-items-lg-center">
+        <div class="col d-lg-flex align-items-lg-center">
             @* <div class="input-group"><span class="input-group-text">Search</span><input class="form-control" type="text">
               <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
             </div> *@
             <div class="col d-flex justify-content-between">
+                <Button Color="Color.Primary" Clicked="@ShowMedicineModal">Add Medicine</Button>
                 <Button Color="Color.Primary" Clicked="@ShowModal">Update Stock</Button>
             </div>
         </div>
@@ -46,7 +47,6 @@
                                     <th>ID No.</th>
                                     <th>Medicine Name</th>
                                     <th>Description</th>
-                                    <th>Quality</th>
                                     <th>Stock</th>
                                     <th>Expiration Date</th>
                                     <th>Release Date</th>
@@ -61,7 +61,6 @@
                                         <MedicineRow ID="@medicine.GetID()"
                                                      MedicineName="@medicine.GetMedicineName()"
                                                      MedicineDescription="@medicine.GetDescription()"
-                                                     Quality="@medicine.GetQuality()"
                                                      Stock="@medicine.GetStock()"
                                                      ExpirationDate="@medicine.GetExpirationDate()"
                                                      ReleaseDate="@medicine.GetReleaseDate()" 
@@ -129,6 +128,56 @@
             </ModalFooter>
         </ModalContent>
     </Modal>
+
+    <Modal @ref="@AddMedicineForm">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>
+                    Add Medicine Record
+                </ModalTitle>
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>
+                        Medicine Name
+                    </FieldLabel>
+                    <TextEdit Placeholder="Ex. Paracetamol" @bind-Text="@newMedicine.MedicineName" />
+                </Field>
+
+                <Field>
+                    <FieldLabel>
+                        Medicine Description
+                    </FieldLabel>
+                    <TextEdit Placeholder="Ex. For Dry Throat and Coughs" @bind-Text="@newMedicine.Description" />
+                </Field>
+
+                <Field>
+                    <FieldLabel>
+                        Medicine Stock
+                    </FieldLabel>
+                    <NumericEdit TValue="int" @bind-Value="@newMedicine.Stock" />
+                </Field>
+
+                <Field>
+                    <FieldLabel>
+                        Medicine Expiration Date
+                    </FieldLabel>
+                    <TextEdit Placeholder="mm/yyyy" @bind-Text="@newMedicine.ExpirationDate" />
+                </Field>
+
+                <Field>
+                    <FieldLabel>
+                        Medicine Release Date
+                    </FieldLabel>
+                    <TextEdit Placeholder="mm/dd/yyyy" @bind-Text="@newMedicine.ReleaseDate" />
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@HideMedicineModal">Close</Button>
+                <Button Color="Color.Primary" Clicked="@AddMedicine">Save Changes</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
 </div>
 
 @code {
@@ -161,6 +210,30 @@
     private void UpdateMedicine()
     {
         context.UpdateMedicineStock(residentMedicine.ID, newStock);
+        HideModal();
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+    Modal AddMedicineForm = new Modal();
+    ResidentMedicineModel newMedicine = new ResidentMedicineModel();
+
+    private Task ShowMedicineModal()
+    {
+        return AddMedicineForm.Show();
+    }
+    private void HideMedicineModal()
+    {
+        newMedicine.MedicineName = "";
+        newMedicine.Description = "";
+        newMedicine.Quality = 0;
+        newMedicine.ExpirationDate = "";
+        newMedicine.ReleaseDate = "";
+        AddMedicineForm.Hide();
+    }
+
+    private void AddMedicine()
+    {
+        context.AddMedicine(newMedicine);
         HideModal();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }

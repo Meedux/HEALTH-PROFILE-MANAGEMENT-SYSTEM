@@ -18,6 +18,7 @@
                     }
                     else
                     {
+                        <Button Color="Color.Primary" Class="mr-3" Clicked="@ShowMedicineModal">Medicine</Button>
                         <a class="btn btn-primary" href="/bhw/resident/@ID?isEdit=true">Edit</a>
                     }
                 </div>
@@ -331,8 +332,46 @@
     </div>
 </div>
 
+<Modal @ref="@MedicineForm">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>
+                Medicine
+            </ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>
+                    Medicine
+                </FieldLabel>
+                <Select TValue="int" @bind-SelectedValue="medicineId" @onchange="GetMedicineID" Class="form-control">
+                    <SelectItem value="@none">None</SelectItem>
+                    @foreach(ResidentMedicineModel medicine in medicines)
+                    {
+                        <SelectItem value="@medicine.ID">@medicine.MedicineName</SelectItem>
+                    }
+                </Select>
+            </Field>
+
+            @if(medicineId != 0)
+            {
+                <Field>
+                    <FieldLabel>
+                        Quantity
+                    </FieldLabel>
+                    <NumericEdit TValue="int" @bind-Value="@quantity"/>
+                </Field>   
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideMedicineModal">Close</Button>
+            <Button Color="Color.Primary" Clicked="@AddMedicineReceipt" Disabled="(medicineId != 0 && quantity != 0) ? false : true">Save Changes</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 @code {
-    [Parameter] public int? ID { get; set; } = 0;
+    [Parameter] public int ID { get; set; } = 0;
 
     [Parameter]
     [SupplyParameterFromQuery]
@@ -364,7 +403,7 @@
     String bloodPressure    {get; set;} = "";
     int id_no { get; set; } = 0;
 
-    string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+    string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7"};
     String edited_firstName { get; set; } = "";
     String edited_middleName { get; set; } = "";
     String edited_lastName { get; set; } = "";
@@ -391,6 +430,11 @@
     String edited_bloodPressure { get; set; } = "";
     int edited_id_no = 0;
 
+    List<ResidentMedicineModel> medicines = new List<ResidentMedicineModel>();
+    int medicineId = 0;
+    int quantity = 0;
+    int none = 0;
+
     void ChangePurok(ChangeEventArgs args)
     {
         var selectedValue = Convert.ToString(args.Value);
@@ -413,6 +457,8 @@
         ResidentModel resident = context.GetResident(ID);
         HouseholdModel household = context.GetHousehold(ID);
         ResidentHealthStatusModel RHS = context.GetResidentHealthStatus(ID);
+
+        medicines = context.GetMedicines();
 
 
         //Fill up the Resident Details
@@ -488,6 +534,7 @@
             HouseholdModel household = context.GetHousehold(ID);
             ResidentHealthStatusModel RHS = context.GetResidentHealthStatus(ID);
 
+            medicines = context.GetMedicines();
 
             //Fill up the Resident Details
             firstName = resident.GetResidentFirstName();
@@ -589,5 +636,40 @@
         StateHasChanged();
         NavigationManager.NavigateTo($"/bhw/resident/{ID}", forceLoad: true);
 
+    }
+
+    Modal MedicineForm = new Modal();
+
+    private Task ShowMedicineModal()
+    {
+        return MedicineForm.Show();
+    }
+
+    private void HideMedicineModal()
+    {
+
+        MedicineForm.Hide();
+    }
+
+    private void AddMedicineReceipt()
+    {
+        MedicineReceiptModel newReceipt = new MedicineReceiptModel();
+
+        newReceipt.residentId = ID;
+        newReceipt.medicineId = medicineId;
+        newReceipt.quantity = quantity;
+
+        context.AddReceipt(newReceipt);
+
+        medicineId = 0;
+        quantity = 0;
+
+        NavigationManager.NavigateTo("/bhw/medicine-record", forceLoad: true);
+    }
+
+    void GetMedicineID(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToInt32(args.Value);
+        medicineId = selectedValue;
     }
 }

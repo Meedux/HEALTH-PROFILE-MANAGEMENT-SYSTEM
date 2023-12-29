@@ -43,25 +43,30 @@
                                     {
                                         @if(res.GetID() == rhs.ResidentId)
                                         {
-                                            @if (context.isArchived(res))
+                                            @if(res.GetPurok() == Purok)
                                             {
-                                                @if (context.isArchived(rhs))
+                                                @if (context.isArchived(res))
                                                 {
-                                                    @if (!context.isIllnessNone(rhs))
+                                                    @if (context.isArchived(rhs))
                                                     {
-                                                        <HealthTableRow ID="@res.GetID()"
-                                                        Name="@res.GetResidentFirstName()"
-                                                        BirthDate="@res.GetResidentDOB()"
-                                                        Age="@res.GetResidentAge()"
-                                                        Gender="@res.GetResidentGender()"
-                                                        Height="@rhs.GetHeight()"
-                                                        Weight="@rhs.GetWeight()"
-                                                        BloodPressure="@rhs.GetBloodPressure()"
-                                                        Temperature="@rhs.GetTemperature()"
-                                                        Date="@rhs.GetDiagnosedDate()" />
+                                                        Console.WriteLine(res.GetPurok());
+                                                        @if (!context.isIllnessNone(rhs))
+                                                        {
+                                                            <HealthTableRow ID="@res.GetID()"
+                                                            Name="@res.GetResidentFirstName()"
+                                                            BirthDate="@res.GetResidentDOB()"
+                                                            Age="@res.GetResidentAge()"
+                                                            Gender="@res.GetResidentGender()"
+                                                            Height="@rhs.GetHeight()"
+                                                            Weight="@rhs.GetWeight()"
+                                                            BloodPressure="@rhs.GetBloodPressure()"
+                                                            Temperature="@rhs.GetTemperature()"
+                                                            Date="@rhs.GetDiagnosedDate()" />
+                                                        }
                                                     }
                                                 }
                                             }
+
                                         }
                                     }
                                 }

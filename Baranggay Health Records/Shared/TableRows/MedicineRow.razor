@@ -5,7 +5,6 @@
     <td class="text-truncate" style="max-width: 200px;">@ID</td>
     <td class="text-truncate" style="max-width: 200px;">@MedicineName</td>
     <td>@MedicineDescription</td>
-    <td class="text-truncate" style="max-width: 200px;">@Quality</td>
     <td class="text-truncate" style="max-width: 200px;">@Stock</td>
     <td>@ExpirationDate</td>
     <td>@ReleaseDate</td>
@@ -35,9 +34,6 @@
 
     [Parameter]
     public String? MedicineDescription { get; set; }
-
-    [Parameter]
-    public int? Quality { get; set; }
 
     [Parameter]
     public int? Stock { get; set; }

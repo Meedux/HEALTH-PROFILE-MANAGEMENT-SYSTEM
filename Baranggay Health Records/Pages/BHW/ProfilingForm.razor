@@ -18,9 +18,41 @@
             <div class="col"><label class="form-label">Suffix</label><input @bind="suffix" class="form-control" type="text" placeholder="Ex. Smith" required=""></div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0">
-                <label class="form-label">Date of Birth</label>
-                <input @bind="dob" class="form-control" type="text" placeholder="mm/dd/yyyy" required="">
+            <div class="col-md-4 offset-md-0">
+                <label class="form-label">Year</label>
+                <div class="input-group">
+                    <Select TValue="string" @bind-Value="dobMonth" @onchange="ChangeMonth" Class="form-control">
+                        <SelectItem Value="String.Empty">Select Birth Month</SelectItem>
+                        @foreach (var month in months)
+                        {
+                            <SelectItem Value="@month">@month</SelectItem>
+                        }
+                    </Select>
+                </div>
+            </div>
+            <div class="col-xl-4 offset-xl-0">
+                <label class="form-label">Day</label>
+                <div class="input-group">
+                    <Select TValue="string" @bind-Value="dobDay" @onchange="ChangeDay" Class="form-control">
+                        <SelectItem Value="String.Empty">Select Birth Day</SelectItem>
+                        @foreach (var day in numbersString)
+                        {
+                            <SelectItem Value="@day">@day</SelectItem>
+                        }
+                    </Select>
+                </div>
+            </div>
+            <div class="col-xl-4 offset-xl-0">
+                <label class="form-label">Month</label>
+                <div class="input-group">
+                    <Select TValue="string" @bind-Value="dobYear" @onchange="ChangeYear" Class="form-control">
+                        <SelectItem Value="String.Empty">Select Birth Year</SelectItem>
+                        @foreach (var year in years)
+                        {
+                            <SelectItem Value="@year">@year</SelectItem>
+                        }
+                    </Select>
+                </div>
             </div>
         </div>
         
@@ -177,8 +209,42 @@
     String medicine = "";
     int id_no = 0;
 
+    string dobDay = "";
+    string dobMonth = "";
+    string dobYear = "";
 
-    string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
+    string[] months = {
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+    };
+
+    // Array of strings from 1 to 30
+    string[] numbersString = new string[30];
+    string[] years = new string[44];
+
+    void ChangeMonth(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToString(args.Value);
+        dobMonth = (selectedValue != null) ? selectedValue : "";
+        Console.WriteLine($"Selected Month: {dobMonth}");
+    }
+
+    void ChangeDay(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToString(args.Value);
+        dobDay = (selectedValue != null) ? selectedValue : "";
+        Console.WriteLine($"Selected Day: {dobDay}");
+    }
+
+    void ChangeYear(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToString(args.Value);
+        dobYear = (selectedValue != null) ? selectedValue : "";
+        Console.WriteLine($"Selected Year: {dobYear}");
+    }
+
+
+    string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7"};
 
     public List<IllnessModel> Illnesses = new List<IllnessModel>();
 
@@ -199,6 +265,15 @@
     protected override void OnInitialized()
     {
         Illnesses = context.GetIllnesses();
+        for (int i = 0; i < 30; i++)
+        {
+            numbersString[i] = (i + 1).ToString();
+        }
+
+        for (int i = 0; i < 44; i++)
+        {
+            years[i] = (1980 + i).ToString();
+        }
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -206,6 +281,15 @@
         if (firstRender)
         {
             Illnesses = context.GetIllnesses();
+            for (int i = 0; i < 30; i++)
+            {
+                numbersString[i] = (i + 1).ToString();
+            }
+
+            for (int i = 0; i < 44; i++)
+            {
+                years[i] = (1980 + i).ToString();
+            }
         }
     }
 

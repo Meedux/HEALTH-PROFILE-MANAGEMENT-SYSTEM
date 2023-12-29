@@ -73,7 +73,7 @@
 
     private void DeleteData()
     {
-        context.DeleteHousehold(ID);
+        context.DeleteResident(ID);
         StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
