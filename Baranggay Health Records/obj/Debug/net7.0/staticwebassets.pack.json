@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\Files\\ResidentHealthStatusList.docx",
+      "PackagePath": "staticwebassets\\Files\\ResidentHealthStatusList.docx"
+    },
+    {
       "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
     },
@@ -13,8 +17,8 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\img\\logo.jpg",
-      "PackagePath": "staticwebassets\\img\\logo.jpg"
+      "Id": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\logo.jpg",
+      "PackagePath": "staticwebassets\\logo.jpg"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.Baranggay Health Records.Microsoft.AspNetCore.StaticWebAssets.props",

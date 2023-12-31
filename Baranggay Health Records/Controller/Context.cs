@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.JSInterop;
 
+
 namespace Baranggay_Health_Records.Controller
 {
     public class Context
@@ -1821,10 +1822,12 @@ namespace Baranggay_Health_Records.Controller
                 headerRow.Append(
                     CreateHeaderCell("ID"),
                     CreateHeaderCell("Resident Name"),
+                    CreateHeaderCell("Birthday"),
                     CreateHeaderCell("Age"),
-                    CreateHeaderCell("Temperature"),
-                    CreateHeaderCell("Blood Pressure"),
-                    CreateHeaderCell("Type of Illness")
+                    CreateHeaderCell("Gender"),
+                    CreateHeaderCell("TypeofIllness"),
+                    CreateHeaderCell("Purok"),
+                    CreateHeaderCell("Diagnosed Date")
                 );
                 table.AppendChild(headerRow);
 
@@ -1844,10 +1847,12 @@ namespace Baranggay_Health_Records.Controller
                         dataRow.Append(
                             CreateTableCell(rh.GetID().ToString()),
                             CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
-                            CreateTableCell(resident.Age.ToString()),
-                            CreateTableCell(rh.GetTemperature()),
-                            CreateTableCell(resident.GetHouseholdNumber().ToString()),
-                            CreateTableCell(illness.GetName())
+                            CreateTableCell(resident.GetResidentDOB()),
+                            CreateTableCell(resident.GetResidentAge().ToString()),
+                            CreateTableCell(resident.GetResidentGender()),
+                            CreateTableCell(illness.GetName()),
+                            CreateTableCell(resident.GetPurok()),
+                            CreateTableCell(rh.GetDiagnosedDate())
                         );
                         table.AppendChild(dataRow);
                     }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pV17uY6e48MG/UURPro4coFEjBgDubau0QJHUoT6KyI=",
+  "Hash": "Av0Dwt0wIpyfsZNUmrIy+pVYMHfTTcCezjJvXyLeGgU=",
   "Source": "Baranggay Health Records",
   "BasePath": "_content/Baranggay Health Records",
   "Mode": "Default",
@@ -748,12 +748,12 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\img\\logo.jpg",
+      "Identity": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\Files\\ResidentHealthStatusList.docx",
       "SourceId": "Baranggay Health Records",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\",
       "BasePath": "_content/Baranggay Health Records",
-      "RelativePath": "img/logo.jpg",
+      "RelativePath": "Files/ResidentHealthStatusList.docx",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -762,7 +762,24 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\img\\logo.jpg"
+      "OriginalItemSpec": "wwwroot\\Files\\ResidentHealthStatusList.docx"
+    },
+    {
+      "Identity": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\logo.jpg",
+      "SourceId": "Baranggay Health Records",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\herre\\Documents\\Blazor\\Baranggay Health Records\\Baranggay Health Records\\wwwroot\\",
+      "BasePath": "_content/Baranggay Health Records",
+      "RelativePath": "logo.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logo.jpg"
     }
   ]
 }

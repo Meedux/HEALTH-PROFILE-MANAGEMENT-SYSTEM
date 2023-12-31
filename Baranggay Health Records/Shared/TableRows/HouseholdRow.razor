@@ -3,9 +3,7 @@
 
 <tr>
     <td class="text-truncate" style="max-width: 200px;">@ID</td>
-    <td class="text-truncate" style="max-width: 200px;">@Lastname</td>
-    <td>@Firstname</td>
-    <td class="text-truncate" style="max-width: 200px;">@Middlename</td>
+    <td class="text-truncate" style="max-width: 200px;">@HOF</td>
     <td class="text-truncate" style="max-width: 200px;">@Member</td>
     <td>@Purok</td>
     <td class="text-center">
@@ -46,13 +44,7 @@
     public int ID { get; set; }
 
     [Parameter]
-    public String? Lastname { get; set; }
-
-    [Parameter]
-    public String? Firstname { get; set; }
-
-    [Parameter]
-    public String? Middlename { get; set; }
+    public String? HOF { get; set; }
 
     [Parameter]
     public int Member { get; set; }
@@ -65,7 +57,7 @@
 
     private void ArchiveData()
     {
-        string household = "Mr/Ms. " + Lastname + "'s Household";
+        string household = "Mr/Ms. " + HOF + "'s Household";
         context.ArchiveData(household, "household", ID);
         StateHasChanged();
     }

@@ -3,7 +3,6 @@
 <tr>
     <td class="text-truncate" style="max-width: 200px;">@ID</td>
     <td class="text-truncate" style="max-width: 200px;">@IllnessName</td>
-    <td class="text-truncate" style="max-width: 200px;">@RecommendedMedicine</td>
     <td>@Occurence</td>
     <td>
         <a href="/bhw/illness/@ID" class="btn btn-primary">
@@ -23,9 +22,6 @@
 
     [Parameter]
     public String? IllnessName { get; set; }
-
-    [Parameter]
-    public String? RecommendedMedicine { get; set; }
 
     public int Occurence { get; set; }
 

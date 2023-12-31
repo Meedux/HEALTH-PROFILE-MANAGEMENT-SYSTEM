@@ -32,16 +32,13 @@
                                 <tr>
                                     <th>Illness ID #</th>
                                     <th>Illness Name</th>
-                                    <th>Recommended Medicine</th>
-                                    <th>Occurence</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (IllnessModel i in ill)
                                 {
                                     <IllnessRow id="@i.GetID()"
-                                    IllnessName="@i.GetName()"
-                                    RecommendedMedicine="@i.GetRecommendedMedicine()"/>
+                                    IllnessName="@i.GetName()"/>
                                 }
                            </tbody>
                         </table>
@@ -71,17 +68,6 @@
                     <FieldLabel>Name</FieldLabel>
                     <TextEdit @bind-Text="@newIllness.IllnessName" Placeholder="Enter name..." />
                 </Field>
-
-                <Field>
-                    <FieldLabel>Recommended Medicine</FieldLabel>
-                    <Select @bind-SelectedValue="@newIllness.MedicineID" TValue="int">
-                        <SelectItem value="@none">None</SelectItem>
-                        @foreach (var medicine in medicines)
-                        {
-                            <SelectItem value="@medicine.ID">@medicine.MedicineName</SelectItem>
-                        }
-                    </Select>
-                </Field>
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
@@ -94,7 +80,6 @@
 @code {
     public List<IllnessModel> ill { get; set; } = new List<IllnessModel>();
     public IllnessModel newIllness = new IllnessModel();
-    List<ResidentMedicineModel> medicines = new List<ResidentMedicineModel>();
 
     int none = 0;
 
@@ -102,7 +87,6 @@
     protected override void OnInitialized()
     {
         ill = context.GetIllnesses();
-        medicines = context.GetMedicines();
     }
 
 
@@ -111,7 +95,6 @@
         if (firstRender)
         {
             ill = context.GetIllnesses();
-            medicines = context.GetMedicines();
             StateHasChanged();
         }
     }
@@ -133,15 +116,6 @@
 
     private void SaveChanges()
     {
-        var selectedMedicine = medicines.FirstOrDefault(m => m.ID == newIllness.MedicineID);
-        if (selectedMedicine != null)
-        {
-            newIllness.RecommendedMedicine = selectedMedicine.MedicineName;
-        }else
-        {
-            newIllness.RecommendedMedicine = "None";    
-        }
-
         context.AddIllness(newIllness);
         HideModal();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);

@@ -32,9 +32,7 @@
                             <thead>
                                 <tr>
                                     <th>ID No.</th>
-                                    <th>Last Name</th>
-                                    <th>First Name</th>
-                                    <th>Middle Name</th>
+                                    <th>Head of Family Name</th>
                                     <th>Member</th>
                                     <th>Purok</th>
                                     <th></th>
@@ -57,9 +55,7 @@
                                                     @if (context.isArchived(household))
                                                     {
                                                         <HouseholdRow ID="@household.GetID()"
-                                                                      Lastname="@household.GetResidentLastName()"
-                                                                      Firstname="@household.GetResidentFirstName()"
-                                                                      Middlename="@household.GetResidentMiddleName()"
+                                                                      HOF="@household1.GetHeadofFamily()"
                                                                       Member="@GetFamilyMemberCount(household.GetID())"
                                                                       Purok="@household.GetPurok()"
                                                                       stringurl="@stringurl" />

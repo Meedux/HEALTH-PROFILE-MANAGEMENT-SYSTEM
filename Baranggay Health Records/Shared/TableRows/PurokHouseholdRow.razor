@@ -3,9 +3,7 @@
 
 <tr>
     <td class="text-truncate" style="max-width: 200px;">@ID</td>
-    <td class="text-truncate" style="max-width: 200px;">@LastName</td>
-    <td>@FirstName</td>
-    <td class="text-truncate" style="max-width: 200px;">@MiddleName</td>
+    <td class="text-truncate" style="max-width: 200px;">@HOF</td>
     <td>@Members</td>
     <td class="text-center">
         <a href="/secretary/household/details/@ID">
@@ -41,16 +39,14 @@
 
 @code {
     [Parameter] public int ID { get; set; }
-    [Parameter] public String? LastName { get; set; }
-    [Parameter] public String? FirstName { get; set; }
-    [Parameter] public String? MiddleName { get; set; }
+    [Parameter] public String? HOF { get; set; }
     [Parameter] public int? Members { get; set; }
     [Parameter]
     public String? stringurl { get; set; }
 
     private void ArchiveData()
     {
-        string household = "Mr/Ms. " + LastName + "'s Household";
+        string household = "Mr/Ms. " + HOF + "'s Household";
         context.ArchiveData(household, "household", ID);
         StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);

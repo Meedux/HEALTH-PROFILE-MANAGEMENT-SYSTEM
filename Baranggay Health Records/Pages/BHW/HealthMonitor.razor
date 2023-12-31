@@ -52,7 +52,7 @@
                                                 ResidentHealthStatusModel temp_two = rhs;
                                                 @if (context.isArchived(rhs))
                                                 {
-                                                    @if (context.isIllnessNone(rhs))
+                                                    @if (!context.isIllnessNone(rhs))
                                                     {
                                                         <HealthMonitorRow 
                                                                         ID="@res.GetID()"
