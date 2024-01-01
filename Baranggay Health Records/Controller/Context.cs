@@ -613,8 +613,8 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = @"
-                INSERT INTO Resident (FirstName, MiddleName, LastName, Suffix, Dob, Age, Gender, Civil_status, Religion, Occupation, Ed_attain, Household_number, Purok, IsPWD, IsSenior, IDNo)
-                VALUES (@FirstName, @MiddleName, @LastName, @Suffix, @Dob, @Age, @Gender, @Civil_status, @Religion, @Occupation, @Ed_attain, @Household_number, @Purok, @IsPWD, @IsSenior, @IDNo);
+                INSERT INTO Resident (FirstName, MiddleName, LastName, Suffix, Dob, Age, Gender, Civil_status, Religion, Occupation, Ed_attain, Household_number, Purok, IsPWD, IsSenior, IDNo, statusId)
+                VALUES (@FirstName, @MiddleName, @LastName, @Suffix, @Dob, @Age, @Gender, @Civil_status, @Religion, @Occupation, @Ed_attain, @Household_number, @Purok, @IsPWD, @IsSenior, @IDNo, @statusId);
                 SELECT LAST_INSERT_ID();";
 
                     int newResidentId = connection.ExecuteScalar<int>(query, resident);
@@ -739,7 +739,7 @@ namespace Baranggay_Health_Records.Controller
                     Suffix = @Suffix, Dob = @Dob, Age = @Age, Gender = @Gender,
                     Civil_status = @Civil_status, Religion = @Religion, Occupation = @Occupation,
                     Ed_attain = @Ed_attain, Household_number = @Household_number,
-                    Purok = @Purok, IsPWD = @IsPWD, IsSenior = @IsSenior, IDNo = @IDNo
+                    Purok = @Purok, IsPWD = @IsPWD, IsSenior = @IsSenior, IDNo = @IDNo, statusId = @statusId
                 WHERE ID = @ID;
             ";
 
@@ -761,6 +761,7 @@ namespace Baranggay_Health_Records.Controller
                         model.IsPWD,
                         model.IsSenior,
                         model.IDNo,
+                        model.statusId,
                         ID
                     });
                 }
@@ -2032,7 +2033,58 @@ namespace Baranggay_Health_Records.Controller
                 Console.WriteLine(e);
             }
         }
+
+        public List<Status> GetStatuses()
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var statuses = connection.Query<Status>("SELECT * FROM status").ToList();
+                Console.WriteLine("Fetching Medicine Data");
+                return statuses;
+            }
+        }
+
+        public List<ResidentModel> GetResidentsByStatus(int? id)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var res = connection.Query<ResidentModel>("SELECT * FROM resident WHERE statusId = @id", new { id = id }).ToList();
+                Console.WriteLine("Fetching Medicine Data");
+                return res;
+            }
+        }
+
+        public string GetStatusNameByID(int id)
+        {
+            string? name = "";
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = "SELECT name FROM status WHERE ID = @ID";
+                    name = connection.QuerySingleOrDefault<string>(query, new { ID = id });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return "ERROR";
+            }
+            string temp = (name != null) ? name : "";
+            return temp;
+        }
+        
+        public void AddStatus(String name)
+        {
+
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                connection.Execute("INSERT INTO status (name) VALUES (@name);", new { name = name });
+            }
+        }
     }
+
+    
 }
 
 

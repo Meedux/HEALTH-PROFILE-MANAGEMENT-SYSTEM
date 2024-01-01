@@ -42,6 +42,8 @@ namespace Baranggay_Health_Records.Data
 
         public int IDNo { get; set; }
 
+        public int statusId { get; set; }
+
 
         //Resident Model Queries
 
@@ -123,6 +125,11 @@ namespace Baranggay_Health_Records.Data
         public int GetIDNum()
         {
             return this.IDNo;
+        }
+
+        public int GetStatus()
+        {
+            return this.statusId;
         }
     }
 }

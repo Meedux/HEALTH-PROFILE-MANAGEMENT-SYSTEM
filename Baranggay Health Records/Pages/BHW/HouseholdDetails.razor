@@ -1,6 +1,8 @@
 ﻿@page "/bhw/household/details/{ID:int}"
 @layout BHWLayout
 @inject Context context
+@inject NavigationManager NavigationManager
+
 
 <div class="container text-center" style="margin-top: 90px;margin-bottom: 10px;">
     <h1>Household Details for User @ID</h1>
@@ -96,6 +98,10 @@
             if(house.GetMemberID() == ID)
             {
                 household = house;
+                edited_head = house.GetHeadofFamily();
+                edited_fathersName = house.GetFathersName();
+                edited_mothersName = house.GetMothersName();
+                edited_count = house.GetFamilyCount();
                 break;
             }
         }
@@ -105,7 +111,18 @@
     {
         HouseholdModel householdModel = new HouseholdModel();
 
+        householdModel.HeadofFamily = edited_head;
+        householdModel.FathersName = edited_fathersName;
+        householdModel.MothersName = edited_mothersName;
+        householdModel.FamilyCount = edited_count;
 
+        context.UpdateHousehold(householdModel, ID);
 
+        edited_head = "";
+        edited_count = 0;
+        edited_mothersName = "";
+        edited_fathersName = "";
+
+        NavigationManager.NavigateTo($"/bhw/household/details/{ID}");
     }
 }

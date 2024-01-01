@@ -1,0 +1,157 @@
+﻿@page "/secretary/household/details/{ID:int}"
+@layout SecretaryLayout
+@inject Context context
+@inject NavigationManager NavigationManager
+
+<div class="container text-center" style="margin-top: 90px;margin-bottom: 10px;">
+    <h1>Household Details for User @ID</h1>
+</div>
+<div class="container" style="margin-top: 44px;">
+    <div class="row">
+        <div class="col text-center"><img class="rounded-circle img-fluid" width="300" height="80" src="https://static.thenounproject.com/png/690650-200.png"></div>
+        <div class="col">
+            <div class="row">
+                <div class="col d-flex justify-content-end mb-3">
+                    @if (isEdit)
+                    {
+                        <button class="btn btn-success mr-2" @onclick="UpdateInformation">Update Information</button>
+                        <a class="btn btn-warning" href="/secretary/household/details/@ID">Exit</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" href="/secretary/household/details/@ID?isEdit=true">Edit</a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p style="font-size: 26px;">
+                        <strong>Head of The Family</strong>:
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_head" />
+                        }
+                        else
+                        {
+                            @household.GetHeadofFamily()
+                        }
+                    </p>
+                    <p style="font-size: 26px;">
+                        <strong>Father's Name</strong>:
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_fathersName" />
+                        }
+                        else
+                        {
+                            @household.GetFathersName()
+                        }
+                    </p>
+                    <p style="font-size: 26px;">
+                        <strong>Mother's Name</strong>:
+                        @if (isEdit)
+                        {
+                            <input type="text" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_mothersName" />
+                        }
+                        else
+                        {
+                            @household.GetMothersName()
+                        }
+                    </p>
+                    <p style="font-size: 26px;">
+                        <strong>Members</strong>:
+                        @if (isEdit)
+                        {
+                            <input type="number" style="margin-left: 15px;" class="w-80 form-control" @bind="edited_count" />
+                        }
+                        else
+                        {
+                            @household.GetFamilyCount()
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int ID { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public bool isEdit { get; set; } = false;
+
+    HouseholdModel household = new HouseholdModel();
+
+    public string edited_head { get; set; } = "";
+    public string edited_fathersName { get; set; } = "";
+    public string edited_mothersName { get; set; } = "";
+    public int edited_count { get; set; } = 0;
+
+    protected override void OnInitialized()
+    {
+        List<HouseholdModel> households = new List<HouseholdModel>();
+
+        Console.WriteLine($"Fetching User Data with the ID of {ID}");
+
+        households = context.GetHouseholds();
+
+        foreach (HouseholdModel house in households)
+        {
+            if (house.GetMemberID() == ID)
+            {
+                household = house;
+                edited_head = house.GetHeadofFamily();
+                edited_fathersName = house.GetFathersName();
+                edited_mothersName = house.GetMothersName();
+                edited_count = house.GetFamilyCount();
+                break;
+            }
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            List<HouseholdModel> households = new List<HouseholdModel>();
+
+            Console.WriteLine($"Fetching User Data with the ID of {ID}");
+
+            households = context.GetHouseholds();
+
+            foreach (HouseholdModel house in households)
+            {
+                if (house.GetMemberID() == ID)
+                {
+                    household = house;
+                    edited_head = house.GetHeadofFamily();
+                    edited_fathersName = house.GetFathersName();
+                    edited_mothersName = house.GetMothersName();
+                    edited_count = house.GetFamilyCount();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void UpdateInformation()
+    {
+        HouseholdModel householdModel = new HouseholdModel();
+
+        householdModel.HeadofFamily = edited_head;
+        householdModel.FathersName = edited_fathersName;
+        householdModel.MothersName = edited_mothersName;
+        householdModel.FamilyCount = edited_count;
+
+        context.UpdateHousehold(householdModel, ID);
+
+        edited_head = "";
+        edited_count = 0;
+        edited_mothersName = "";
+        edited_fathersName = "";
+
+        NavigationManager.NavigateTo($"/secretary/household/details/{ID}");
+    }
+}

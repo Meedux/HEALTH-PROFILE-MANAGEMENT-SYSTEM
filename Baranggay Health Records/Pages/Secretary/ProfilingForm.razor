@@ -110,11 +110,17 @@
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Status Type</label><input @bind="status_type" class="form-control" type="text" placeholder="Ex. New Born" required></div>
+            <div class="col-xl-12 offset-xl-0">
+                <label class="form-label">Status Type</label>
+                <Select TValue="int" Placeholder="Select Status...." Class="form-control" @onchange="ChangeStatus">
+                    <SelectItem Value="@none">None</SelectItem>
+                    @foreach (Status dis_status in statuses)
+                    {
+                        <SelectItem Value="@dis_status.id">@dis_status.name</SelectItem>
+                    }
+                </Select>
+            </div>
         </div>
-        @* <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0"><label class="form-label">Civil Status</label><input @bind="civi" class="form-control" type="text" placeholder="Ex. Single"></div>
-        </div> *@
 
         <button type="submit" class="btn btn-success" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;">ADD</button><a class="btn btn-danger" href="/secretary/" style="margin-top: 20px;margin-bottom: 40px;">Cancel</a>
     </form>
@@ -141,6 +147,8 @@
     string purok = "";
     string status_type = "";
     int id_no = 0;
+    int status = 0;
+    int none = 0;
 
     string dobDay = "";
     string dobMonth = "";
@@ -154,6 +162,14 @@
     // Array of strings from 1 to 30
     string[] numbersString = new string[30];
     string[] years = new string[44];
+
+    List<Status> statuses = new List<Status>();
+
+    void ChangeStatus(ChangeEventArgs args)
+    {
+        status = Convert.ToInt32(args.Value);
+        Console.WriteLine($"Selected Status: {status}");
+    }
 
     void ChangeMonth(ChangeEventArgs args)
     {
@@ -194,6 +210,8 @@
         {
             years[i] = (1980 + i).ToString();
         }
+
+        statuses = context.GetStatuses();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -209,6 +227,7 @@
             {
                 years[i] = (1980 + i).ToString();
             }
+            statuses = context.GetStatuses();
         }
     }
 
@@ -233,6 +252,7 @@
         res.Household_number = household_number;
         res.Purok = purok;
         res.IDNo = id_no;
+        res.statusId = status;
 
 
 

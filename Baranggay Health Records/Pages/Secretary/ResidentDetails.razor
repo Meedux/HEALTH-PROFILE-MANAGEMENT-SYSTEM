@@ -220,6 +220,36 @@
                     </p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <p style="font-size: 26px;font-weight: bold;">Status:</p>
+                </div>
+                <div class="col">
+                    <p style="font-size: 26px;">
+                        @if (isEdit)
+                        {
+                            <Select TValue="int" Placeholder="Select Status...." Class="form-control" @onchange="ChangeStatus">
+                                <SelectItem Value="@none">Select Resident Status</SelectItem>
+                                @foreach (Status dis_status in statuses)
+                                {
+                                    <SelectItem Value="@dis_status.id">@dis_status.name</SelectItem>
+                                }
+                            </Select>
+                        }
+                        else
+                        {
+                            @foreach(Status dis_status in statuses)
+                            {
+                                if(status == dis_status.id)
+                                {
+                                    <p>@dis_status.name</p>
+                                }
+                            }
+                        }
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -230,7 +260,7 @@
     [Parameter]
     [SupplyParameterFromQuery]
     public bool isEdit { get; set; } = true;
-
+    int none = 0;
     string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
     String firstName { get; set; } = "";
     String middleName { get; set; } = "";
@@ -251,6 +281,9 @@
     String purok { get; set; } = "";
     int id_no { get; set; } = 0;
 
+    int edited_status;
+    int status;
+
     String edited_firstName { get; set; } = "";
     String edited_middleName { get; set; } = "";
     String edited_lastName { get; set; } = "";
@@ -270,11 +303,19 @@
     String edited_purok { get; set; } = "";
     int edited_id_no { get; set; } = 0;
 
+    private List<Status> statuses = new List<Status>();
+
     void ChangePurok(ChangeEventArgs args)
     {
         var selectedValue = Convert.ToString(args.Value);
         edited_purok = (selectedValue != null) ? selectedValue : "";
         Console.WriteLine($"Selected Purok: {purok}");
+    }
+
+    void ChangeStatus(ChangeEventArgs args)
+    {
+        edited_status = Convert.ToInt32(args.Value);
+        Console.WriteLine($"Selected Status: {edited_status}");
     }
 
     protected override void OnInitialized()
@@ -283,6 +324,7 @@
         ResidentModel resident = context.GetResident(ID);
         HouseholdModel? household = context.GetHousehold(ID);
         ResidentHealthStatusModel? RHS = context.GetResidentHealthStatus(ID);
+        statuses = context.GetStatuses();
 
 
         //Fill up the Resident Details
@@ -299,6 +341,7 @@
         household_number = resident.GetHouseholdNumber();
         purok = resident.GetPurok();
         id_no = resident.GetIDNum();
+        status = resident.GetStatus();
         // status_type = resident.GetResidentCivilStatus();
 
         //Fill up the Household Details
@@ -322,13 +365,15 @@
         edited_household_number = resident.GetHouseholdNumber();
         edited_purok = resident.GetPurok();
         edited_id_no = resident.GetIDNum();
+        edited_status = resident.GetStatus();
 
         //Fill up the Household Details
         edited_fathers_name = household.GetFathersName();
         edited_mothers_name = household.GetMothersName();
         edited_head = household.GetHeadofFamily();
         edited_num_of_fam = household.GetFamilyCount();
-        
+
+
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -338,6 +383,7 @@
             ResidentModel resident = context.GetResident(ID);
             HouseholdModel? household = context.GetHousehold(ID);
             ResidentHealthStatusModel? RHS = context.GetResidentHealthStatus(ID);
+            statuses = context.GetStatuses();
 
 
             //Fill up the Resident Details
@@ -401,6 +447,7 @@
         residentModel.Household_number = edited_household_number;
         residentModel.Purok = edited_purok;
         residentModel.IDNo = edited_id_no;
+        residentModel.statusId = edited_status;
 
         HouseholdModel householdModel = new HouseholdModel();
         householdModel.FathersName = edited_fathers_name;
