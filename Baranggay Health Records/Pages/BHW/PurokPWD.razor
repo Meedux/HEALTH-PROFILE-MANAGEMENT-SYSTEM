@@ -40,7 +40,7 @@
                                 {
                                     @if (context.isArchived(seniors))
                                     {
-                                        if (seniors.isPWD)
+                                        if (seniors.IsPWD)
                                         {
                                             <SeniorCitizenRow ID="@seniors.GetIDNum()"
                                                               LastName="@seniors.GetResidentLastName()"
@@ -85,7 +85,7 @@
 
     private void GenerateRecord()
     {
-        var seniors = Seniors.Where(s => s.isPWD).ToList();
+        var seniors = Seniors.Where(s => s.IsPWD).ToList();
         context.GeneratePWDPurokResident(purok, seniors, JS);
     }
 }

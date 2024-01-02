@@ -16,13 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\BHW\PurokPWD.razor" />
     <Content Remove="Shared\Navbar.razor" />
     <Content Remove="Shared\TableRows\InventoryMedicineRow.razor" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\BHW\PurokPWD.razor" />
     <None Include="Shared\Navbar.razor" />
     <None Include="Shared\TableRows\InventoryMedicineRow.razor" />
   </ItemGroup>
@@ -37,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\BHW\PurokPWD.razor" />
     <_ContentIncludedByDefault Remove="Shared\TableRows\InventoryMedicineRow.razor" />
     <_ContentIncludedByDefault Remove="Shared\TableRows\ResidentRow.razor" />
   </ItemGroup>
@@ -53,10 +50,6 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Shared\TableRows\ResidentRow.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\BHW\PurokPWD.razor" />
   </ItemGroup>
 
 </Project>
