@@ -19,7 +19,7 @@
                 @:<div class="row" style="margin-bottom: 26px;">
             }
 
-            <div class="col">
+            <div class="col" style="margin-bottom: 26px;">
                 <PurokHealthCard Purok="@purok" Name="@ill[i].GetName()" ID="@ill[i].GetID()" />
             </div>
 
@@ -31,12 +31,16 @@
     }
 
     
-    <div class="row" style="margin-bottom: 26px;">
+    <div class="row" style="margin-bottom: 26px;margin-top: 20px;">
         <div class="col">
             <PurokDataCard Purok="@purok" Name="Households" Count="@HouseholdCount" URL="@householdUrl" />
+            <br/>
+            <PurokDataCard Purok="@purok" Name="PWD" Count="@PWDCount" URL="@pwdUrl" />
         </div>
         <div class="col">
             <PurokDataCard Purok="@purok" Name="Senior Citizen" Count="@SeniorCitizenCount" URL="@seniorUrl" />
+            <br/>
+            <PurokDataCard Purok="@purok" Name="Prenates" Count="@PrenateCount" URL="@prenateUrl" />
         </div>
     </div>
 </div>
@@ -45,9 +49,13 @@
     [Parameter] public string purok { get; set; } = "";
     public int HouseholdCount { get; set; } = 0;
     public int SeniorCitizenCount { get; set; } = 0;
+    public int PWDCount { get; set; } = 0;
+    public int PrenateCount { get; set; } = 0;
 
     string householdUrl = "";
     string seniorUrl = "";
+    string pwdUrl = "";
+    string prenateUrl = "";
 
     List<IllnessModel> ill = new List<IllnessModel>();
 
@@ -56,9 +64,13 @@
         ill = context.GetIllnesses();
         HouseholdCount = context.GetPurokHouseholdCount(purok);
         SeniorCitizenCount = context.GetPurokSeniorCitizenCount(purok);
+        PWDCount = context.GetPWDCount(purok);
+        PrenateCount = context.GetPrenateCount(purok);
 
         householdUrl = $"bhw/{purok}/household";
         seniorUrl = $"bhw/{purok}/senior-citizen";
+        pwdUrl = $"bhw/{purok}/pwd";
+        prenateUrl = $"bhw/{purok}/prenate";
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -66,9 +78,11 @@
         if (firstRender)
         {
             ill = context.GetIllnesses();
-            HouseholdCount = context.GetHouseholdCount();
-            SeniorCitizenCount = context.GetSeniorCitizenCount();
-        }
+            HouseholdCount = context.GetPurokHouseholdCount(purok);
+            SeniorCitizenCount = context.GetPurokSeniorCitizenCount(purok);
+            PWDCount = context.GetPWDCount(purok);
+            PrenateCount = context.GetPrenateCount(purok);
+            StateHasChanged();
         }
     }
 }

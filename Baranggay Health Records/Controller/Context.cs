@@ -585,26 +585,6 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public int GetDewormingCount()
-        {
-            return 200;
-        }
-
-        public int GetPrenatalCount()
-        {
-            return 200;
-        }
-
-        public int GetHouseholdCount()
-        {
-            return 200;
-        }
-
-        public int GetSeniorCitizenCount()
-        {
-            return 200;
-        }
-
 
         public int CreateResident(ResidentModel resident)
         {
@@ -1428,6 +1408,328 @@ namespace Baranggay_Health_Records.Controller
             await DownloadFileFromStream(fileName, file, JS);
         }
 
+        public async void GeneratePrenatePurokResident(string? purok, List<ResidentModel> residents, IJSRuntime JS)
+        {
+            string fileName = $"Purok {purok} Prenate.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = $@"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Purok {purok} Prenate Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
+
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Full Name"),
+                    CreateHeaderCell("Age"),
+                    CreateHeaderCell("Date of Birth"),
+                    CreateHeaderCell("Household Number"),
+                    CreateHeaderCell("Purok")
+                );
+                table.AppendChild(headerRow);
+
+                // Populate table with resident data
+                Console.WriteLine(residents.Count);
+                foreach (var resident in residents)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(resident.GetIDNum().ToString()),
+                        CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
+                        CreateTableCell(resident.Age.ToString()),
+                        CreateTableCell(resident.GetResidentDOB()),
+                        CreateTableCell(resident.GetHouseholdNumber().ToString()),
+                        CreateTableCell(resident.GetPurok())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+
+            }
+            await DownloadFileFromStream(fileName, file, JS);
+        }
+
+        public async void GeneratePWDPurokResident(string? purok, List<ResidentModel> residents, IJSRuntime JS)
+        {
+            string fileName = $"Purok {purok} PWD.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+
+                // Add a header part
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = $@"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Purok {purok} PWD Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
+
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Full Name"),
+                    CreateHeaderCell("Age"),
+                    CreateHeaderCell("Gender"),
+                    CreateHeaderCell("Household Number"),
+                    CreateHeaderCell("Purok")
+                );
+                table.AppendChild(headerRow);
+
+                // Populate table with resident data
+                Console.WriteLine(residents.Count);
+                foreach (var resident in residents)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(resident.GetIDNum().ToString()),
+                        CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
+                        CreateTableCell(resident.Age.ToString()),
+                        CreateTableCell(resident.GetResidentGender()),
+                        CreateTableCell(resident.GetHouseholdNumber().ToString()),
+                        CreateTableCell(resident.GetPurok())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                // Append the table to the document body and save the document
+                body.Append(table);
+                mainPart.Document.Save();
+
+            }
+            await DownloadFileFromStream(fileName, file, JS);
+        }
+
+        public async void GenerateResidentWithTitle(string title, List<ResidentModel> residents, IJSRuntime JS)
+        {
+            string fileName = $"{title} List.docx"; // Name of the generated file
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); // Path within wwwroot)
+
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+
+            using (var document = WordprocessingDocument.Create(file, WordprocessingDocumentType.Document))
+            {
+                MainDocumentPart mainPart = document.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = mainPart.Document.AppendChild(new Body());
+                HeaderPart headerPart = mainPart.AddNewPart<HeaderPart>();
+
+                string headerMarkup = $@"<w:hdr xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/> <!-- Center align -->
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='48'/> <!-- Enlarge font size -->
+                                            <w:b/> <!-- Bold -->
+                                        </w:rPr>
+                                        <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>{title} Masterlist</w:t>
+                                    </w:r>
+                                </w:p>
+                            </w:hdr>";
+
+                using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
+                {
+                    streamWriter.Write(headerMarkup);
+                }
+
+                SectionProperties sectionProperties = new SectionProperties();
+                HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
+                sectionProperties.Append(headerReference);
+                if (mainPart.Document.Body != null)
+                {
+                    mainPart.Document.Body.Append(sectionProperties);
+                }
+
+                Table table = new Table();
+                TableProperties props = new TableProperties(
+                    new TableWidth { Width = "100%", Type = TableWidthUnitValues.Pct },
+                    new TableBorders(
+                        new TopBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new BottomBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new LeftBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new RightBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideHorizontalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                        new InsideVerticalBorder { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
+                    )
+                );
+                table.AppendChild<TableProperties>(props);
+
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    CreateHeaderCell("ID"),
+                    CreateHeaderCell("Full Name"),
+                    CreateHeaderCell("Age"),
+                    CreateHeaderCell("Gender"),
+                    CreateHeaderCell("Household Number"),
+                    CreateHeaderCell("Purok")
+                );
+                table.AppendChild(headerRow);
+
+                Console.WriteLine(residents.Count);
+                foreach (var resident in residents)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        CreateTableCell(resident.GetID().ToString()),
+                        CreateTableCell($"{resident.GetResidentFirstName()} {resident.GetResidentMiddleName()} {resident.GetResidentLastName()} {resident.GetResidentSuffix()}"),
+                        CreateTableCell(resident.Age.ToString()),
+                        CreateTableCell(resident.GetResidentGender()),
+                        CreateTableCell(resident.GetHouseholdNumber().ToString()),
+                        CreateTableCell(resident.GetPurok())
+                    );
+                    table.AppendChild(dataRow);
+                }
+
+                body.Append(table);
+                mainPart.Document.Save();
+
+            }
+            await DownloadFileFromStream(fileName, file, JS);
+        }
+
         public async void GeneratePurokResident(string? purok, string title, List<ResidentModel> residents, IJSRuntime JS)
         {
             string fileName = $"Purok {purok} {title}.docx"; // Name of the generated file
@@ -2080,6 +2382,64 @@ namespace Baranggay_Health_Records.Controller
             using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
                 connection.Execute("INSERT INTO status (name) VALUES (@name);", new { name = name });
+            }
+        }
+
+        public int GetPWDCount(string purok)
+        {
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Resident WHERE isPWD = 1 AND purok = @purok";
+
+                try
+                {
+                    int residentCount = connection.QuerySingle<int>(query, new { purok = purok });
+                    return residentCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting pwd count: {ex.Message}");
+                    return -1;
+                }
+            }
+        }
+
+        public int GetPrenateCount(string purok)
+        {
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM Resident WHERE isPrenate = 1 AND purok = @purok";
+
+                try
+                {
+                    int residentCount = connection.QuerySingle<int>(query, new { purok = purok });
+                    return residentCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting prenate count: {ex.Message}");
+                    return -1;
+                }
+            }
+        }
+
+        public List<ResidentModel> GetPWDByPurok(string purok)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE isPWD = 1 AND purok = @purok", new { purok = purok }).ToList();
+                Console.WriteLine("Fetching Resident Data");
+                return residents;
+            }
+        }
+
+        public List<ResidentModel> GetPrenateByPurok(string purok)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var residents = connection.Query<ResidentModel>("SELECT * FROM resident WHERE isPrenate = 1 AND purok = @purok", new { purok = purok }).ToList();
+                Console.WriteLine("Fetching Resident Data");
+                return residents;
             }
         }
     }

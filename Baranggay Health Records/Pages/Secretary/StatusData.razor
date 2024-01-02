@@ -3,6 +3,7 @@
 @page "/secretary/status/{ID:int}"
 @inject Context context
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 
 <div class="container" style="margin-top: 115px;">
     <h1 class="text-center">Recorded Illnesses: @StatusType.ToUpper()</h1>
@@ -12,6 +13,7 @@
     <div class="row">
         <div class="col d-flex justify-content-between">
             <Button Color="Color.Primary" Type="ButtonType.Link" To="/secretary/status">Return</Button>
+            <Button Color="Color.Primary" Clicked="@GenerateRecord">Generate Record</Button>
         </div>
     </div>
     <div class="row justify-content-center" style="margin-top: 24px;">
@@ -74,6 +76,11 @@
             res = context.GetResidentsByStatus(ID);
             StatusType = context.GetStatusNameByID(ID);
         }
+    }
+
+    private void GenerateRecord()
+    {
+        context.GenerateResidentWithTitle(StatusType.ToUpper(), res, JS);
     }
 
 }
