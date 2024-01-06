@@ -11,7 +11,7 @@ namespace Baranggay_Health_Records.Controller
         public SQLConnector(IConfiguration configuration)
         {
             //Live Database
-            //_connection = new MySqlConnection("Server=MYSQL5026.site4now.net;Database=db_aa322a_bhr;Uid=aa322a_bhr;Pwd=bhrsystem123");
+            //_connection = new MySqlConnection("Server=MYSQL5026.site4now.net;Database=db_aa39da_bhr;Uid=aa39da_bhr;Pwd=bcbrecords123");
 
             //Test Database
             _connection = new MySqlConnection("Server=127.0.0.1;Port=3306;Database=bhr;User=bhrs;Password=bhrs;");

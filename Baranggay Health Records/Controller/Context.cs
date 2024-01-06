@@ -86,7 +86,14 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM Resident";
+                const string query = @"SELECT COUNT(DISTINCT resident.ID) AS TotalResidents
+                        FROM resident resident
+                        WHERE NOT EXISTS (
+                            SELECT 1
+                            FROM Archive
+                            WHERE ReferenceID = resident.ID
+                            AND Type = 'resident' 
+                        )";
 
                 try
                 {
@@ -129,7 +136,14 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM Resident WHERE Age < 18";
+                const string query = @"SELECT COUNT(DISTINCT resident.ID) AS TotalResidents
+                        FROM resident resident
+                        WHERE NOT EXISTS (
+                            SELECT 1
+                            FROM Archive
+                            WHERE ReferenceID = resident.ID
+                            AND Type = 'resident' 
+                        ) AND age <= 18";
 
                 try
                 {
@@ -171,9 +185,14 @@ namespace Baranggay_Health_Records.Controller
                 {
                     int currentYear = DateTime.Now.Year;
 
-                    const string query = @"
-                SELECT COUNT(*) FROM resident WHERE SUBSTRING(dob, -4) = @CurrentYear;
-            ";
+                    const string query = @"SELECT COUNT(DISTINCT resident.ID) AS TotalResidents
+                        FROM resident resident
+                        WHERE NOT EXISTS (
+                            SELECT 1
+                            FROM Archive
+                            WHERE ReferenceID = resident.ID
+                            AND Type = 'resident' 
+                        ) AND SUBSTRING(dob, -4) = @CurrentYear";
 
                     int totalCount = connection.ExecuteScalar<int>(query, new { CurrentYear = currentYear });
                     return totalCount;
@@ -190,7 +209,14 @@ namespace Baranggay_Health_Records.Controller
         {
             using (var connection = _sqlConnector.GetConnection())
             {
-                string query = "SELECT COUNT(*) FROM household";
+                const string query = @"SELECT COUNT(DISTINCT household.ID) AS TotalHouseholds
+                        FROM household household
+                        WHERE NOT EXISTS (
+                            SELECT 1
+                            FROM Archive
+                            WHERE ReferenceID = household.ID
+                            AND Type = 'household' 
+                        )";
 
                 try
                 {

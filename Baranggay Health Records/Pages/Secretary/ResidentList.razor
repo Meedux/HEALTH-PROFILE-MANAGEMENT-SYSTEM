@@ -14,6 +14,16 @@
         <div class="col d-flex justify-content-between">
             <Button Color="Color.Primary" Clicked="@GenerateRecord">Generate Record</Button>
         </div>
+
+        <div class="col-lg-10 d-lg-flex align-items-lg-center">
+            <Select TValue="string" @bind-Value="@purok" Placeholder="Select Purok...." Class="btn btn-primary" @onchange="ChangePurok">
+                <SelectItem Value="String.Empty">None</SelectItem>
+                @foreach (string pur in purokList)
+                {
+                    <SelectItem Value="@pur">@pur</SelectItem>
+                }
+            </Select>
+        </div>
     </div>
     <div class="row justify-content-center" style="margin-top: 24px;">
         <div class="col-xl-10 col-xxl-9">
@@ -40,13 +50,29 @@
 
                                     @if (context.isArchived(household))
                                     {
-                                        <ResidentRow ID="@household.GetID()"
-                                                     Lastname="@household.GetResidentLastName()"
-                                                     Firstname="@household.GetResidentFirstName()"
-                                                     Middlename="@household.GetResidentMiddleName()"
-                                                     HouseNumber="@household.GetHouseholdNumber()"
-                                                     Purok="@household.GetPurok()"
-                                                     stringurl="@stringurl" />
+                                        @if (purok != String.Empty)
+                                        {
+                                            @if (purok == household.GetPurok())
+                                            {
+                                                <ResidentRow ID="@household.GetID()"
+                                                             Lastname="@household.GetResidentLastName()"
+                                                             Firstname="@household.GetResidentFirstName()"
+                                                             Middlename="@household.GetResidentMiddleName()"
+                                                             HouseNumber="@household.GetHouseholdNumber()"
+                                                             Purok="@household.GetPurok()"
+                                                             stringurl="@stringurl" />
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <ResidentRow ID="@household.GetID()"
+                                                         Lastname="@household.GetResidentLastName()"
+                                                         Firstname="@household.GetResidentFirstName()"
+                                                         Middlename="@household.GetResidentMiddleName()"
+                                                         HouseNumber="@household.GetHouseholdNumber()"
+                                                         Purok="@household.GetPurok()"
+                                                         stringurl="@stringurl" />
+                                        }
                                     }
                                 }
                             </tbody>
@@ -72,6 +98,9 @@
 @code {
     public List<ResidentModel> resident = new List<ResidentModel>();
 
+    string[] purokList = { "1A", "1B", "2", "3", "4", "5", "6", "7" };
+    string purok = "";
+
     protected override void OnInitialized()
     {
         resident = context.GetResidents();
@@ -89,5 +118,12 @@
     private void GenerateRecord()
     {
         context.GenerateResident(resident, JS);
+    }
+
+    void ChangePurok(ChangeEventArgs args)
+    {
+        var selectedValue = Convert.ToString(args.Value);
+        purok = (selectedValue != null) ? selectedValue : "";
+        Console.WriteLine($"Selected Purok: {purok}");
     }
 }

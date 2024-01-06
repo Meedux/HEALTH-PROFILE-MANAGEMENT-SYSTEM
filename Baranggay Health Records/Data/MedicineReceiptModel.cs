@@ -10,7 +10,8 @@ namespace Baranggay_Health_Records.Data
 
         public int medicineId { get; set; }
 
-        public int quantity { get; set; }        
+        public int quantity { get; set; }
+        public DateTime Date { get; set; }
 
         public int GetID()
         {
@@ -30,6 +31,11 @@ namespace Baranggay_Health_Records.Data
         public int GetMedicineID()
         {
             return this.medicineId;
+        }
+
+        public string GetDate()
+        {
+            return this.Date.ToShortDateString();
         }
     }
 }
