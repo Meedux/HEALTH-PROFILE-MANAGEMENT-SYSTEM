@@ -602,8 +602,8 @@ namespace Baranggay_Health_Records.Controller
                 var query = @"
                     SELECT r.* 
                     FROM resident r
-                    JOIN rhs ON r.ID = rhs.ResidentId
-                    WHERE rhs.TypeofillnessID = @ID";
+                    JOIN resident_illnesses ON r.ID = resident_illnesses.ResidentId
+                    WHERE resident_illnesses.illnessId = @ID";
 
                 var residents = connection.Query<ResidentModel>(query, new { ID }).ToList();
                 Console.WriteLine("Fetching Resident Data");
@@ -641,12 +641,12 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = @"
-                    INSERT INTO rhs (ResidentId, TypeofillnessID, Weight, Height, Temperature, BloodPressure)
-                    VALUES (@ResidentId, @TypeofillnessID, @Weight, @Height, @Temperature, @BloodPressure);
+                    INSERT INTO rhs (ResidentId,  Weight, Height, Temperature, BloodPressure)
+                    VALUES (@ResidentId,  @Weight, @Height, @Temperature, @BloodPressure);
                     SELECT LAST_INSERT_ID();
                     ";
 
-                    int newRHS_ID = connection.ExecuteScalar<int>(query, new { ResidentId = RHS.ResidentId, TypeofillnessID = RHS.TypeofillnessID, Weight = RHS.Weight, Height = RHS.Height, Temperature = RHS.Temperature, BloodPressure = RHS.BloodPressure });
+                    int newRHS_ID = connection.ExecuteScalar<int>(query, new { ResidentId = RHS.ResidentId, Weight = RHS.Weight, Height = RHS.Height, Temperature = RHS.Temperature, BloodPressure = RHS.BloodPressure });
                     return newRHS_ID;
                 }
             }
@@ -672,6 +672,53 @@ namespace Baranggay_Health_Records.Controller
 
                     int newHousehold_ID = connection.ExecuteScalar<int>(query, Model);
                     return newHousehold_ID;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+        }
+
+        
+        public int CreateResidentIllness(int illnessId, int residentId)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                    INSERT INTO resident_illnesses (residentId, illnessId)
+                    VALUES (@residentId, @illnessId);
+                    SELECT LAST_INSERT_ID();
+                    ";
+
+                    int newID = connection.ExecuteScalar<int>(query, new { residentId = residentId, illnessId = illnessId });
+                    return newID;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+        }
+
+        public int CreateResidentStatus(int statusId, int residentId)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                    INSERT INTO resident_statuses (residentId, statusId)
+                    VALUES (@residentId, @statusId);
+                    SELECT LAST_INSERT_ID();
+                    ";
+
+                    int newID = connection.ExecuteScalar<int>(query, new { residentId = residentId, statusId = statusId });
+                    return newID;
                 }
             }
             catch (Exception e)
@@ -818,14 +865,13 @@ namespace Baranggay_Health_Records.Controller
                 {
                     const string query = @"
                 UPDATE rhs
-                SET TypeofillnessID = @TypeofillnessID, Weight = @Weight, Height = @Height,
+                SET  Weight = @Weight, Height = @Height,
                     Temperature = @Temperature, BloodPressure = @BloodPressure
                 WHERE ResidentId = @ID;
             ";
 
                     connection.Execute(query, new
                     {
-                        model.TypeofillnessID,
                         model.Weight,
                         model.Height,
                         model.Temperature,
@@ -2154,7 +2200,6 @@ namespace Baranggay_Health_Records.Controller
                     CreateHeaderCell("Birthday"),
                     CreateHeaderCell("Age"),
                     CreateHeaderCell("Gender"),
-                    CreateHeaderCell("TypeofIllness"),
                     CreateHeaderCell("Purok"),
                     CreateHeaderCell("Diagnosed Date")
                 );
@@ -2164,13 +2209,12 @@ namespace Baranggay_Health_Records.Controller
                 Console.WriteLine(rhs.Count);
                 foreach (ResidentHealthStatusModel rh in rhs)
                 {
-                    IllnessModel? illness = illnesses.FirstOrDefault(i => i.GetID() == rh.GetIllnessType());
                     ResidentModel? resident = residents.FirstOrDefault(r => r.GetID() == rh.ResidentId);
 
-                    if (illness != null && resident != null)
+                    if (resident != null)
                     {
                         Console.WriteLine("Illness and resident found");
-                        Console.WriteLine($"Illness: {illness.GetName()} | Resident: {resident.GetResidentFirstName()} {resident.GetResidentLastName()}");
+                        Console.WriteLine($"Resident: {resident.GetResidentFirstName()} {resident.GetResidentLastName()}");
 
                         TableRow dataRow = new TableRow();
                         dataRow.Append(
@@ -2179,7 +2223,6 @@ namespace Baranggay_Health_Records.Controller
                             CreateTableCell(resident.GetResidentDOB()),
                             CreateTableCell(resident.GetResidentAge().ToString()),
                             CreateTableCell(resident.GetResidentGender()),
-                            CreateTableCell(illness.GetName()),
                             CreateTableCell(resident.GetPurok()),
                             CreateTableCell(rh.GetDiagnosedDate())
                         );
@@ -2187,10 +2230,6 @@ namespace Baranggay_Health_Records.Controller
                     }
                     else
                     {
-                        if (illness == null)
-                        {
-                            Console.WriteLine($"Illness with ID {rh.GetIllnessType()} not found");
-                        }
                         if (resident == null)
                         {
                             Console.WriteLine($"Resident with ID {rh.ResidentId} not found");
@@ -2362,12 +2401,20 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public List<Status> GetStatuses()
+        public List<ResidentStatuses> GetStatuses()
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                var statuses = connection.Query<ResidentStatuses>("SELECT * FROM resident_statuses").ToList();
+                return statuses;
+            }
+        }
+
+        public List<Status> GetAllStatuses()
         {
             using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
                 var statuses = connection.Query<Status>("SELECT * FROM status").ToList();
-                Console.WriteLine("Fetching Medicine Data");
                 return statuses;
             }
         }
@@ -2376,6 +2423,11 @@ namespace Baranggay_Health_Records.Controller
         {
             using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
+                var query = @"
+                    SELECT r.* 
+                    FROM resident r
+                    JOIN resident_statuses ON r.ID = resident_statuses.ResidentId
+                    WHERE resident_statuses.statusId = @ID";
                 var res = connection.Query<ResidentModel>("SELECT * FROM resident WHERE statusId = @id", new { id = id }).ToList();
                 Console.WriteLine("Fetching Medicine Data");
                 return res;
@@ -2468,6 +2520,61 @@ namespace Baranggay_Health_Records.Controller
                 return residents;
             }
         }
+
+        public int GetIllnessCountByUserID(int id)
+        {
+            using(MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM resident_illnesses WHERE residentId = @id";
+                try
+                {
+                    int illnessCount = connection.QuerySingle<int>(query, new { id = id });
+                    return illnessCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting illness count: {ex.Message}");
+                    return -1;
+                }
+            }
+        }
+
+        public List<ResidentIllnesses> GetIllnessesByID(int id)
+        {
+            using(MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT * FROM resident_illnesses WHERE residentId = @id";
+                try
+                {
+                    var illnesses = connection.Query<ResidentIllnesses>(query, new { id = id }).ToList();
+                    return illnesses;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting illnesses: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
+        public List<Status> GetResidentStatuses(int id)
+        {
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT * FROM resident_statuses WHERE residentId = @id";
+                try
+                {
+                    var statuses = connection.Query<Status>(query, new { id = id }).ToList();
+                    return statuses;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting statuses: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
     }
 
     

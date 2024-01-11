@@ -228,22 +228,22 @@
                     <p style="font-size: 26px;">
                         @if (isEdit)
                         {
-                            <Select TValue="int" Placeholder="Select Status...." Class="form-control" @onchange="ChangeStatus">
-                                <SelectItem Value="@none">Select Resident Status</SelectItem>
-                                @foreach (Status dis_status in statuses)
-                                {
-                                    <SelectItem Value="@dis_status.id">@dis_status.name</SelectItem>
-                                }
-                            </Select>
+                            @for (int i = 0; i < statusID.Count; i++){
+                                int currentIndex = i;
+                                <Select TValue="int" Placeholder="Select Status...." Class="form-control" @onchange="e => ChangeStatus(e, currentIndex)">
+                                    <SelectItem Value="@none">Select Resident Status</SelectItem>
+                                    @foreach (Status dis_status in all_status)
+                                    {
+                                        <SelectItem Value="@dis_status.id">@dis_status.name</SelectItem>
+                                    }
+                                </Select>
+                            }
                         }
                         else
                         {
-                            @foreach(Status dis_status in statuses)
+                            @foreach (ResidentStatuses dis_status in statuses)
                             {
-                                if(status == dis_status.id)
-                                {
-                                    <p>@dis_status.name</p>
-                                }
+                                <p>@context.GetStatusNameByID(dis_status.GetStatusID())</p>
                             }
                         }
                     </p>
@@ -255,7 +255,7 @@
 </div>
 
 @code {
-    [Parameter] public int? ID { get; set; } = 0;
+    [Parameter] public int ID { get; set; } = 0;
 
     [Parameter]
     [SupplyParameterFromQuery]
@@ -303,7 +303,9 @@
     String edited_purok { get; set; } = "";
     int edited_id_no { get; set; } = 0;
 
-    private List<Status> statuses = new List<Status>();
+    private List<Status> all_status = new List<Status>();
+    private List<ResidentStatuses> statuses = new List<ResidentStatuses>();
+    private List<int> statusID = new List<int> { 0 };
 
     void ChangePurok(ChangeEventArgs args)
     {
@@ -312,10 +314,11 @@
         Console.WriteLine($"Selected Purok: {purok}");
     }
 
-    void ChangeStatus(ChangeEventArgs args)
+    void ChangeStatus(ChangeEventArgs args, int index)
     {
-        edited_status = Convert.ToInt32(args.Value);
-        Console.WriteLine($"Selected Status: {edited_status}");
+        Console.WriteLine(index);
+        int selectedValue = Convert.ToInt32(args.Value);
+        statusID[index] = selectedValue;
     }
 
     protected override void OnInitialized()
@@ -325,6 +328,18 @@
         HouseholdModel? household = context.GetHousehold(ID);
         ResidentHealthStatusModel? RHS = context.GetResidentHealthStatus(ID);
         statuses = context.GetStatuses();
+        all_status = context.GetAllStatuses();
+
+        foreach (ResidentStatuses stat in statuses)
+        {
+            int id = stat.GetStatusID();
+            if (!statusID.Contains(id))
+            {
+                statusID.Add(id);
+                Console.WriteLine(id);
+            }
+        }
+        statusID = statusID.Distinct().ToList();
 
 
         //Fill up the Resident Details
@@ -384,6 +399,18 @@
             HouseholdModel? household = context.GetHousehold(ID);
             ResidentHealthStatusModel? RHS = context.GetResidentHealthStatus(ID);
             statuses = context.GetStatuses();
+            all_status = context.GetAllStatuses();
+
+            foreach (ResidentStatuses stat in statuses)
+            {
+                int id = stat.GetStatusID();
+                if (!statusID.Contains(id))
+                {
+                    statusID.Add(id);
+                    Console.WriteLine(id);
+                }
+            }
+            statusID = statusID.Distinct().ToList();
 
 
             //Fill up the Resident Details
@@ -448,6 +475,15 @@
         residentModel.Purok = edited_purok;
         residentModel.IDNo = edited_id_no;
         residentModel.statusId = edited_status;
+
+        statusID = statusID.Distinct().ToList();
+        foreach (int illnessId in statusID)
+        {
+            if (illnessId != 0)
+            {
+                context.CreateResidentStatus(illnessId, ID);
+            }
+        }
 
         HouseholdModel householdModel = new HouseholdModel();
         householdModel.FathersName = edited_fathers_name;

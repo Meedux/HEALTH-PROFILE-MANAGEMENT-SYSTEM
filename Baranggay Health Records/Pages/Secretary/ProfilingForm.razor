@@ -110,15 +110,24 @@
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0">
-                <label class="form-label">Status Type</label>
-                <Select TValue="int" Placeholder="Select Status...." Class="form-control" @onchange="ChangeStatus">
-                    <SelectItem Value="@none">None</SelectItem>
-                    @foreach (Status dis_status in statuses)
-                    {
-                        <SelectItem Value="@dis_status.id">@dis_status.name</SelectItem>
-                    }
-                </Select>
+            <div class="col-xl-12 offset-xl-0 d-flex flex-column justify-content-start">
+                <label class="form-label">Illness Type</label>
+                <div>
+                    <button @onclick="AddInput" type="button" class="btn btn-success mb-3">Add Illness</button>
+                </div>
+
+                @for (int i = 0; i < statusID.Count; i++)
+                {
+                    <div class="input-group mb-3">
+                        <Select TValue="int" Placeholder="Select Status...." Class="form-control mb-3" @onchange="e => ChangeStatus(e, i)">
+                            <SelectItem Value="@none">None</SelectItem>
+                            @foreach (Status dis_status in statuses)
+                            {
+                                <SelectItem Value="@dis_status.id">@dis_status.name</SelectItem>
+                            }
+                        </Select>
+                    </div>
+                }
             </div>
         </div>
 
@@ -164,11 +173,17 @@
     string[] years = new string[44];
 
     List<Status> statuses = new List<Status>();
+    List<int> statusID = new List<int> { 0 };
 
-    void ChangeStatus(ChangeEventArgs args)
+    public void ChangeStatus(ChangeEventArgs e, int index)
     {
-        status = Convert.ToInt32(args.Value);
-        Console.WriteLine($"Selected Status: {status}");
+        int selectedValue = Convert.ToInt32(e.Value);
+        statusID[index] = selectedValue;
+    }
+
+    void AddInput()
+    {
+        statusID.Add(0);
     }
 
     void ChangeMonth(ChangeEventArgs args)
@@ -211,7 +226,7 @@
             years[i] = (1980 + i).ToString();
         }
 
-        statuses = context.GetStatuses();
+        statuses = context.GetAllStatuses();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -227,7 +242,7 @@
             {
                 years[i] = (1980 + i).ToString();
             }
-            statuses = context.GetStatuses();
+            statuses = context.GetAllStatuses();
         }
     }
 
@@ -284,6 +299,19 @@
             household.MothersName = mothers_name;
             household.Member = firstName + middleName + lastName;
             household.FamilyCount = num_of_fam;
+
+            statusID = statusID.Distinct().ToList();
+
+            HashSet<int> unStatus = new HashSet<int>();
+
+            foreach (var statID in statusID)
+            {
+                if (statID != 0 && !unStatus.Contains(statID))
+                {
+                    context.CreateResidentStatus(id, statID);
+                    unStatus.Add(statID);
+                }
+            }
 
             rhs.ResidentId = id;
             context.CreateHousehold(household);

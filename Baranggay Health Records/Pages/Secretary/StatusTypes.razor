@@ -70,14 +70,14 @@
 
     protected override void OnInitialized()
     {
-        statuses = context.GetStatuses();
+        statuses = context.GetAllStatuses();
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            statuses = context.GetStatuses();
+            statuses = context.GetAllStatuses();
             StateHasChanged();
         }
     }

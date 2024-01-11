@@ -7,7 +7,6 @@
     <td>@BirthDate</td>
     <td class="text-truncate" style="max-width: 200px;">@Age</td>
     <td class="text-truncate" style="max-width: 200px;">@Gender</td>
-    <td class="text-truncate" style="max-width: 200px;">@TypeofIllness</td>
     <td class="text-truncate" style="max-width: 200px;">@Height</td>
     <td class="text-truncate" style="max-width: 200px;">@Weight</td>
     <td>@BP</td>
@@ -64,12 +63,6 @@
     public String? Gender { get; set; }
 
     [Parameter]
-    public String? TypeofIllness { get; set; }
-
-    [Parameter]
-    public int TypeofIllnessID { get; set; }
-
-    [Parameter]
     public String? Height { get; set; }
 
     [Parameter]
@@ -84,22 +77,9 @@
     [Parameter]
     public String? Purok { get; set; }
 
+
     [Parameter]
     public String? Date { get; set; }
-
-    protected override void OnInitialized()
-    {
-        TypeofIllness = context.GetIllnessNameByID(TypeofIllnessID);
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            TypeofIllness = context.GetIllnessNameByID(TypeofIllnessID);
-            StateHasChanged();
-        }
-    }
 
     private void ArchiveData()
     {

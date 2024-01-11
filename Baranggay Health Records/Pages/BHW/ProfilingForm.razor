@@ -137,15 +137,22 @@
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
-            <div class="col-xl-12 offset-xl-0">
+            <div class="col-xl-12 offset-xl-0 d-flex flex-column justify-content-start">
                 <label class="form-label">Illness Type</label>
-                <Select TValue="int" @bind-Value="@illnessID" Placeholder="Select illness..." Class="form-control" @onchange="HandleChange">
-                    <SelectItem Value="0">None</SelectItem>
-                    @foreach (var illness in Illnesses)
+                <div>
+                    <button @onclick="AddInput" type="button" class="btn btn-success mb-3">Add Illness</button>
+                </div>
+                @for (int i = 0; i < illnessesID.Count; i++)
+                {
+                    int currentIndex = i;
+                    <Select TValue="int" Placeholder="Select illness..." Class="form-control mb-3" @onchange="e => HandleChange(e, currentIndex)">
+                        <SelectItem Value="0">None</SelectItem>
+                        @foreach (var illness in Illnesses)
                         {
                             <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
                         }
-                   </Select>
+                    </Select>
+                }
             </div>
         </div>
         <div class="row" style="margin-top: 10px;">
@@ -200,7 +207,8 @@
     List<String> Immunization = new List<String>();
     String weight = "";
     String height = "";
-    int illnessID { get; set; }
+    //int illnessID { get; set; }
+    List<int> illnessesID = new List<int> { 0 };
     String temperature = "";
     String bloodPressure = "";
     String medicine = "";
@@ -245,11 +253,16 @@
 
     public List<IllnessModel> Illnesses = new List<IllnessModel>();
 
-    void HandleChange(ChangeEventArgs args)
+    public void HandleChange(ChangeEventArgs e, int index)
     {
-        var selectedValue = Convert.ToInt32(args.Value);
-        illnessID = selectedValue;
-        Console.WriteLine($"Selected illness ID: {illnessID}");
+        Console.WriteLine(index);
+        int selectedValue = Convert.ToInt32(e.Value);
+        illnessesID[index] = selectedValue;
+    }
+
+    void AddInput()
+    {
+        illnessesID.Add(0);
     }
 
     void ChangePurok(ChangeEventArgs args)
@@ -314,8 +327,19 @@
 
         var resID = context.CreateResident(newResident);
 
+        HashSet<int> uniqueIllnesses = new HashSet<int>();
+
+        foreach (var illnessID in illnessesID)
+        {
+            Console.WriteLine(illnessID);
+            if (illnessID != 0 && !uniqueIllnesses.Contains(illnessID))
+            {
+                context.CreateResidentIllness(resID, illnessID);
+                uniqueIllnesses.Add(illnessID);
+            }
+        }
+
         newRHS.ResidentId = resID;
-        newRHS.TypeofillnessID = illnessID;
         newRHS.Weight = weight;
         newRHS.Height = height;
         newRHS.Temperature = temperature;
@@ -331,7 +355,6 @@
         context.CreateHousehold(newHousehold);
         context.CreateResidentHealthStatus(newRHS);
 
-        context.IncrementIllness(illnessID);
 
         firstName = "";
         middleName = "";
@@ -351,7 +374,6 @@
         Immunization.Clear();
         weight = "";
         height = "";
-        illnessID = 0;
         temperature = "";
         bloodPressure = "";
         medicine = "";

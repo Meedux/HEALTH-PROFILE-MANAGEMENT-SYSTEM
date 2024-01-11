@@ -256,22 +256,42 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Type of Illness(If Any)</td>
+                    <td>
+                        Type of Illness(If Any)
+                        <br />
+                        
+                    </td>
                     <td>
                         @if (isEdit)
                         {
-                            <Select TValue="int" @bind-Value="@edited_illness_typeID" Placeholder="Select illness..." Class="form-control" @onchange="HandleChange">
+                            @* <Select TValue="int" @bind-Value="@edited_illness_typeID" Placeholder="Select illness..." Class="form-control" @onchange="HandleChange">
                                 <SelectItem Value="-1">Update Resident's Illness'</SelectItem>
                                 <SelectItem Value="0">None</SelectItem>
                                 @foreach (var illness in Illnesses)
                                 {
                                     <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
                                 }
-                            </Select>
+                            </Select> *@
+                            <button @onclick="AddInput" type="button" class="btn btn-success mb-3">Add Illness</button>
+                            @for (int i = 0; i < illnessesID.Count; i++)
+                            {
+                                int currentIndex = i;
+                                <Select TValue="int" Placeholder="Select illness..." Class="form-control mb-3" @onchange="e => HandleChange(e, currentIndex)">
+                                    <SelectItem Value="0">Update Resident's Illness'</SelectItem>
+                                    <SelectItem Value="0">None</SelectItem>
+                                    @foreach (var illness in Illnesses)
+                                    {
+                                        <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
+                                    }
+                                </Select>
+                            }
                         }
                         else
                         {
-                            @illness_type
+                            @foreach(int illnessID in illnessesID)
+                            {
+                                <p>@context.GetIllnessNameByID(illnessID)</p>
+                            }
                         }
                     </td>
                 </tr>
@@ -435,17 +455,26 @@
     int quantity = 0;
     int none = 0;
 
+    List<ResidentIllnesses> residentIllnesses = new List<ResidentIllnesses>();
+    List<int> illnessesID = new List<int> { 0 };
+
     void ChangePurok(ChangeEventArgs args)
     {
         var selectedValue = Convert.ToString(args.Value);
         edited_purok = (selectedValue != null) ? selectedValue : "";
         Console.WriteLine($"Selected Purok: {purok}");
     }
-    void HandleChange(ChangeEventArgs args)
+
+    public void HandleChange(ChangeEventArgs e, int index)
     {
-        var selectedValue = Convert.ToInt32(args.Value);
-        edited_illness_typeID = selectedValue;
-        Console.WriteLine($"Selected illness ID: {edited_illness_typeID}");
+        Console.WriteLine(index);
+        int selectedValue = Convert.ToInt32(e.Value);
+        illnessesID[index] = selectedValue;
+    }
+
+    void AddInput()
+    {
+        illnessesID.Add(0);
     }
 
     public List<IllnessModel> Illnesses = new List<IllnessModel>();
@@ -459,6 +488,20 @@
         ResidentHealthStatusModel RHS = context.GetResidentHealthStatus(ID);
 
         medicines = context.GetMedicines();
+
+        residentIllnesses = context.GetIllnessesByID(ID);
+
+        foreach (ResidentIllnesses illness in residentIllnesses)
+        {
+            int id = illness.GetIllnessID();
+            if (!illnessesID.Contains(id))
+            {
+                illnessesID.Add(id);
+                Console.WriteLine(id);
+            }
+        }
+        illnessesID = illnessesID.Distinct().ToList();
+
 
 
         //Fill up the Resident Details
@@ -535,6 +578,20 @@
             ResidentHealthStatusModel RHS = context.GetResidentHealthStatus(ID);
 
             medicines = context.GetMedicines();
+
+            residentIllnesses = context.GetIllnessesByID(ID);
+            illnessesID = illnessesID.Distinct().ToList();
+
+            foreach (ResidentIllnesses illness in residentIllnesses)
+            {
+                int id = illness.GetIllnessID();
+                if (!illnessesID.Contains(id))
+                {
+                    illnessesID.Add(id);
+                    Console.WriteLine(id);
+                }
+            }
+            illnessesID = illnessesID.Distinct().ToList();
 
             //Fill up the Resident Details
             firstName = resident.GetResidentFirstName();
@@ -616,6 +673,16 @@
         residentModel.Household_number = edited_household_number;
         residentModel.Purok = edited_purok;
         residentModel.IDNo = edited_id_no;
+
+        illnessesID = illnessesID.Distinct().ToList();
+        foreach(int illnessId in illnessesID)
+        {
+            if(illnessId != 0)
+            {
+                context.CreateResidentIllness(illnessId, ID);
+            }
+        }
+
 
         HouseholdModel householdModel = new HouseholdModel();
         householdModel.FathersName = edited_fathers_name;
