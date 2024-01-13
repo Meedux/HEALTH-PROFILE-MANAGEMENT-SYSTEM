@@ -43,7 +43,7 @@
                                         {
                                             @if (context.isArchived(household1))
                                             {
-                                                @if (!context.isArchived(household))
+                                                @if (context.isArchived(household))
                                                 {
                                                     <HouseholdRow ID="@household.GetID()"
                                                                   HOF="@household1.GetHeadofFamily()"
