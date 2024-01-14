@@ -255,7 +255,6 @@
 
     public void HandleChange(ChangeEventArgs e, int index)
     {
-        Console.WriteLine(index);
         int selectedValue = Convert.ToInt32(e.Value);
         illnessesID[index] = selectedValue;
     }
@@ -331,10 +330,9 @@
 
         foreach (var illnessID in illnessesID)
         {
-            Console.WriteLine(illnessID);
             if (illnessID != 0 && !uniqueIllnesses.Contains(illnessID))
             {
-                context.CreateResidentIllness(resID, illnessID);
+                context.CreateResidentIllness(illnessID, resID);
                 uniqueIllnesses.Add(illnessID);
             }
         }

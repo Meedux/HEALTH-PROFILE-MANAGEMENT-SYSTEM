@@ -9,18 +9,20 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col text-center"><img class="rounded-circle img-fluid" width="300" height="80" src="../assets/img/avatar-dhg.png"></div>
+        <div class="col text-center"><img class="rounded-circle img-fluid" width="300" height="80" src="https://cdn-icons-png.flaticon.com/512/1253/1253756.png"></div>
         <div class="col">
             <div class="row">
-                @if (isEdit)
-                {
-                    <button class="btn btn-success mr-2" @onclick="UpdateInformation">Update Information</button>
-                    <a class="btn btn-warning" href="/secretary/resident/@ID">Exit</a>
-                }
-                else
-                {
-                    <a class="btn btn-primary" href="/secretary/resident/@ID?isEdit=true">Edit</a>
-                }
+                <div class="col d-flex justify-content-end mb-3">
+                    @if (isEdit)
+                    {
+                        <button class="btn btn-success mr-2" @onclick="UpdateInformation">Update Information</button>
+                        <a class="btn btn-warning" href="/secretary/resident/@ID">Exit</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary" href="/secretary/resident/@ID?isEdit=true">Edit</a>
+                    }
+                </div>
             </div>
             <div class="row">
                 <div class="col">
@@ -222,16 +224,18 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <p style="font-size: 26px;font-weight: bold;">Status:</p>
+                    <p style="font-size: 26px;font-weight: bold;">Resident Tags:</p>
                 </div>
                 <div class="col">
                     <p style="font-size: 26px;">
                         @if (isEdit)
                         {
+                            <button @onclick="AddInput" type="button" class="btn btn-success mb-3">Add Resident Tag</button>
                             @for (int i = 0; i < statusID.Count; i++){
                                 int currentIndex = i;
-                                <Select TValue="int" Placeholder="Select Status...." Class="form-control" @onchange="e => ChangeStatus(e, currentIndex)">
-                                    <SelectItem Value="@none">Select Resident Status</SelectItem>
+                                <Select TValue="int" Placeholder="Select Resident Tag...." Class="form-control" @onchange="e => ChangeStatus(e, currentIndex)">
+                                    <SelectItem Value="statusID[currentIndex]">Current tag: @context.GetStatusNameByID(statusID[currentIndex])</SelectItem>
+                                    <SelectItem Value="@none">None</SelectItem>
                                     @foreach (Status dis_status in all_status)
                                     {
                                         <SelectItem Value="@dis_status.id">@dis_status.name</SelectItem>
@@ -321,6 +325,11 @@
         statusID[index] = selectedValue;
     }
 
+    void AddInput()
+    {
+        statusID.Add(0);
+    }
+
     protected override void OnInitialized()
     {
         Console.WriteLine($"Fetching user Data and Health status data with the user ID of {ID}");
@@ -330,6 +339,8 @@
         statuses = context.GetStatuses();
         all_status = context.GetAllStatuses();
 
+
+        statusID.Clear();
         foreach (ResidentStatuses stat in statuses)
         {
             int id = stat.GetStatusID();
@@ -476,14 +487,17 @@
         residentModel.IDNo = edited_id_no;
         residentModel.statusId = edited_status;
 
-        statusID = statusID.Distinct().ToList();
-        foreach (int illnessId in statusID)
+        HashSet<int> unStatus = new HashSet<int>();
+
+        foreach (var statID in statusID)
         {
-            if (illnessId != 0)
+            if (statID != 0 && !unStatus.Contains(statID))
             {
-                context.CreateResidentStatus(illnessId, ID);
+                context.CreateResidentStatus(statID, ID);
+                unStatus.Add(statID);
             }
         }
+
 
         HouseholdModel householdModel = new HouseholdModel();
         householdModel.FathersName = edited_fathers_name;

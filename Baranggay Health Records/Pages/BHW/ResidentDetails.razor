@@ -276,14 +276,23 @@
                             @for (int i = 0; i < illnessesID.Count; i++)
                             {
                                 int currentIndex = i;
-                                <Select TValue="int" Placeholder="Select illness..." Class="form-control mb-3" @onchange="e => HandleChange(e, currentIndex)">
-                                    <SelectItem Value="0">Update Resident's Illness'</SelectItem>
-                                    <SelectItem Value="0">None</SelectItem>
-                                    @foreach (var illness in Illnesses)
-                                    {
-                                        <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
-                                    }
-                                </Select>
+                                if (currentIndex < illnessesID.Count)
+                                {
+                                    <Select TValue="int" Placeholder="Select illness..." Class="form-control mb-3" @onchange="e => HandleChange(e, currentIndex)">
+                                        <SelectItem Value="illnessesID[currentIndex]">Current Illness: @context.GetIllnessNameByID(illnessesID[currentIndex])</SelectItem>
+                                        
+                                        @foreach (var illness in Illnesses)
+                                        {
+                                            <SelectItem Value="@illness.ID">@illness.IllnessName</SelectItem>
+                                        }
+                                        <SelectItem Value="0">None</SelectItem>
+                                    </Select>
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Index out of range.");
+                                }
+                                
                             }
                         }
                         else
@@ -456,7 +465,7 @@
     int none = 0;
 
     List<ResidentIllnesses> residentIllnesses = new List<ResidentIllnesses>();
-    List<int> illnessesID = new List<int> { 0 };
+    List<int> illnessesID = new List<int>();
 
     void ChangePurok(ChangeEventArgs args)
     {
@@ -491,6 +500,7 @@
 
         residentIllnesses = context.GetIllnessesByID(ID);
 
+        illnessesID.Clear();
         foreach (ResidentIllnesses illness in residentIllnesses)
         {
             int id = illness.GetIllnessID();

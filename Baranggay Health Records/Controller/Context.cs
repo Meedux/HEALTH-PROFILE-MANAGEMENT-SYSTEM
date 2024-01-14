@@ -2426,9 +2426,9 @@ namespace Baranggay_Health_Records.Controller
                 var query = @"
                     SELECT r.* 
                     FROM resident r
-                    JOIN resident_statuses ON r.ID = resident_statuses.ResidentId
+                    JOIN resident_statuses ON r.ID = resident_statuses.residentId
                     WHERE resident_statuses.statusId = @ID";
-                var res = connection.Query<ResidentModel>("SELECT * FROM resident WHERE statusId = @id", new { id = id }).ToList();
+                var res = connection.Query<ResidentModel>(query, new { id = id }).ToList();
                 Console.WriteLine("Fetching Medicine Data");
                 return res;
             }

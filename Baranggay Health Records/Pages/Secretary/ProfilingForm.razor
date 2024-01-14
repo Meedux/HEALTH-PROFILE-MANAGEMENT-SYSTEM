@@ -118,8 +118,9 @@
 
                 @for (int i = 0; i < statusID.Count; i++)
                 {
+                    int currentIndx = i;
                     <div class="input-group mb-3">
-                        <Select TValue="int" Placeholder="Select Status...." Class="form-control mb-3" @onchange="e => ChangeStatus(e, i)">
+                        <Select TValue="int" Placeholder="Select Status...." Class="form-control mb-3" @onchange="e => ChangeStatus(e, currentIndx)">
                             <SelectItem Value="@none">None</SelectItem>
                             @foreach (Status dis_status in statuses)
                             {
@@ -308,7 +309,7 @@
             {
                 if (statID != 0 && !unStatus.Contains(statID))
                 {
-                    context.CreateResidentStatus(id, statID);
+                    context.CreateResidentStatus(statID, id);
                     unStatus.Add(statID);
                 }
             }
