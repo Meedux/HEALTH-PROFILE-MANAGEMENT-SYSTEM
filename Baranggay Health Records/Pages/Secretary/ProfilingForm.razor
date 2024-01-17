@@ -20,7 +20,7 @@
         </div>
         <div class="row" style="margin-top: 10px;">
             <div class="col-md-4 offset-md-0">
-                <label class="form-label">Year</label>
+                <label class="form-label">Month</label>
                 <div class="input-group">
                     <Select TValue="string" @bind-Value="dobMonth" @onchange="ChangeMonth" Class="form-control">
                         <SelectItem Value="String.Empty">Select Birth Month</SelectItem>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="col-xl-4 offset-xl-0">
-                    <label class="form-label">Month</label>
+                    <label class="form-label">Year</label>
                 <div class="input-group">
                     <Select TValue="string" @bind-Value="dobYear" @onchange="ChangeYear" Class="form-control">
                         <SelectItem Value="String.Empty">Select Birth Year</SelectItem>
@@ -113,14 +113,14 @@
             <div class="col-xl-12 offset-xl-0 d-flex flex-column justify-content-start">
                 <label class="form-label">Illness Type</label>
                 <div>
-                    <button @onclick="AddInput" type="button" class="btn btn-success mb-3">Add Illness</button>
+                    <button @onclick="AddInput" type="button" class="btn btn-success mb-3">Add Condition</button>
                 </div>
 
                 @for (int i = 0; i < statusID.Count; i++)
                 {
                     int currentIndx = i;
                     <div class="input-group mb-3">
-                        <Select TValue="int" Placeholder="Select Status...." Class="form-control mb-3" @onchange="e => ChangeStatus(e, currentIndx)">
+                        <Select TValue="int" Placeholder="Select Condition...." Class="form-control mb-3" @onchange="e => ChangeStatus(e, currentIndx)">
                             <SelectItem Value="@none">None</SelectItem>
                             @foreach (Status dis_status in statuses)
                             {

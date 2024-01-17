@@ -26,7 +26,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Status Type</th>
+                                    <th>Resident Conditions</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -48,12 +48,12 @@
 <Modal @ref="modalRef">
     <ModalContent Centered>
         <ModalHeader>
-            <ModalTitle>Add Status Type</ModalTitle>
+            <ModalTitle>Add Resident Condition</ModalTitle>
         </ModalHeader>
         <ModalBody>
             <Field>
                 <FieldLabel>Name</FieldLabel>
-                <TextEdit @bind-Text="@newStatusName" Placeholder="Enter New Status name..." />
+                <TextEdit @bind-Text="@newStatusName" Placeholder="Enter New Condition name..." />
             </Field>
         </ModalBody>
         <ModalFooter>

@@ -19,7 +19,7 @@
 
     protected override void OnInitialized()
     {
-        Count = context.GetIllnessCount(ID);
+        Count = context.GetIllnessCount(ID, Purok);
         StateHasChanged();
     }
 
@@ -27,7 +27,7 @@
     {
         if (firstRender)
         {
-            Count = context.GetIllnessCount(ID);
+            Count = context.GetIllnessCount(ID, Purok);
             StateHasChanged();
         }
     }

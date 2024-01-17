@@ -24,14 +24,14 @@
 
     protected override void OnInitialized()
     {
-        Occurence = context.GetIllnessCount(ID);
+        Occurence = context.GetAllIllnessCount(ID);
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            Occurence = context.GetIllnessCount(ID);
+            Occurence = context.GetAllIllnessCount(ID);
             StateHasChanged();
         }
     }
