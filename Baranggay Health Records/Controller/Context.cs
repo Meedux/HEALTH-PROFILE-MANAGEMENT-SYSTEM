@@ -262,7 +262,7 @@ namespace Baranggay_Health_Records.Controller
                         WHERE NOT EXISTS (
                             SELECT 1
                             FROM Archive
-                            WHERE ReferenceID = rhs.TypeofillnessID
+                            WHERE ReferenceID = rhs.ID
                             AND Type = 'resident' OR Type = 'rhs'
                         )";
                     int? result = connection.QueryFirstOrDefault<int?>(query);
@@ -359,11 +359,18 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public List<ResidentHealthStatusModel> GetResidentHealthStatusesByIllness(int illness)
+        public List<ResidentHealthStatusModel> GetResidentHealthStatusesByIllness(int illness, string purok)
         {
             using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
-                var residentHealthStatuses = connection.Query<ResidentHealthStatusModel>($"SELECT * FROM rhs WHERE TypeofillnessID = '{illness}'").ToList();
+                string query = @"
+                    SELECT *
+                    FROM rhs
+                    INNER JOIN resident r ON r.ID = rhs.ResidentId
+                    INNER JOIN resident_illnesses ON r.ID = resident_illnesses.ResidentId
+                    WHERE resident_illnesses.illnessId = @Illness
+                    AND r.Purok = @Purok";
+                var residentHealthStatuses = connection.Query<ResidentHealthStatusModel>(query, new { Illness = illness, Purok = purok }).ToList();
                 Console.WriteLine("Fetching Resident Health Status Data");
                 return residentHealthStatuses;
             }
@@ -570,16 +577,40 @@ namespace Baranggay_Health_Records.Controller
 
         //Purok Health Details
 
-        public int GetIllnessCount(int ID)
+        public int GetIllnessCount(int ID, string Purok)
         {
             using (var connection = _sqlConnector.GetConnection())
             {
                 string query = @"
                     SELECT COUNT(*)
                     FROM rhs
-                    INNER JOIN resident r ON rhs.ResidentId = r.ID
+                    INNER JOIN resident r ON r.ID = rhs.ResidentId
+                    INNER JOIN resident_illnesses ON r.ID = resident_illnesses.ResidentId
+                    WHERE resident_illnesses.illnessId = @ID
+                    AND r.Purok = @Purok";
+                try
+                {
+                    int illnessCount = connection.QuerySingle<int>(query, new { ID, Purok });
+                    return illnessCount;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    return -1;
+                }
+            }
+        }
+
+        public int GetAllIllnessCount(int ID)
+        {
+            using (var connection = _sqlConnector.GetConnection())
+            {
+                string query = @"
+                    SELECT COUNT(*)
+                    FROM resident_illnesses
+                    INNER JOIN resident r ON r.ID = resident_illnesses.residentId
                     LEFT JOIN Archive a ON r.ID = a.ReferenceID AND a.Type = 'rhs'
-                    WHERE rhs.TypeofIllnessID = @ID
+                    WHERE resident_illnesses.illnessId = @ID
                     AND a.ReferenceID IS NULL";
                 try
                 {
@@ -961,7 +992,9 @@ namespace Baranggay_Health_Records.Controller
                     connection.Execute(
                         @"DELETE FROM resident WHERE ID = @DataId;
                               DELETE FROM rhs WHERE ResidentId = @DataId;
-                              DELETE FROM household WHERE MemberID = @DataId",
+                              DELETE FROM household WHERE MemberID = @DataId;
+                              DELETE FROM resident_illnesses WHERE residentId = @DataId;
+                              DELETE FROM resident_statuses WHERE residentId = @DataId;",
                         new { DataId = dataId });
                 }
             }
@@ -981,7 +1014,9 @@ namespace Baranggay_Health_Records.Controller
                     connection.Execute(
                         @"DELETE FROM rhs WHERE ID = @DataId;
                               DELETE FROM resident WHERE ID = (SELECT ResidentId FROM rhs WHERE ID = @DataId);
-                              DELETE FROM household WHERE MemberID = (SELECT ResidentId FROM rhs WHERE ID = @DataId)",
+                              DELETE FROM household WHERE MemberID = (SELECT ResidentId FROM rhs WHERE ID = @DataId);
+                              DELETE FROM resident_illnesses WHERE residentId = (SELECT ResidentId FROM rhs WHERE ID = @DataId);
+                              DELETE FROM resident_statuses WHERE residentId = (SELECT ResidentId FROM rhs WHERE ID = @DataId);",
                         new { DataId = dataId });
                 }
             }
@@ -1205,6 +1240,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='36'/> <!-- Enlarge font size -->
                                             <w:b/>
                                         </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
                                         <w:t>Senior Citizens Masterlist</w:t>
                                     </w:r>
                                 </w:p>
@@ -1306,10 +1353,24 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='36'/> <!-- Enlarge font size -->
                                             <w:b/>
                                         </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
                                         <w:t>Residents Masterlist</w:t>
                                     </w:r>
                                 </w:p>
                             </w:hdr>";
+
+
 
                 using (StreamWriter streamWriter = new StreamWriter(headerPart.GetStream(FileMode.Create)))
                 {
@@ -1402,6 +1463,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
                                         <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1522,6 +1595,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='36'/> <!-- Enlarge font size -->
                                             <w:b/>
                                         </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
                                         <w:t>Purok {purok} Prenate Masterlist</w:t>
                                     </w:r>
                                 </w:p>
@@ -1620,6 +1705,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
                                         <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1737,6 +1834,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='36'/> <!-- Enlarge font size -->
                                             <w:b/>
                                         </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
                                         <w:t>{title} Masterlist</w:t>
                                     </w:r>
                                 </w:p>
@@ -1830,6 +1939,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
                                         <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1949,6 +2070,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='36'/> <!-- Enlarge font size -->
                                             <w:b/>
                                         </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
                                         <w:t>Households Masterlist</w:t>
                                     </w:r>
                                 </w:p>
@@ -2056,6 +2189,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='36'/> <!-- Enlarge font size -->
                                             <w:b/>
                                         </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
                                         <w:t>Purok {purok} Households Masterlist</w:t>
                                     </w:r>
                                 </w:p>
@@ -2147,6 +2292,18 @@ namespace Baranggay_Health_Records.Controller
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
                                         <w:t>Baranggay Health Profiling</w:t>
+                                    </w:r>
+                                </w:p>
+                                <w:p>
+                                    <w:pPr>
+                                        <w:jc w:val='center'/>
+                                    </w:pPr>
+                                    <w:r>
+                                        <w:rPr>
+                                            <w:sz w:val='36'/> <!-- Enlarge font size -->
+                                            <w:b/>
+                                        </w:rPr>
+                                        <w:t>Municipality of Midsayap Barangay Central Bulanan</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -2571,6 +2728,24 @@ namespace Baranggay_Health_Records.Controller
                 {
                     Console.WriteLine($"Error getting statuses: {ex.Message}");
                     return null;
+                }
+            }
+        }
+
+        public bool isIll(int residentId)
+        {
+            using(MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT COUNT(*) FROM resident_illnesses WHERE residentId = @residentId";
+                try
+                {
+                    var count = connection.QuerySingle<int>(query, new { residentId = residentId });
+                    return (count > 0);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Error getting illnesses: {ex.Message}");
+                    return false;
                 }
             }
         }

@@ -92,7 +92,7 @@
 
 @code {
     [Parameter]
-    public String? Purok { get; set; }
+    public String Purok { get; set; } = "";
 
     [Parameter]
     public int Illness { get; set; }
@@ -106,7 +106,7 @@
     protected override void OnInitialized()
     {
         Residents = context.GetResidents();
-        residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness);
+        residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness, Purok);
         illnessName = context.GetIllnessNameByID(Illness);
         illnesses = context.GetIllnesses();
         Console.WriteLine($"Fetching Table Data with the Purok number of {Purok} and Illness type of {illnessName}");
@@ -118,7 +118,7 @@
         {
             Console.WriteLine($"Fetching Table Data with the Purok number of {Purok} and Illness type of {Illness}");
             Residents = context.GetResidents();
-            residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness);
+            residentHealthStatuses = context.GetResidentHealthStatusesByIllness(Illness, Purok);
             illnesses = context.GetIllnesses();
             StateHasChanged();
         }
