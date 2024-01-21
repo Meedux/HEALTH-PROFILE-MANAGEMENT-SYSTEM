@@ -113,14 +113,14 @@
             <div class="col-xl-12 offset-xl-0 d-flex flex-column justify-content-start">
                 <label class="form-label">Illness Type</label>
                 <div>
-                    <button @onclick="AddInput" type="button" class="btn btn-success mb-3">Add Condition</button>
+                    <button @onclick="AddInput" type="button" class="btn btn-success mb-3">Add Vice</button>
                 </div>
 
                 @for (int i = 0; i < statusID.Count; i++)
                 {
                     int currentIndx = i;
                     <div class="input-group mb-3">
-                        <Select TValue="int" Placeholder="Select Condition...." Class="form-control mb-3" @onchange="e => ChangeStatus(e, currentIndx)">
+                        <Select TValue="int" Placeholder="Select Resident Vice...." Class="form-control mb-3" @onchange="e => ChangeStatus(e, currentIndx)">
                             <SelectItem Value="@none">None</SelectItem>
                             @foreach (Status dis_status in statuses)
                             {
