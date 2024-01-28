@@ -258,13 +258,13 @@ namespace Baranggay_Health_Records.Controller
                 using (var connection = _sqlConnector.GetConnection())
                 {
                     const string query = @"SELECT COUNT(DISTINCT rhs.ResidentId) AS TotalResidentsWithIllness
-                        FROM rhs rhs
-                        WHERE NOT EXISTS (
-                            SELECT 1
-                            FROM Archive
-                            WHERE ReferenceID = rhs.ID
-                            AND Type = 'resident' OR Type = 'rhs'
-                        )";
+            FROM rhs
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM Archive
+                WHERE ReferenceID = rhs.ID
+                AND Type = 'rhs'
+            ) AND rhs.ResidentId IS NOT NULL";
                     int? result = connection.QueryFirstOrDefault<int?>(query);
                     totalOccurrence = result.GetValueOrDefault();
                 }
@@ -1228,7 +1228,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1341,7 +1341,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1462,7 +1462,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1583,7 +1583,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1704,7 +1704,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1822,7 +1822,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -1938,7 +1938,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -2058,7 +2058,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -2177,7 +2177,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
@@ -2291,7 +2291,7 @@ namespace Baranggay_Health_Records.Controller
                                             <w:sz w:val='48'/> <!-- Enlarge font size -->
                                             <w:b/> <!-- Bold -->
                                         </w:rPr>
-                                        <w:t>Baranggay Health Profiling</w:t>
+                                        <w:t>Barangay Health Profiling</w:t>
                                     </w:r>
                                 </w:p>
                                 <w:p>
