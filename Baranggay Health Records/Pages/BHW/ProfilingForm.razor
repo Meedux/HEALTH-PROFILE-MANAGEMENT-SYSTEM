@@ -305,53 +305,78 @@
 
     public void AddResident()
     {
-        ResidentModel newResident = new ResidentModel
-            {
-                FirstName = firstName,
-                MiddleName = middleName,
-                LastName = lastName,
-                Suffix = suffix,
-                Age = age,
-                Dob = $"{dobMonth}/{dobDay}/{dobYear}",
-                Gender = gender,
-                Purok = purok,
-                IsPWD = isPWD,
-                IsSenior = isSenior,
-                isPrenate = isPrenate,
-                IDNo = id_no
-            };
-
-        ResidentHealthStatusModel newRHS = new ResidentHealthStatusModel();
-        HouseholdModel newHousehold = new HouseholdModel();
-
-        var resID = context.CreateResident(newResident);
-
-        HashSet<int> uniqueIllnesses = new HashSet<int>();
-
-        foreach (var illnessID in illnessesID)
+        if(
+            firstName == "" ||
+            middleName == "" ||
+            lastName == "" ||
+            suffix == "" ||
+            dob == "" ||
+            gender == "" ||
+            fathers_name == "" ||
+            mothers_name == "" ||
+            head == "" ||
+            num_of_fam == 0 ||
+            purok == "" ||
+            weight == "" ||
+            height == "" ||
+            temperature == "" ||
+            bloodPressure == ""
+            )
         {
-            if (illnessID != 0 && !uniqueIllnesses.Contains(illnessID))
+            Console.WriteLine("Please fill up all fields");
+            return;
+        }
+        else
+        {
+            ResidentModel newResident = new ResidentModel
+                {
+                    FirstName = firstName,
+                    MiddleName = middleName,
+                    LastName = lastName,
+                    Suffix = suffix,
+                    Age = age,
+                    Dob = $"{dobMonth}/{dobDay}/{dobYear}",
+                    Gender = gender,
+                    Purok = purok,
+                    IsPWD = isPWD,
+                    IsSenior = isSenior,
+                    isPrenate = isPrenate,
+                    IDNo = id_no
+                };
+
+            ResidentHealthStatusModel newRHS = new ResidentHealthStatusModel();
+            HouseholdModel newHousehold = new HouseholdModel();
+
+            var resID = context.CreateResident(newResident);
+
+            HashSet<int> uniqueIllnesses = new HashSet<int>();
+
+            foreach (var illnessID in illnessesID)
             {
-                context.CreateResidentIllness(illnessID, resID);
-                uniqueIllnesses.Add(illnessID);
+                if (illnessID != 0 && !uniqueIllnesses.Contains(illnessID))
+                {
+                    context.CreateResidentIllness(illnessID, resID);
+                    uniqueIllnesses.Add(illnessID);
+                }
             }
+
+            newRHS.ResidentId = resID;
+            newRHS.Weight = weight;
+            newRHS.Height = height;
+            newRHS.Temperature = temperature;
+
+
+            newHousehold.FathersName = fathers_name;
+            newHousehold.MothersName = mothers_name;
+            newHousehold.Member = firstName + " " + middleName + " " + lastName;
+            newHousehold.MemberID = resID;
+            newHousehold.FamilyCount = num_of_fam;
+            newHousehold.HeadofFamily = head;
+
+            context.CreateHousehold(newHousehold);
+            context.CreateResidentHealthStatus(newRHS);
         }
 
-        newRHS.ResidentId = resID;
-        newRHS.Weight = weight;
-        newRHS.Height = height;
-        newRHS.Temperature = temperature;
-
-
-        newHousehold.FathersName = fathers_name;
-        newHousehold.MothersName = mothers_name;
-        newHousehold.Member = firstName + " " + middleName + " " + lastName;
-        newHousehold.MemberID = resID;
-        newHousehold.FamilyCount = num_of_fam;
-        newHousehold.HeadofFamily = head;
-
-        context.CreateHousehold(newHousehold);
-        context.CreateResidentHealthStatus(newRHS);
 
 
         firstName = "";
