@@ -245,9 +245,12 @@
                         }
                         else
                         {
-                            @foreach (ResidentStatuses dis_status in statuses)
+                            if (!context.isArchived(resident))
                             {
-                                <p>@context.GetStatusNameByID(dis_status.GetStatusID())</p>
+                                @foreach (ResidentStatuses dis_status in statuses)
+                                {
+                                    <p>@context.GetStatusNameByID(dis_status.GetStatusID())</p>
+                                }
                             }
                         }
                     </p>
@@ -311,6 +314,8 @@
     private List<ResidentStatuses> statuses = new List<ResidentStatuses>();
     private List<int> statusID = new List<int> { 0 };
 
+    ResidentModel resident = new ResidentModel();
+
     void ChangePurok(ChangeEventArgs args)
     {
         var selectedValue = Convert.ToString(args.Value);
@@ -333,7 +338,7 @@
     protected override void OnInitialized()
     {
         Console.WriteLine($"Fetching user Data and Health status data with the user ID of {ID}");
-        ResidentModel resident = context.GetResident(ID);
+        resident = context.GetResident(ID);
         HouseholdModel? household = context.GetHousehold(ID);
         ResidentHealthStatusModel? RHS = context.GetResidentHealthStatus(ID);
         statuses = context.GetStatuses();
@@ -489,14 +494,6 @@
 
         HashSet<int> unStatus = new HashSet<int>();
 
-        foreach (var statID in statusID)
-        {
-            if (statID != 0 && !unStatus.Contains(statID))
-            {
-                context.CreateResidentStatus(statID, ID);
-                unStatus.Add(statID);
-            }
-        }
 
 
         HouseholdModel householdModel = new HouseholdModel();
@@ -507,6 +504,23 @@
 
         context.UpdateResident(residentModel, ID);
         context.UpdateHousehold(householdModel, ID);
+
+        if (statusID.Count > 0)
+        {
+            if (context.isArchived(resident))
+            {
+                context.UnArchive(ID, "resident");
+            }
+        }
+
+        foreach (var statID in statusID)
+        {
+            if (statID != 0 && !unStatus.Contains(statID))
+            {
+                context.CreateResidentStatus(statID, ID);
+                unStatus.Add(statID);
+            }
+        }
 
         NavigationManager.NavigateTo($"/secretary/resident/{ID}");
     }

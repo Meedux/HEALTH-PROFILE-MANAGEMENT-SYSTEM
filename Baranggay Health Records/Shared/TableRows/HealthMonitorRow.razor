@@ -84,6 +84,7 @@
     private void ArchiveData()
     {
         context.ArchiveData(FullName, "rhs", ID);
+        //context.clearIllness(ID);
         
         StateHasChanged();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);

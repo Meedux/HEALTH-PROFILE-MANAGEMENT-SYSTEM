@@ -5,7 +5,7 @@
 
 
 <div class="container" style="margin-top: 90px;">
-    <form>
+    <form @onsubmit="AddResident">
         <div class="row">
             <div class="col">
                 <h1 class="text-center"><strong>Resident Form</strong></h1>
@@ -184,8 +184,8 @@
         <div class="row" style="margin-top: 10px;">
             <div class="col-xl-12 offset-xl-0"><label class="form-label">Blood Pressure</label><input @bind="bloodPressure" class="form-control" type="text" placeholder="Ex. 1A" required=""></div>
         </div>
+    <button class="btn btn-success" type="submit" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;">ADD</button><button class="btn btn-danger" type="button" style="margin-top: 20px;margin-bottom: 40px;">Cancel</button>
     </form>
-    <button class="btn btn-success" type="button" style="margin-top: 20px;margin-bottom: 40px;margin-right: 22px;" @onclick="AddResident">ADD</button><button class="btn btn-danger" type="button" style="margin-top: 20px;margin-bottom: 40px;">Cancel</button>
 </div>
 
 @code {
@@ -305,77 +305,64 @@
 
     public void AddResident()
     {
-        if(
-            firstName == "" ||
-            middleName == "" ||
-            lastName == "" ||
-            suffix == "" ||
-            dob == "" ||
-            gender == "" ||
-            fathers_name == "" ||
-            mothers_name == "" ||
-            head == "" ||
-            num_of_fam == 0 ||
-            purok == "" ||
-            weight == "" ||
-            height == "" ||
-            temperature == "" ||
-            bloodPressure == ""
-            )
+        int newAge = 0;
+        if (dobMonth != "" && dobDay != "" && dobYear != "")
         {
-            Console.WriteLine("Please fill up all fields");
-            return;
-        }
-        else
-        {
-            ResidentModel newResident = new ResidentModel
-                {
-                    FirstName = firstName,
-                    MiddleName = middleName,
-                    LastName = lastName,
-                    Suffix = suffix,
-                    Age = age,
-                    Dob = $"{dobMonth}/{dobDay}/{dobYear}",
-                    Gender = gender,
-                    Purok = purok,
-                    IsPWD = isPWD,
-                    IsSenior = isSenior,
-                    isPrenate = isPrenate,
-                    IDNo = id_no
-                };
-
-            ResidentHealthStatusModel newRHS = new ResidentHealthStatusModel();
-            HouseholdModel newHousehold = new HouseholdModel();
-
-            var resID = context.CreateResident(newResident);
-
-            HashSet<int> uniqueIllnesses = new HashSet<int>();
-
-            foreach (var illnessID in illnessesID)
+            DateTime dob = new DateTime(Convert.ToInt32(dobYear), Array.IndexOf(months, dobMonth) + 1, Convert.ToInt32(dobDay));
+            newAge = DateTime.Now.Year - dob.Year;
+            if (DateTime.Now.DayOfYear < dob.DayOfYear)
             {
-                if (illnessID != 0 && !uniqueIllnesses.Contains(illnessID))
-                {
-                    context.CreateResidentIllness(illnessID, resID);
-                    uniqueIllnesses.Add(illnessID);
-                }
+                newAge = newAge - 1;
             }
-
-            newRHS.ResidentId = resID;
-            newRHS.Weight = weight;
-            newRHS.Height = height;
-            newRHS.Temperature = temperature;
-
-
-            newHousehold.FathersName = fathers_name;
-            newHousehold.MothersName = mothers_name;
-            newHousehold.Member = firstName + " " + middleName + " " + lastName;
-            newHousehold.MemberID = resID;
-            newHousehold.FamilyCount = num_of_fam;
-            newHousehold.HeadofFamily = head;
-
-            context.CreateHousehold(newHousehold);
-            context.CreateResidentHealthStatus(newRHS);
         }
+
+        ResidentModel newResident = new ResidentModel
+            {
+                FirstName = firstName,
+                MiddleName = middleName,
+                LastName = lastName,
+                Suffix = suffix,
+                Dob = $"{dobMonth}/{dobDay}/{dobYear}",
+                Age = newAge,
+                Gender = gender,
+                Purok = purok,
+                IsPWD = isPWD,
+                IsSenior = isSenior,
+                isPrenate = isPrenate,
+                IDNo = id_no
+            };
+
+        ResidentHealthStatusModel newRHS = new ResidentHealthStatusModel();
+        HouseholdModel newHousehold = new HouseholdModel();
+
+        var resID = context.CreateResident(newResident);
+
+        HashSet<int> uniqueIllnesses = new HashSet<int>();
+
+        foreach (var illnessID in illnessesID)
+        {
+            if (illnessID != 0 && !uniqueIllnesses.Contains(illnessID))
+            {
+                context.CreateResidentIllness(illnessID, resID);
+                uniqueIllnesses.Add(illnessID);
+            }
+        }
+
+        newRHS.ResidentId = resID;
+        newRHS.Weight = weight;
+        newRHS.Height = height;
+        newRHS.Temperature = temperature;
+
+
+        newHousehold.FathersName = fathers_name;
+        newHousehold.MothersName = mothers_name;
+        newHousehold.Member = firstName + " " + middleName + " " + lastName;
+        newHousehold.MemberID = resID;
+        newHousehold.FamilyCount = num_of_fam;
+        newHousehold.HeadofFamily = head;
+
+        context.CreateHousehold(newHousehold);
+        context.CreateResidentHealthStatus(newRHS);
 
 
 

@@ -917,6 +917,39 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public int UpdateRHSandReturnID(ResidentHealthStatusModel model, int? ID)
+        {
+            //DO as the function says
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                UPDATE rhs
+                SET  Weight = @Weight, Height = @Height,
+                    Temperature = @Temperature, BloodPressure = @BloodPressure
+                WHERE ResidentId = @ID;
+                SELECT ID FROM rhs WHERE ResidentId = @ID;"
+                    ;
+
+                    int newID = connection.ExecuteScalar<int>(query, new
+                    {
+                        model.Weight,
+                        model.Height,
+                        model.Temperature,
+                        model.BloodPressure,
+                        ID
+                    });
+                    return newID;       
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+        }
+
         public void ArchiveData(string name, string type, int dataId)
         {
             try
@@ -931,6 +964,7 @@ namespace Baranggay_Health_Records.Controller
                     ";
 
                     connection.Execute(query, new { Name = name, Archive_Type = type, Archive_ReferenceID = dataId});
+
                 }
             }
             catch (Exception e)
@@ -938,6 +972,26 @@ namespace Baranggay_Health_Records.Controller
                 Console.WriteLine(e);
             }
 
+        }
+
+        public void clearIllness(int resId)
+        {
+            try
+            {
+                //Clear the illness from the resident_illnesses
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                        DELETE FROM resident_illnesses WHERE residentId = @resId;
+                    ";
+
+                    connection.Execute(query, new { resId });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public void DeleteData(string type, int dataId)
@@ -1116,6 +1170,29 @@ namespace Baranggay_Health_Records.Controller
                 Console.WriteLine(e);
                 return false;
             }
+        }
+
+        public bool isArchived(int resId)
+        {
+            //From the archived table get all of the rhs archived and check in each rhs archive from the rhs table if it matches the residentId
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"SELECT COUNT(*)
+                    FROM rhs
+                    INNER JOIN archive r ON r.ReferenceID = rhs.ID
+                    WHERE rhs.ResidentId = @resId";
+                    int count = connection.ExecuteScalar<int>(query, new { resId = resId });
+                    return !(count > 0);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+
         }
 
         public void UnArchive(int ID, string type)

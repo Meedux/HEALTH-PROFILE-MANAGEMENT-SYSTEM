@@ -297,9 +297,12 @@
                         }
                         else
                         {
-                            @foreach(int illnessID in illnessesID)
+                            if (context.isArchived(ID))
                             {
-                                <p>@context.GetIllnessNameByID(illnessID)</p>
+                                @foreach(int illnessID in illnessesID)
+                                {
+                                    <p>@context.GetIllnessNameByID(illnessID)</p>
+                                }
                             }
                         }
                     </td>
@@ -684,14 +687,6 @@
         residentModel.Purok = edited_purok;
         residentModel.IDNo = edited_id_no;
 
-        illnessesID = illnessesID.Distinct().ToList();
-        foreach(int illnessId in illnessesID)
-        {
-            if(illnessId != 0)
-            {
-                context.CreateResidentIllness(illnessId, ID);
-            }
-        }
 
 
         HouseholdModel householdModel = new HouseholdModel();
@@ -709,7 +704,23 @@
 
         context.UpdateResident(residentModel, ID);
         context.UpdateHousehold(householdModel, ID);
-        context.UpdateResidentHealthStatus(rHSM, ID);
+        var rhsId = context.UpdateRHSandReturnID(rHSM, ID);
+
+        if (!context.isArchived(ID))
+        {
+            context.UnArchive(rhsId, "rhs");
+        }
+
+
+        illnessesID = illnessesID.Distinct().ToList();
+        foreach(int illnessId in illnessesID)
+        {
+            if(illnessId != 0)
+            {
+        
+                context.CreateResidentIllness(illnessId, ID);
+            }
+        }
         StateHasChanged();
         NavigationManager.NavigateTo($"/bhw/resident/{ID}", forceLoad: true);
 
