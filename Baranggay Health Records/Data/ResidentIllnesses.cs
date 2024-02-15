@@ -10,6 +10,8 @@ namespace Baranggay_Health_Records.Data
 
         public int illnessId { get; set; } = 0;
 
+        public DateTime diagnosedDate { get; set; }
+
 
         public int GetID()
         {
@@ -24,6 +26,11 @@ namespace Baranggay_Health_Records.Data
         public int GetIllnessID()
         {
             return this.illnessId;
+        }
+
+        public DateTime GetDiagnosedDate()
+        {
+            return this.diagnosedDate;
         }
 
     }

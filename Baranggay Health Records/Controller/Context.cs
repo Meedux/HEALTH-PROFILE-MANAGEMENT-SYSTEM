@@ -16,7 +16,7 @@ namespace Baranggay_Health_Records.Controller
 {
     public class Context
     {
-       
+
         public List<ResidentModel>? Residents { get; set; } = new List<ResidentModel>();
         public List<HouseholdModel>? Households { get; set; } = new List<HouseholdModel>();
         public List<ResidentHealthStatusModel>? ResidentHealthStatus { get; set; } = new List<ResidentHealthStatusModel>();
@@ -681,7 +681,7 @@ namespace Baranggay_Health_Records.Controller
                     return newRHS_ID;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
                 return -1;
@@ -712,7 +712,7 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        
+
         public int CreateResidentIllness(int illnessId, int residentId)
         {
             try
@@ -799,8 +799,8 @@ namespace Baranggay_Health_Records.Controller
 
                     connection.Execute(query, new
                     {
-                       newStock,
-                       medicineID
+                        newStock,
+                        medicineID
                     });
                 }
             }
@@ -940,7 +940,7 @@ namespace Baranggay_Health_Records.Controller
                         model.BloodPressure,
                         ID
                     });
-                    return newID;       
+                    return newID;
                 }
             }
             catch (Exception e)
@@ -963,7 +963,7 @@ namespace Baranggay_Health_Records.Controller
                         VALUES (@Name, @Archive_Type, @Archive_ReferenceID);
                     ";
 
-                    connection.Execute(query, new { Name = name, Archive_Type = type, Archive_ReferenceID = dataId});
+                    connection.Execute(query, new { Name = name, Archive_Type = type, Archive_ReferenceID = dataId });
 
                 }
             }
@@ -1229,7 +1229,7 @@ namespace Baranggay_Health_Records.Controller
                     connection.Execute(query, new
                     {
                         ill.IllnessName,
-                        ill.RecommendedMedicine, 
+                        ill.RecommendedMedicine,
                         ill.MedicineID,
                         Occurence = 0
                     });
@@ -1457,7 +1457,7 @@ namespace Baranggay_Health_Records.Controller
                 SectionProperties sectionProperties = new SectionProperties();
                 HeaderReference headerReference = new HeaderReference() { Type = HeaderFooterValues.Default, Id = mainPart.GetIdOfPart(headerPart) };
                 sectionProperties.Append(headerReference);
-                if(mainPart.Document.Body != null)
+                if (mainPart.Document.Body != null)
                 {
                     mainPart.Document.Body.Append(sectionProperties);
                 }
@@ -2101,7 +2101,7 @@ namespace Baranggay_Health_Records.Controller
                 mainPart.Document.Save();
 
             }
-                await DownloadFileFromStream(fileName, file, JS);
+            await DownloadFileFromStream(fileName, file, JS);
         }
 
 
@@ -2221,7 +2221,7 @@ namespace Baranggay_Health_Records.Controller
                 mainPart.Document.Save();
 
             }
-                await DownloadFileFromStream(fileName, file, JS);
+            await DownloadFileFromStream(fileName, file, JS);
         }
 
         public async void GeneratePurokHousehold(string? purok, List<HouseholdModel> households, IJSRuntime JS)
@@ -2337,13 +2337,13 @@ namespace Baranggay_Health_Records.Controller
                 mainPart.Document.Save();
 
             }
-                await DownloadFileFromStream(fileName, file, JS);
+            await DownloadFileFromStream(fileName, file, JS);
         }
 
         public async void GenerateRHS(List<ResidentHealthStatusModel> rhs, List<IllnessModel> illnesses, List<ResidentModel> residents, IJSRuntime JS)
         {
-            string fileName = "ResidentHealthStatusList.docx"; 
-            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName); 
+            string fileName = "ResidentHealthStatusList.docx";
+            string file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files", fileName);
 
             if (File.Exists(file))
             {
@@ -2476,7 +2476,7 @@ namespace Baranggay_Health_Records.Controller
                 mainPart.Document.Save();
 
             }
-                await DownloadFileFromStream(fileName, file, JS);
+            await DownloadFileFromStream(fileName, file, JS);
         }
 
         private TableCell CreateHeaderCell(string text)
@@ -2504,7 +2504,7 @@ namespace Baranggay_Health_Records.Controller
                     INNER JOIN resident r ON h.MemberID = r.ID
                     LEFT JOIN Archive a ON r.ID = a.ReferenceID AND a.Type = 'household'
                     WHERE r.Purok = @Purok
-                    AND a.ReferenceID IS NULL"; 
+                    AND a.ReferenceID IS NULL";
                 return connection.ExecuteScalar<int>(query, new { Purok = purok });
             }
         }
@@ -2519,7 +2519,7 @@ namespace Baranggay_Health_Records.Controller
                     LEFT JOIN Archive a ON r.ID = a.ReferenceID AND a.Type = 'Resident'
                     WHERE r.Purok = @Purok 
                     AND r.Age >= 60
-                    AND a.ReferenceID IS NULL"; 
+                    AND a.ReferenceID IS NULL";
 
                 return connection.ExecuteScalar<int>(query, new { Purok = purok });
             }
@@ -2578,6 +2578,31 @@ namespace Baranggay_Health_Records.Controller
             }
             string temp = (name != null) ? name : "";
             return temp;
+        }
+
+        public string ShowIllnessNameAndDiagnosedDate(int illnessId, int residentId)
+        {
+            string? name = "";
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    const string query = @"
+                        SELECT i.IllnessName, ri.DiagnosedDate
+                        FROM resident_illnesses ri
+                        JOIN illness i ON ri.IllnessID = i.ID
+                        WHERE ri.IllnessID = @illnessId AND ri.ResidentID = @residentId";
+                    var result = connection.QuerySingleOrDefault(query, new { illnessId = illnessId, residentId = residentId });
+                    name = result.IllnessName;
+                    string date = result.DiagnosedDate;
+                    return $"{name} - {date}";
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return "ERROR";
+            }
         }
 
         public bool isIllnessNone(ResidentHealthStatusModel rhs)
@@ -2791,6 +2816,24 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public List<DateTime> GetIllnessDiagnosedDate(int id)
+        {
+            using(MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT diagnosedDate FROM resident_illnesses WHERE residentId = @id";
+                try
+                {
+                    var dates = connection.Query<DateTime>(query, new { id = id }).ToList();
+                    return dates;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error getting illness dates: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
         public List<Status> GetResidentStatuses(int id)
         {
             using (MySqlConnection connection = _sqlConnector.GetConnection())
@@ -2822,6 +2865,25 @@ namespace Baranggay_Health_Records.Controller
                 catch(Exception ex)
                 {
                     Console.WriteLine($"Error getting illnesses: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+        public bool checkMedicineReduction(int medicineId, int quantity)
+        {
+            //Check if the medicine quantity taken is gonna be less than zero
+            using(MySqlConnection connection = _sqlConnector.GetConnection())
+            {
+                string query = "SELECT stock FROM medicine WHERE id = @medicineId";
+                try
+                {
+                    var stock = connection.QuerySingle<int>(query, new { medicineId = medicineId });
+                    return (stock - quantity) >= 0;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Error getting medicine stock: {ex.Message}");
                     return false;
                 }
             }

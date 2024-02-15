@@ -2,6 +2,7 @@
 @layout BHWLayout
 @inject Context context
 @inject NavigationManager NavigationManager
+@using System.Globalization
 
 <div class="container" style="margin-top: 86px;">
     <h1 class="text-center">Resident Details</h1>
@@ -74,7 +75,7 @@
                             <input type="number" style="margin-left: 15px;" class="w-50 form-control" @bind="edited_age" />
                         }
                         else{
-                             @age
+                            <p>  @age @AgeType Old</p>
                         }    
                     </p>
 
@@ -415,6 +416,7 @@
     String suffix           {get; set;} = "";
     String dob { get; set; } = "";
     int age { get; set; } = 0;
+    String AgeType { get; set; } = "";
     String gender           {get; set;} = "";
     String civil_status     {get; set;} = "";
     String religion         {get; set;} = "";
@@ -468,6 +470,7 @@
     int none = 0;
 
     List<ResidentIllnesses> residentIllnesses = new List<ResidentIllnesses>();
+    List<DateTime> diagnosedDates = new List<DateTime>();
     List<int> illnessesID = new List<int>();
 
     void ChangePurok(ChangeEventArgs args)
@@ -510,7 +513,9 @@
             if (!illnessesID.Contains(id))
             {
                 illnessesID.Add(id);
+                diagnosedDates.Add(illness.GetDiagnosedDate());
                 Console.WriteLine(id);
+                Console.WriteLine(illness.GetDiagnosedDate());
             }
         }
         illnessesID = illnessesID.Distinct().ToList();
@@ -532,6 +537,48 @@
         purok = resident.GetPurok();
         id_no = resident.GetIDNum();
         // status_type = resident.GetResidentCivilStatus();
+
+        string[] dobSplit = resident.GetResidentDOB().Split("/");
+        int month = DateTime.ParseExact(dobSplit[0], "MMMM", CultureInfo.CurrentCulture).Month;
+        int day = Convert.ToInt32(dobSplit[1]);
+        int year = Convert.ToInt32(dobSplit[2]);
+
+        DateTime tempDob = new DateTime(year, month, day);
+
+        DateTime currentDate = DateTime.Now;
+
+        int ageInYears = currentDate.Year - tempDob.Year;
+        int ageInMonths = currentDate.Month - tempDob.Month;
+        int ageInDays = (currentDate - tempDob).Days;
+
+
+        if (ageInYears > 0)
+        {
+            AgeType = "Year(s)";
+            age = ageInYears;
+        }
+        else if (ageInYears == 0 && ageInMonths > 0)
+        {
+            AgeType = "Month(s)";
+            age = ageInMonths;
+        }
+        else if (ageInYears == 0 && ageInMonths == 0)
+        {
+            AgeType = "Day(s)";
+            age = ageInDays;
+        }
+        else
+        {
+            // Handle the case when the current month is less than the birth month
+            ageInYears--; // Reduce the age by 1 since the birthday hasn't been reached yet this year
+            ageInMonths = 12 - tempDob.Month + currentDate.Month; // Calculate the difference in months
+            if (currentDate.Day < tempDob.Day)
+            {
+                ageInMonths--; // Adjust if the current day is before the birth day in the current month
+            }
+            AgeType = "Month(s)";
+            age = ageInMonths;
+        }
 
         //Fill up the Household Details
         fathers_name = household.GetFathersName();
@@ -580,6 +627,7 @@
 
 
         Illnesses = context.GetIllnesses();
+
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -620,6 +668,49 @@
             household_number = resident.GetHouseholdNumber();
             purok = resident.GetPurok();
             // status_type = resident.GetResidentCivilStatus();
+
+
+            string[] dobSplit = resident.GetResidentDOB().Split("/");
+            int month = DateTime.ParseExact(dobSplit[0], "MMMM", CultureInfo.CurrentCulture).Month;
+            int day = Convert.ToInt32(dobSplit[1]);
+            int year = Convert.ToInt32(dobSplit[2]);
+
+            DateTime tempDob = new DateTime(year, month, day);
+
+            DateTime currentDate = DateTime.Now;
+
+            int ageInYears = currentDate.Year - tempDob.Year;
+            int ageInMonths = currentDate.Month - tempDob.Month;
+            int ageInDays = (currentDate - tempDob).Days;
+
+
+            if (ageInYears > 0)
+            {
+                AgeType = "Year(s)";
+                age = ageInYears;
+            }
+            else if (ageInYears == 0 && ageInMonths > 0)
+            {
+                AgeType = "Month(s)";
+                age = ageInMonths;
+            }
+            else if (ageInYears == 0 && ageInMonths == 0)
+            {
+                AgeType = "Day(s)";
+                age = ageInDays;
+            }
+            else
+            {
+                // Handle the case when the current month is less than the birth month
+                ageInYears--; // Reduce the age by 1 since the birthday hasn't been reached yet this year
+                ageInMonths = 12 - tempDob.Month + currentDate.Month; // Calculate the difference in months
+                if (currentDate.Day < tempDob.Day)
+                {
+                    ageInMonths--; // Adjust if the current day is before the birth day in the current month
+                }
+                AgeType = "Month(s)";
+                age = ageInMonths;
+            }
 
             //Fill up the Household Details
             fathers_name = household.GetFathersName();
@@ -717,7 +808,7 @@
         {
             if(illnessId != 0)
             {
-        
+
                 context.CreateResidentIllness(illnessId, ID);
             }
         }
@@ -747,12 +838,22 @@
         newReceipt.medicineId = medicineId;
         newReceipt.quantity = quantity;
 
-        context.AddReceipt(newReceipt);
+        //use the newly created function to check if its good to take the medicine stock
+        if(!context.checkMedicineReduction(medicineId, quantity))
+        {
+            context.UpdateMedicineStock(medicineId, quantity);
+            context.AddReceipt(newReceipt);
 
-        medicineId = 0;
-        quantity = 0;
+            medicineId = 0;
+            quantity = 0;
 
-        NavigationManager.NavigateTo("/bhw/medicine-record", forceLoad: true);
+            NavigationManager.NavigateTo("/bhw/medicine-record", forceLoad: true);
+        }
+        else
+        {
+            HideMedicineModal();
+        }
+
     }
 
     void GetMedicineID(ChangeEventArgs args)
