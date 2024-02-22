@@ -206,7 +206,7 @@
 
     private void UpdateMedicine()
     {
-        context.UpdateMedicineStock(residentMedicine.ID, newStock);
+        context.UpdateStock(residentMedicine.ID, newStock);
         HideModal();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }

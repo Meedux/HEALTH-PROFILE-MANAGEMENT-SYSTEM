@@ -787,16 +787,45 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
+        public void UpdateStock(int medicineID, int newStock)
+        {
+            try
+            {
+                using (var connection = _sqlConnector.GetConnection())
+                {
+                    //const string query = @"UPDATE medicine SET stock = @newStock WHERE ID = @medicineID";
+                    //decrease the stocks
+                    const string query = @"
+                        UPDATE medicine
+                        SET stock = stock + @newStock
+                        WHERE ID = @medicineID; 
+                    ";
+                    connection.Execute(query, new
+                    {
+                        newStock,
+                        medicineID
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
         public void UpdateMedicineStock(int medicineID, int newStock)
         {
             try
             {
                 using (var connection = _sqlConnector.GetConnection())
                 {
+                    //const string query = @"UPDATE medicine SET stock = @newStock WHERE ID = @medicineID";
+                    //decrease the stocks
                     const string query = @"
-                    UPDATE medicine SET stock = @newStock WHERE ID = @medicineID
+                        UPDATE medicine
+                        SET stock = stock - @newStock
+                        WHERE ID = @medicineID; 
                     ";
-
                     connection.Execute(query, new
                     {
                         newStock,
@@ -2870,18 +2899,19 @@ namespace Baranggay_Health_Records.Controller
             }
         }
 
-        public bool checkMedicineReduction(int medicineId, int quantity)
+        public bool IsMedicineStockSufficient(int medicineId, int quantity)
         {
-            //Check if the medicine quantity taken is gonna be less than zero
-            using(MySqlConnection connection = _sqlConnector.GetConnection())
+            using (MySqlConnection connection = _sqlConnector.GetConnection())
             {
                 string query = "SELECT stock FROM medicine WHERE id = @medicineId";
                 try
                 {
-                    var stock = connection.QuerySingle<int>(query, new { medicineId = medicineId });
-                    return (stock - quantity) >= 0;
+                    var stock = connection.QuerySingleOrDefault<int>(query, new { medicineId = medicineId });
+
+                    // Check if stock is available and sufficient
+                    return stock > 0 && (stock - quantity) >= 0;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine($"Error getting medicine stock: {ex.Message}");
                     return false;

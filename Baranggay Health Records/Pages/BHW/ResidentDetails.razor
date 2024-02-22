@@ -388,6 +388,10 @@
 
             @if(medicineId != 0)
             {
+                @if (IsVisible)
+                {
+                    <p class="text-danger">Medicine is either low or out of stock</p>
+                }
                 <Field>
                     <FieldLabel>
                         Quantity
@@ -830,7 +834,10 @@
         MedicineForm.Hide();
     }
 
-    private void AddMedicineReceipt()
+    private bool IsVisible = false;
+
+
+    private async void AddMedicineReceipt()
     {
         MedicineReceiptModel newReceipt = new MedicineReceiptModel();
 
@@ -839,7 +846,7 @@
         newReceipt.quantity = quantity;
 
         //use the newly created function to check if its good to take the medicine stock
-        if(!context.checkMedicineReduction(medicineId, quantity))
+        if (context.IsMedicineStockSufficient(medicineId, quantity))
         {
             context.UpdateMedicineStock(medicineId, quantity);
             context.AddReceipt(newReceipt);
@@ -851,7 +858,14 @@
         }
         else
         {
-            HideMedicineModal();
+            IsVisible = true;
+            StateHasChanged(); // Update the UI to show the alert
+
+            // Delay for 3 seconds before hiding the alert
+            await Task.Delay(3000);
+
+            IsVisible = false;
+            StateHasChanged(); // Update the UI to hide the alert
         }
 
     }
